@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace project.api.Entities
+{
+    public class Category
+    {
+        public Guid Id { get; set; }
+        public Category ParentCategory { get; set; }
+        public Guid? ParentId { get; set; }
+        [StringLength(30, MinimumLength = 2)]
+        public string Name { get; set; }
+
+        public Product Product { get; set; }
+        public ICollection<Category> SubCategories { get; set; }
+
+    }
+}
