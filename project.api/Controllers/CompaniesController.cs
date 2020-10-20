@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.api.Repositories;
-using project.models.Addresses;
+using project.models.Companies;
+using project.models.Products;
 
 namespace project.api.Controllers
 {
@@ -14,25 +15,25 @@ namespace project.api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class AddressesController : ControllerBase
+    public class CompaniesController : ControllerBase
     {
-        private readonly IAddressRepository _addressRepository;
+        private readonly ICompanyRepository _companyRepository;
 
-        public AddressesController(IAddressRepository addressRepository)
+        public CompaniesController(ICompanyRepository companyRepository)
         {
-            _addressRepository = addressRepository;
+            _companyRepository = companyRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<GetAddressModel>>> GetAddresses()
+        public async Task<ActionResult<List<GetCompanyModel>>> GetCompanies()
         {
             try
             {
-                List<GetAddressModel> addresses = await _addressRepository.GetAddresses();
+                List<GetCompanyModel> companies = await _companyRepository.GetCompanies();
 
-                return addresses;
+                return companies;
             }
             catch (ProjectException e)
             {
@@ -42,21 +43,20 @@ namespace project.api.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> GetAddress(string id)
+        public async Task<ActionResult<GetCompanyModel>> GetCompany(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid companyId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetCompany", "400");
                 }
 
-                GetAddressModel address = await _addressRepository.GetAddress(addressId);
+                GetCompanyModel company = await _companyRepository.GetCompany(companyId);
 
-                return address;
+                return company;
             }
             catch (ProjectException e)
             {
@@ -73,18 +73,26 @@ namespace project.api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> PostAddress(PostAddressModel postAddressModel)
+        public async Task<ActionResult<GetCompanyModel>> PostBoek(PostCompanyModel postBoekModel)
         {
             try
             {
-                GetAddressModel address = await _addressRepository.PostAddress(postAddressModel);
+                GetCompanyModel company = await _companyRepository.PostCompany(postBoekModel);
 
-                return CreatedAtAction(nameof(GetAddress), new { id = address.Id }, address);
+                return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
             }
-            catch (DatabaseException e)
+            catch (ProjectException e)
             {
-                return BadRequest(e.ProjectError);
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -92,16 +100,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutAddress(string id, PutAddressModel putAddressModel)
+        public async Task<IActionResult> PutCompany(string id, PutCompanyModel putCompanyModel)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid companyId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutCompany", "400");
                 }
 
-                await _addressRepository.PutAddress(addressId, putAddressModel);
+                await _companyRepository.PutCompany(companyId, putCompanyModel);
 
                 return NoContent();
             }
@@ -122,16 +130,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAddress(string id)
+        public async Task<IActionResult> DeleteCompany(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid boekId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteAuteur", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteCompany", "400");
                 }
 
-                await _addressRepository.DeleteAddress(addressId);
+                await _companyRepository.DeleteCompany(boekId);
 
                 return NoContent();
             }

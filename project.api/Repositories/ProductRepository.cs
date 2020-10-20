@@ -19,17 +19,22 @@ namespace project.api.Repositories
             _context = context;
         }
 
-        public async Task DeleteProduct(string id)
+        public async Task DeleteProduct(Guid id)
         {
             try
             {
                 Product product = await _context.Products
                     .Include(x => x.Images)
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (product == null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new EntityException("Product not found.", this.GetType().Name, "DeleteProduct", "404");
+                }
+
+                if (product.OrderProducts.Count > 0)
+                {
+                    throw new CollectionException("Remove all Products first.", this.GetType().Name, "DeleteProducts", "400");
                 }
 
                 _context.Images.RemoveRange(product.Images);
@@ -37,29 +42,19 @@ namespace project.api.Repositories
                 _context.Products.Remove(product);
 
                 await _context.SaveChangesAsync();
-            } catch (Exception e)
+            }
+            catch (ProjectException e)
             {
-                if (e.GetType().Name.Equals("KeyNotFoundException"))
-                {
-                    throw new KeyNotFoundException();
-                }
-                if (e.InnerException.GetType().Name.Equals("FormatException"))
-                {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteProduct");
-                }
-
-                if (e.GetType().ToString().Contains("DbUpdate"))
-                {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "DeleteProduct");
-                }
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "DeleteProduct", "400");
             }
         }
 
         public async Task<List<GetProductModel>> GetProducts()
         {
-            try
-            {
-
                 List<GetProductModel> products = await _context.Products
                    .Include(x => x.Images)
                     .Include(x => x.Category)
@@ -77,17 +72,18 @@ namespace project.api.Repositories
                     .AsNoTracking()
                     .ToListAsync();
 
-                return products;
-            } catch (Exception e)
-            {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetProducts");
-            }
-        }
+                
+                if (products.Count == 0)
+                {
+                    throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
+                }
 
-        public async Task<GetProductModel> GetProduct(string id)
+                return products;
+            }
+
+        public async Task<GetProductModel> GetProduct(Guid id)
         {
-            try
-            {
+            
                 GetProductModel product = await _context.Products
                     .Include(x => x.Images)
                     .Include(x => x.Category)
@@ -103,13 +99,14 @@ namespace project.api.Repositories
                         Category = x.Category.Name,
                     })
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
+
+                if (product == null)
+                {
+                    throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
+                }
                 return product;
-            } catch (Exception e)
-            {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetProduct");
-            }
         }
 
         public async Task<GetProductModel> PostProduct(PostProductModel postProductModel)
@@ -125,25 +122,24 @@ namespace project.api.Repositories
                 
             });
 
-            await _context.SaveChangesAsync();
-
-            return new GetProductModel
+            try
             {
-                Id = result.Entity.Id,
-                Name = result.Entity.Name,
-                Description = result.Entity.Description,
-                Stock = result.Entity.Stock,
-                Price = result.Entity.Price,
-                Category = result.Entity.Category.Name,
-                Company = result.Entity.Company.Name
-            };
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PostProduct", "400");
+            }
+
+            return await GetProduct(result.Entity.Id);
+            
         }
 
-        public async Task PutProduct(string id, PutProductModel putProductModel)
+        public async Task PutProduct(Guid id, PutProductModel putProductModel)
         {
             try
             {
-                Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (product == null)
                 {
@@ -157,22 +153,14 @@ namespace project.api.Repositories
                 product.CompanyId = putProductModel.CompanyId;
 
                 await _context.SaveChangesAsync();
-            } catch(Exception e)
+            }
+            catch (ProjectException e)
             {
-                if (e.GetType().Name.Equals("KeyNotFoundException"))
-                {
-                    throw new KeyNotFoundException();
-                }
-
-                if (e.InnerException.GetType().Name.Equals("FormatException"))
-                {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "PutProduct");
-                }
-
-                if (e.GetType().ToString().Contains("DbUpdate"))
-                {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "PutProduct");
-                }
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutProduct", "400");
             }
         }
     }

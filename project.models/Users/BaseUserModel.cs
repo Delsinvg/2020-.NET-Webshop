@@ -19,4 +19,4 @@ namespace project.models.Users
         public string Email { get; set; }
     }
 }
-}
+

@@ -9,9 +9,9 @@ namespace project.api.Repositories
     public interface IAddressRepository
     {
         Task<List <GetAddressModel>> GetAddresses();
-        Task<GetAddressModel> GetAddress(string id);
+        Task<GetAddressModel> GetAddress(Guid id);
         Task<GetAddressModel> PostAddress(PostAddressModel postAddressModel);
-        Task PutAddress(string id, PutAddressModel putAddressModel);
-        Task DeleteAddress(string id);
+        Task PutAddress(Guid id, PutAddressModel putAddressModel);
+        Task DeleteAddress(Guid id);
     }
 }

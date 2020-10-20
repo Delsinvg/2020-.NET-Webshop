@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using project.api.Entities;
 using project.api.Exceptions;
 using project.api.Repositories;
-using project.models.Addresses;
+using project.models.Categories;
 
 namespace project.api.Controllers
 {
@@ -14,25 +15,25 @@ namespace project.api.Controllers
     [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class AddressesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
-        private readonly IAddressRepository _addressRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public AddressesController(IAddressRepository addressRepository)
+        public CategoriesController(ICategoryRepository categoryRepository)
         {
-            _addressRepository = addressRepository;
+            _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<GetAddressModel>>> GetAddresses()
+        public async Task<ActionResult<List<GetCategoryModel>>> GetCategories()
         {
             try
             {
-                List<GetAddressModel> addresses = await _addressRepository.GetAddresses();
+                List<GetCategoryModel> categories = await _categoryRepository.GetCategories();
 
-                return addresses;
+                return categories;
             }
             catch (ProjectException e)
             {
@@ -42,21 +43,20 @@ namespace project.api.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> GetAddress(string id)
+        public async Task<ActionResult<GetCategoryModel>> GetCategory(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid categoryId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetCategory", "400");
                 }
 
-                GetAddressModel address = await _addressRepository.GetAddress(addressId);
+                GetCategoryModel boek = await _categoryRepository.GetCategory(categoryId);
 
-                return address;
+                return boek;
             }
             catch (ProjectException e)
             {
@@ -73,18 +73,26 @@ namespace project.api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> PostAddress(PostAddressModel postAddressModel)
+        public async Task<ActionResult<GetCategoryModel>> PostBoek(PostCategoryModel postCategoryModel)
         {
             try
             {
-                GetAddressModel address = await _addressRepository.PostAddress(postAddressModel);
+                GetCategoryModel category = await _categoryRepository.PostCategory(postCategoryModel);
 
-                return CreatedAtAction(nameof(GetAddress), new { id = address.Id }, address);
+                return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
             }
-            catch (DatabaseException e)
+            catch (ProjectException e)
             {
-                return BadRequest(e.ProjectError);
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -92,16 +100,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutAddress(string id, PutAddressModel putAddressModel)
+        public async Task<IActionResult> PutCategory(string id, PutCategoryModel putCategoryModel)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid boekId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutBoek", "400");
                 }
 
-                await _addressRepository.PutAddress(addressId, putAddressModel);
+                await _categoryRepository.PutCategory(boekId, putCategoryModel);
 
                 return NoContent();
             }
@@ -122,16 +130,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAddress(string id)
+        public async Task<IActionResult> DeleteBoek(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid categoryId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteAuteur", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteCategory", "400");
                 }
 
-                await _addressRepository.DeleteAddress(addressId);
+                await _categoryRepository.DeleteCategory(categoryId);
 
                 return NoContent();
             }

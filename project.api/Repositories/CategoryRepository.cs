@@ -19,11 +19,11 @@ namespace project.api.Repositories
             _context = context;
         }
 
-        public async Task DeleteCategory(string id)
+        public async Task DeleteCategory(Guid id)
         {
             try
             {
-                Category category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                Category category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (category == null)
                 {
@@ -40,41 +40,41 @@ namespace project.api.Repositories
                 }
                 if (e.InnerException.GetType().Name.Equals("FormatException"))
                 {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteCategory");
+                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteCategory", "400");
                 }
 
                 if (e.GetType().ToString().Contains("DbUpdate"))
                 {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "DeleteCategory");
+                    throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "DeleteCategory", "400");
                 }
             }
         }
 
         public async Task<List<GetCategoryModel>> GetCategories()
         {
-            try
-            {
-                List<GetCategoryModel> categories = await _context.Categories
-                    .Select(x => new GetCategoryModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        ParentCategory = x.ParentCategory.Name
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
 
-                return categories;
-            } catch (Exception e)
+            List<GetCategoryModel> categories = await _context.Categories
+                .Select(x => new GetCategoryModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ParentCategory = x.ParentCategory.Name
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+
+
+            if (categories.Count == 0)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetCategories");
+                throw new CollectionException("No Categories found", this.GetType().Name, "GetCategories", "404");
             }
+            return categories;            
         }
 
-        public async Task<GetCategoryModel> GetCategory(string id)
+        public async Task<GetCategoryModel> GetCategory(Guid id)
         {
-            try
-            {
+            
                 GetCategoryModel category = await _context.Categories
                 .Select(x => new GetCategoryModel
                 {
@@ -83,13 +83,14 @@ namespace project.api.Repositories
                     ParentCategory = x.ParentCategory.Name
                 })
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-                return category;
-            } catch (Exception e)
+            if (category == null)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetCategory");
+                throw new EntityException("Category not found.", this.GetType().Name, "GetUitgeverij", "404");
             }
+
+            return category;
         }
 
         public async Task<GetCategoryModel> PostCategory(PostCategoryModel postCategoryModel)
@@ -100,21 +101,24 @@ namespace project.api.Repositories
                 ParentId = postCategoryModel.ParentId
             });
 
-            await _context.SaveChangesAsync();
-
-            return new GetCategoryModel
+            try
             {
-                Id = result.Entity.Id,
-                Name = result.Entity.Name,
-                ParentCategory = result.Entity.ParentCategory.Name
-            };
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PostAddress", "400");
+            }
+
+            return await GetCategory(result.Entity.Id);
         }
 
-        public async Task PutCategory(string id, PutCategoryModel putCategoryModel)
+        public async Task PutCategory(Guid id, PutCategoryModel putCategoryModel)
         {
             try
             {
-                Category category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                Category category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
                 if (category == null)
                 {
                     throw new KeyNotFoundException();
@@ -124,22 +128,15 @@ namespace project.api.Repositories
                 category.ParentId = putCategoryModel.ParentId;
 
                 await _context.SaveChangesAsync();
-            } catch (Exception e)
+
+            }
+            catch (ProjectException e)
             {
-                if (e.GetType().Name.Equals("KeyNotFoundException"))
-                {
-                    throw new KeyNotFoundException();
-                }
-
-                if (e.InnerException.GetType().Name.Equals("FormatException"))
-                {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "PutCategory");
-                }
-
-                if (e.GetType().ToString().Contains("DbUpdate"))
-                {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "PutCategory");
-                }
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutAddress", "400");
             }
         }
     }

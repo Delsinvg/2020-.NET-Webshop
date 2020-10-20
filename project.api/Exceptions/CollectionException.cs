@@ -5,19 +5,14 @@ using System.Threading.Tasks;
 
 namespace project.api.Exceptions
 {
-    public class CollectionException : Exception
+    public class CollectionException : ProjectException
     {
-        public string Type { get; }
-        public string Title { get; }
-        public string SourceClass { get; }
-        public string SourceMethod { get; }
-
-        public CollectionException(string message, string sourceClass, string sourceMethod) : base(message)
+        public CollectionException(
+            string message,
+            string sourceClass,
+            string sourceMethod,
+            string status) : base(message, sourceClass, sourceMethod, status)
         {
-            Type = "CollectionException";
-            Title = message;
-            SourceClass = sourceClass;
-            SourceMethod = sourceMethod;
         }
     }
 }

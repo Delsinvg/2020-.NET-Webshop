@@ -9,9 +9,9 @@ namespace project.api.Repositories
     public interface ICompanyRepository
     {
         Task<List<GetCompanyModel>> GetCompanies();
-        Task<GetCompanyModel> GetCompany(string id);
+        Task<GetCompanyModel> GetCompany(Guid id);
         Task<GetCompanyModel> PostCompany(PostCompanyModel postCompanyModel);
-        Task PutCompany(string id, PutCompanyModel putCompanyModel);
-        Task DeleteCompany(string id);
+        Task PutCompany(Guid id, PutCompanyModel putCompanyModel);
+        Task DeleteCompany(Guid id);
     }
 }

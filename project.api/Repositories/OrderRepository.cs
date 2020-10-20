@@ -19,17 +19,22 @@ namespace project.api.Repositories
             _context = context;
         }
 
-        public async Task DeleteOrder(string id)
+        public async Task DeleteOrder(Guid id)
         {
             try
             {
                 Order order = await _context.Orders
                     .Include(x => x.OrderProducts)
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (order == null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new EntityException("Order not found.", this.GetType().Name, "DeleteOrder", "404");
+                }
+
+                if (order.OrderProducts.Count > 0)
+                {
+                    throw new CollectionException("Remove all Orders first.", this.GetType().Name, "DeleteOrder", "400");
                 }
 
                 _context.OrderProducts.RemoveRange(order.OrderProducts);
@@ -37,28 +42,20 @@ namespace project.api.Repositories
                 _context.Orders.Remove(order);
 
                 await _context.SaveChangesAsync();
-            } catch(Exception e)
+            }
+            catch (ProjectException e)
             {
-                if (e.GetType().Name.Equals("KeyNotFoundException"))
-                {
-                    throw new KeyNotFoundException();
-                }
-                if (e.InnerException.GetType().Name.Equals("FormatException"))
-                {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteOrder");
-                }
-
-                if (e.GetType().ToString().Contains("DbUpdate"))
-                {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "DeleteOrder");
-                }
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "DeleteOrder", "400");
             }
         }
 
-        public async Task<GetOrderModel> GetOrder(string id)
+        public async Task<GetOrderModel> GetOrder(Guid id)
         {
-            try
-            {
+          
                 GetOrderModel order = await _context.Orders
                     .Include(x => x.OrderProducts)
                     .Include(x => x.User)
@@ -71,19 +68,19 @@ namespace project.api.Repositories
                         Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
                     })
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
-                return order;
-            } catch(Exception e)
+            if (order == null)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetOrder");
+                throw new EntityException("Order not found.", this.GetType().Name, "GetOrder", "404");
             }
+
+            return order;
         }
 
         public async Task<List<GetOrderModel>> GetOrders()
         {
-            try
-            {
+            
                 List<GetOrderModel> orders = await _context.Orders
                     .Include(x => x.OrderProducts)
                     .Include(x => x.User)
@@ -98,28 +95,43 @@ namespace project.api.Repositories
                     .AsNoTracking()
                     .ToListAsync();
 
-                return orders;
-            } catch (Exception e)
+            if (orders.Count == 0)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetOrders");
+                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetAuteurs", "404");
             }
+
+            return orders;
+            
         }
 
         public async Task<GetOrderModel> PostOrder(PostOrderModel postOrderModel)
         {
-            EntityEntry<Order> result = await _context.Orders.AddAsync(new Order
+            try
             {
-                Orderdate = postOrderModel.Orderdate,
-                PhoneNumber = postOrderModel.PhoneNumber,
-                UserId = postOrderModel.UserId,
+                await CheckUser(postOrderModel.UserId, "PostOrder");
 
-            });
+                EntityEntry<Order> result = await _context.Orders.AddAsync(new Order
+                {
+                    Orderdate = postOrderModel.Orderdate,
+                    PhoneNumber = postOrderModel.PhoneNumber,
+                    UserId = postOrderModel.UserId,
 
-            await _context.SaveChangesAsync();
+                });
 
-            await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
+                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
 
-            return await GetOrder(result.Entity.Id.ToString());
+                await _context.SaveChangesAsync();
+
+                return await GetOrder(result.Entity.Id);
+            }
+            catch (ProjectException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PostOrder", "400");
+            }
         }
 
         private async Task AddOrderProducts(Guid orderId, List<Guid> productIds)
@@ -136,18 +148,20 @@ namespace project.api.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task PutOrder(string id, PutOrderModel putOrderModel)
+        public async Task PutOrder(Guid id, PutOrderModel putOrderModel)
         {
             try
             {
                 Order order = await _context.Orders
                     .Include(x => x.OrderProducts)
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (order == null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new EntityException("Order not found.", this.GetType().Name, "PutOrder", "404");
                 }
+
+                await CheckUser(putOrderModel.UserId, "PutOrder");
 
                 order.Orderdate = putOrderModel.Orderdate;
                 order.PhoneNumber = putOrderModel.PhoneNumber;
@@ -156,23 +170,30 @@ namespace project.api.Repositories
                 _context.OrderProducts.RemoveRange(order.OrderProducts);
 
 
-                await AddOrderProducts(Guid.Parse(id), putOrderModel.Products.ToList());
+                await AddOrderProducts(id, putOrderModel.Products.ToList());
                 await _context.SaveChangesAsync();
+            }
+            catch (ProjectException e)
+            {
+                throw e;
             }
             catch (Exception e)
             {
-                if (e.GetType().Name.Equals("KeyNotFoundException"))
-                {
-                    throw new KeyNotFoundException();
-                }
-                if (e.InnerException.GetType().Name.Equals("FormatException"))
-                {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "PutOrder");
-                }
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutOrder", "400");
+            }
+        }
 
-                if (e.GetType().ToString().Contains("DbUpdate"))
+        private async Task CheckUser(Guid? userId, string sourceMethod)
+        {
+            if (userId != null)
+            {
+                User user = await _context.Users
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == userId);
+
+                if (user == null)
                 {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "PutOrder");
+                    throw new EntityException("Genre not found.", this.GetType().Name, sourceMethod, "404");
                 }
             }
         }

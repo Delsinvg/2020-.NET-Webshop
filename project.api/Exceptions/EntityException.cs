@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace project.api.Exceptions
 {
-    public class GuidException : ProjectException
+    public class EntityException : ProjectException
     {
-        public GuidException(
+        public EntityException(
             string message,
             string sourceClass,
             string sourceMethod,

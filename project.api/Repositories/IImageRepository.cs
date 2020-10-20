@@ -9,9 +9,9 @@ namespace project.api.Repositories
     public interface IImageRepository
     {
         Task<List<GetImageModel>> GetImages();
-        Task<GetImageModel> GetImage(string id);
+        Task<GetImageModel> GetImage(Guid id);
         Task<GetImageModel> PostImage(PostImageModel postImageModel);
-        Task PutImage(string id, PutImageModel putImageModel);
-        Task DeleteImage(string id);
+        Task PutImage(Guid id, PutImageModel putImageModel);
+        Task DeleteImage(Guid id);
     }
 }

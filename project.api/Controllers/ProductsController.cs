@@ -6,33 +6,31 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.api.Repositories;
-using project.models.Addresses;
+using project.models.Products;
 
 namespace project.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Produces("application/json")]
-    [Consumes("application/json")]
-    public class AddressesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly IAddressRepository _addressRepository;
+        private readonly IProductsRepository _productsRepository;
 
-        public AddressesController(IAddressRepository addressRepository)
+        public ProductsController(IProductsRepository productsRepository)
         {
-            _addressRepository = addressRepository;
+            _productsRepository = productsRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<GetAddressModel>>> GetAddresses()
+        public async Task<ActionResult<List<GetProductModel>>> GetProducts()
         {
             try
             {
-                List<GetAddressModel> addresses = await _addressRepository.GetAddresses();
+                List<GetProductModel> products = await _productsRepository.GetProducts();
 
-                return addresses;
+                return products;
             }
             catch (ProjectException e)
             {
@@ -42,21 +40,20 @@ namespace project.api.Controllers
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> GetAddress(string id)
+        public async Task<ActionResult<GetProductModel>> GetProduct(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid productId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetBoek", "400");
                 }
 
-                GetAddressModel address = await _addressRepository.GetAddress(addressId);
+                GetProductModel boek = await _productsRepository.GetProduct(productId);
 
-                return address;
+                return boek;
             }
             catch (ProjectException e)
             {
@@ -73,18 +70,26 @@ namespace project.api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetAddressModel>> PostAddress(PostAddressModel postAddressModel)
+        public async Task<ActionResult<GetProductModel>> PostBoek(PostProductModel postBoekModel)
         {
             try
             {
-                GetAddressModel address = await _addressRepository.PostAddress(postAddressModel);
+                GetProductModel product = await _productsRepository.PostProduct(postBoekModel);
 
-                return CreatedAtAction(nameof(GetAddress), new { id = address.Id }, address);
+                return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
             }
-            catch (DatabaseException e)
+            catch (ProjectException e)
             {
-                return BadRequest(e.ProjectError);
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -92,16 +97,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutAddress(string id, PutAddressModel putAddressModel)
+        public async Task<IActionResult> PutProduct(string id, PutProductModel putProductModel)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid productId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutAddress", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "PutProduct", "400");
                 }
 
-                await _addressRepository.PutAddress(addressId, putAddressModel);
+                await _productsRepository.PutProduct(productId, putProductModel);
 
                 return NoContent();
             }
@@ -122,16 +127,16 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAddress(string id)
+        public async Task<IActionResult> DeleteProduct(string id)
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid addressId))
+                if (!Guid.TryParse(id, out Guid productId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteAuteur", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteProduct", "400");
                 }
 
-                await _addressRepository.DeleteAddress(addressId);
+                await _productsRepository.DeleteProduct(productId);
 
                 return NoContent();
             }

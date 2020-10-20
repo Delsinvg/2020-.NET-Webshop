@@ -5,7 +5,7 @@ using System.Text;
 
 namespace project.models.OrderProducts
 {
-    class BaseOrderProductModel
+    public class BaseOrderProductModel
     {
         [Range(0, 1000)]
         public int Quantity { get; set; }

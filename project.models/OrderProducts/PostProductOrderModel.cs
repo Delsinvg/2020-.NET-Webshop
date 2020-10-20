@@ -4,8 +4,9 @@ using System.Text;
 
 namespace project.models.OrderProducts
 {
-    class PostProductOrderModel : BaseOrderProductModel
+    public class PostProductOrderModel : BaseOrderProductModel
     {
         public Guid OrderId { get; set; }
+        public Guid ProductId { get; set; }
     }
 }

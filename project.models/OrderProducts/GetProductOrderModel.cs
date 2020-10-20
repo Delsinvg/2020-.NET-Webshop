@@ -4,7 +4,7 @@ using System.Text;
 
 namespace project.models.OrderProducts
 {
-    class GetProductOrderModel : BaseOrderProductModel
+    public class GetProductOrderModel : BaseOrderProductModel
     {
         public Guid Id { get; set; }
 

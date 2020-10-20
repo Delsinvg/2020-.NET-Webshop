@@ -20,17 +20,17 @@ namespace project.api.Repositories
         }
 
         
-        public async Task DeleteAddress(string id)
+        public async Task DeleteAddress(Guid id)
         {
             try
             {
-                Address address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                Address address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == id);
 
                 _context.Addresses.Remove(address);
 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (ProjectException e)
             {
                 if (e.GetType().Name.Equals("KeyNotFoundException"))
                 {
@@ -38,17 +38,17 @@ namespace project.api.Repositories
                 }
                 if (e.InnerException.GetType().Name.Equals("FormatException"))
                 {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteAddress");
+                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "DeleteAddress", "400");
                 }
 
                 if (e.GetType().ToString().Contains("DbUpdate"))
                 {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "DeleteAddress");
+                    throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "DeleteAddress", "400");
                 }
             }
         }
 
-        public async Task<GetAddressModel> GetAddress(string id)
+        public async Task<GetAddressModel> GetAddress(Guid id)
         {
             try
             {
@@ -63,12 +63,12 @@ namespace project.api.Repositories
                         Street = x.Street
                     })
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 return address;
             } catch (Exception e)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddress");
+                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddresses", "400");
             }
         }
 
@@ -96,7 +96,7 @@ namespace project.api.Repositories
                 return addresses;
             } catch (Exception e)
             {
-                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddresses");
+                throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddresses", "400");
             }
         }
 
@@ -111,7 +111,15 @@ namespace project.api.Repositories
                 Street = postAddressModel.Street,
             });
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception e)
+            {
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PostAddress", "400");
+            }
+            
 
             return new GetAddressModel
             {
@@ -124,11 +132,11 @@ namespace project.api.Repositories
             };
         }
 
-        public async Task PutAddress(string id, PutAddressModel putAddressModel)
+        public async Task PutAddress(Guid id, PutAddressModel putAddressModel)
         {
             try
             {
-                Address address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+                Address address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (address == null)
                 {
@@ -152,12 +160,12 @@ namespace project.api.Repositories
 
                 if (e.InnerException.GetType().Name.Equals("FormatException"))
                 {
-                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "PutAddress");
+                    throw new GuidException(e.InnerException.Message, this.GetType().Name, "PutAddress", "400");
                 }
 
                 if (e.GetType().ToString().Contains("DbUpdate"))
                 {
-                    throw new DatabaseException(e.GetType().Name, e.InnerException.Message, this.GetType().Name, "PutAddress");
+                    throw new DatabaseException( e.InnerException.Message, this.GetType().Name, "PutAddress", "400");
                 }
             }
         }

@@ -5,17 +5,14 @@ using System.Threading.Tasks;
 
 namespace project.api.Exceptions
 {
-    public class IdentityException : Exception
+    public class IdentityException : ProjectException
     {
-        public string Title { get; }
-        public string SourceClass { get; }
-        public string SourceMethod { get; }
-
-        public IdentityException(string message, string sourceClass, string sourceMethod) : base(message)
+        public IdentityException(
+            string message,
+            string sourceClass,
+            string sourceMethod,
+            string status) : base(message, sourceClass, sourceMethod, status)
         {
-            Title = "IdentityException";
-            SourceClass = sourceClass;
-            SourceMethod = sourceMethod;
         }
     }
 }

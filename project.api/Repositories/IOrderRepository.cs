@@ -9,9 +9,9 @@ namespace project.api.Repositories
     public interface IOrderRepository
     {
         Task<List<GetOrderModel>> GetOrders();
-        Task<GetOrderModel> GetOrder(string id);
+        Task<GetOrderModel> GetOrder(Guid id);
         Task<GetOrderModel> PostOrder(PostOrderModel postOrderModel);
-        Task PutOrder(string id, PutOrderModel putOrderModel);
-        Task DeleteOrder(string id);
+        Task PutOrder(Guid id, PutOrderModel putOrderModel);
+        Task DeleteOrder(Guid id);
     }
 }
