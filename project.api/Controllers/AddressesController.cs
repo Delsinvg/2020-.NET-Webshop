@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.api.Repositories;
 using project.models.Addresses;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace project.api.Controllers
 {
@@ -22,6 +21,19 @@ namespace project.api.Controllers
         {
             _addressRepository = addressRepository;
         }
+
+        /// <summary>
+        /// Get a list of all addresses.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/addresses
+        ///
+        /// </remarks>
+        /// <returns>List of GetAddressModel</returns>
+        /// <response code="200">Returns the list of addresses</response>
+        /// <response code="404">No address were found</response> 
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -40,8 +52,22 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Get details of an address.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/address/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetAddressModel</returns>
+        /// <response code="200">Returns the address</response>
+        /// <response code="404">The address could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response>
+
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -71,6 +97,27 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an address.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/address
+        ///     {
+        ///        "countryCode": "Code of the Country"
+        ///        "country": "Name of the country"
+        ///        "city": "Name of the city"
+        ///        "postalCode": "postalcode of the city"
+        ///        "street": "street name and number"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postAddressModel"></param>
+        /// <returns>A newly created address</returns>
+        /// <response code="201">Returns the newly created address</response>
+        /// <response code="400">If something went wrong while saving into the database</response> 
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -87,6 +134,28 @@ namespace project.api.Controllers
                 return BadRequest(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Updates an address.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/address/{id}
+        ///     {
+        ///        "countryCode": "Code of the Country"
+        ///        "country": "Name of the country"
+        ///        "city": "Name of the city"
+        ///        "postalCode": "postalcode of the city"
+        ///        "street": "street name and number"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putAddressModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The address could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -117,6 +186,20 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes an address.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/address/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The address could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

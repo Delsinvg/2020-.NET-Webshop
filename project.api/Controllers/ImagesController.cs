@@ -23,6 +23,18 @@ namespace project.api.Controllers
             _imageRepository = imageRepository;
         }
 
+        /// <summary>
+        /// Get a list of all images.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/images
+        ///
+        /// </remarks>
+        /// <returns>List of GetImageModel</returns>
+        /// <response code="200">Returns the list of images</response>
+        /// <response code="404">No auteurs were found</response> 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -39,6 +51,21 @@ namespace project.api.Controllers
                 return NotFound(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Get details of an image.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/images/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetImageModel</returns>
+        /// <response code="200">Returns the image</response>
+        /// <response code="404">The image could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -70,6 +97,24 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an image.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/images
+        ///     {
+        ///        "path": "Path of the image"
+        ///        "productId": "Id of the product"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postImageModel"></param>
+        /// <returns>A newly created image</returns>
+        /// <response code="201">Returns the newly created image</response>
+        /// <response code="400">If something went wrong while saving into the database</response> 
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +139,25 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Updates an image.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/images/{id}
+        ///     {
+        ///        "path": "Path of the image"
+        ///        "productId": "Id of the product"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putImageModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The image could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response> 
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -124,6 +188,20 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes an image.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/images/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The image could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response>
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

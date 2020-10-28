@@ -23,6 +23,19 @@ namespace project.api.Controllers
             _orderRepository = orderRepository;
         }
 
+        /// <summary>
+        /// Get a list of all orders.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/orders
+        ///
+        /// </remarks>
+        /// <returns>List of GetOrderModel</returns>
+        /// <response code="200">Returns the list of orders</response>
+        /// <response code="404">No orders were found</response> 
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -39,6 +52,21 @@ namespace project.api.Controllers
                 return NotFound(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Get details of an order.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/orders/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetOrderModel</returns>
+        /// <response code="200">Returns the order</response>
+        /// <response code="404">The order could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -70,6 +98,25 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an order.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/orders
+        ///     {
+        ///        "orderdate": "Date of the order"
+        ///        "userId": "Id of the user"
+        ///        "products": "Id of the products"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postOrderModel"></param>
+        /// <returns>A newly created order</returns>
+        /// <response code="201">Returns the newly created order</response>
+        /// <response code="400">If something went wrong while saving into the database</response> 
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,6 +141,26 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Updates an order.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/orders/{id}
+        ///     {
+        ///        "orderdate": "Date of the order"
+        ///        "userId": "Id of the user"
+        ///        "products": "Id of the products"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putOrderModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The order could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -124,6 +191,20 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes an order.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/orders/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The order could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -21,6 +21,19 @@ namespace project.api.Controllers
             _productsRepository = productsRepository;
         }
 
+        /// <summary>
+        /// Get a list of all products.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/products
+        ///
+        /// </remarks>
+        /// <returns>List of GetProductModel</returns>
+        /// <response code="200">Returns the list of products</response>
+        /// <response code="404">No products were found</response>
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +50,21 @@ namespace project.api.Controllers
                 return NotFound(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Get details of an product.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/products/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetOrderModel</returns>
+        /// <response code="200">Returns the product</response>
+        /// <response code="404">The order could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,15 +96,37 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an product.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/products
+        ///     {
+        ///        "name": "Name of the product"
+        ///        "stock": "Number of products"
+        ///        "description": "Description of the product"
+        ///        "price": "price of the product"
+        ///        "categoryId": "Id of the category"
+        ///        "companyId": "Id of the company"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postProductModel"></param>
+        /// <returns>A newly created product</returns>
+        /// <response code="201">Returns the newly created product</response>
+        /// <response code="400">If something went wrong while saving into the database</response>
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetProductModel>> PostBoek(PostProductModel postBoekModel)
+        public async Task<ActionResult<GetProductModel>> PostProduct(PostProductModel postProductModel)
         {
             try
             {
-                GetProductModel product = await _productsRepository.PostProduct(postBoekModel);
+                GetProductModel product = await _productsRepository.PostProduct(postProductModel);
 
                 return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
             }
@@ -92,6 +142,29 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Updates an product.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/products/{id}
+        ///     {
+        ///        "name": "Name of the product"
+        ///        "stock": "Number of products"
+        ///        "description": "Description of the product"
+        ///        "price": "price of the product"
+        ///        "categoryId": "Id of the category"
+        ///        "companyId": "Id of the company"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putProductModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The product could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -122,6 +195,20 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes an product.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/products/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The product could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

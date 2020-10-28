@@ -24,6 +24,19 @@ namespace project.api.Controllers
             _categoryRepository = categoryRepository;
         }
 
+        /// <summary>
+        /// Get a list of all categories.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/categories
+        ///
+        /// </remarks>
+        /// <returns>List of GetCategoryModel</returns>
+        /// <response code="200">Returns the list of categories</response>
+        /// <response code="404">No categories were found</response>
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,6 +53,21 @@ namespace project.api.Controllers
                 return NotFound(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Get details of an category.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/category/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetCategoryModel</returns>
+        /// <response code="200">Returns the category</response>
+        /// <response code="404">The category could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response>
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,6 +99,24 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an category.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/categories
+        ///     {
+        ///        "Name": "Name of the category"
+        ///        "parentId": "Id of the parent category"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postCategoryModel"></param>
+        /// <returns>A newly created category</returns>
+        /// <response code="201">Returns the newly created category</response>
+        /// <response code="400">If something went wrong while saving into the database</response>
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -95,6 +141,25 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Updates an category.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/categories/{id}
+        ///     {
+        ///        "Name": "Name of the category"
+        ///        "parentId": "Id of the parent category"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putCategoryModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The category could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -125,6 +190,20 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Deletes an category.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/categories/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The category could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

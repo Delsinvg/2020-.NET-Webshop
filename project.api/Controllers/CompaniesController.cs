@@ -24,6 +24,19 @@ namespace project.api.Controllers
             _companyRepository = companyRepository;
         }
 
+        /// <summary>
+        /// Get a list of all companies.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/companies
+        ///
+        /// </remarks>
+        /// <returns>List of GetCompanyModel</returns>
+        /// <response code="200">Returns the list of companies</response>
+        /// <response code="404">No companies were found</response>  
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -40,6 +53,21 @@ namespace project.api.Controllers
                 return NotFound(e.ProjectError);
             }
         }
+
+        /// <summary>
+        /// Get details of an company.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/companies/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <returns>An GetCompanyModel</returns>
+        /// <response code="200">Returns the company</response>
+        /// <response code="404">The company could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,15 +99,35 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an company.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/companies
+        ///     {
+        ///        "Name": "Name of the company"
+        ///        "email": "Email of the company"
+        ///        "accountnumber": "accountnumber of the company"
+        ///        "addressId": "Id of the address"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postCompanyModel"></param>
+        /// <returns>A newly created company</returns>
+        /// <response code="201">Returns the newly created company</response>
+        /// <response code="400">If something went wrong while saving into the database</response>  
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetCompanyModel>> PostBoek(PostCompanyModel postBoekModel)
+        public async Task<ActionResult<GetCompanyModel>> PostCompany(PostCompanyModel postCompanyModel)
         {
             try
             {
-                GetCompanyModel company = await _companyRepository.PostCompany(postBoekModel);
+                GetCompanyModel company = await _companyRepository.PostCompany(postCompanyModel);
 
                 return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
             }
@@ -95,6 +143,27 @@ namespace project.api.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// Updates an company.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/companies/{id}
+        ///     {
+        ///        "Name": "Name of the company",
+        ///        "email": "Email of the company"
+        ///        "accountnumber": "accountnumber of the company"
+        ///        "addressId": "Id of the address"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <param name="putCompanyModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The company could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -126,6 +195,20 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an company.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/companies/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>      
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The company could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -134,12 +217,12 @@ namespace project.api.Controllers
         {
             try
             {
-                if (!Guid.TryParse(id, out Guid boekId))
+                if (!Guid.TryParse(id, out Guid companyId))
                 {
                     throw new GuidException("Invalid Guid format.", this.GetType().Name, "DeleteCompany", "400");
                 }
 
-                await _companyRepository.DeleteCompany(boekId);
+                await _companyRepository.DeleteCompany(companyId);
 
                 return NoContent();
             }

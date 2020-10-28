@@ -18,7 +18,7 @@ namespace project.api.Repositories
         {
             _context = context;
         }
-
+        
         public async Task DeleteCompany(Guid id)
         {
             try
@@ -55,7 +55,7 @@ namespace project.api.Repositories
                 Name = x.Name,
                 Email = x.Email,
                 AccountNumber = x.AccountNumber,
-                Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode} {x.Address.Street})"
+                Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}"
             })
             .AsNoTracking()
             .ToListAsync();

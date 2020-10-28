@@ -23,6 +23,18 @@ namespace project.api.Controllers
             _roleRepository = roleRepository;
         }
 
+        /// <summary>
+        /// Get a list of all roles.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/roles
+        ///
+        /// </remarks>
+        /// <returns>List of GetRoleModel</returns>
+        /// <response code="200">Returns the list of roles</response>
+        /// <response code="404">No roles were found</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -38,6 +50,20 @@ namespace project.api.Controllers
             return roles;
         }
 
+        /// <summary>
+        /// Get details of an role.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/roles/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>   
+        /// <returns>An GetRoleModel</returns>
+        /// <response code="200">Returns the role</response>
+        /// <response code="404">The role could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response> 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -61,6 +87,23 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates an role.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/roles
+        ///     {
+        ///        "name": "Moderator"
+        ///        "description": "Moderator"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="postRoleModel"></param>
+        /// <returns>A newly created role</returns>
+        /// <response code="201">Returns the newly created role</response>
+        /// <response code="400">If something went wrong while saving into the database</response> 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -78,6 +121,24 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an role.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/roles/{id}
+        ///     {
+        ///        "name": "Moderator"
+        ///        "description": "Moderator"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="id"></param>   
+        /// <param name="putRoleModel"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The role could not be found</response> 
+        /// <response code="400">The id is not a valid Guid or something went wrong while saving into the database</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,6 +161,19 @@ namespace project.api.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an role.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/roles/{id}
+        ///
+        /// </remarks>
+        /// <param name="id"></param>   
+        /// <response code="204">Returns no content</response>
+        /// <response code="404">The role could not be found</response> 
+        /// <response code="400">The id is not a valid Guid</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
