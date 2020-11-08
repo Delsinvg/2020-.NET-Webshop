@@ -23,6 +23,7 @@ namespace project.api.Entities
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -54,6 +55,14 @@ namespace project.api.Entities
             {
                 x.HasOne(x => x.User)
                 .WithMany(x => x.Orders)
+                .HasForeignKey(x => x.UserId)
+                .IsRequired();
+            });
+
+            modelBuilder.Entity<RefreshToken>(x =>
+            {
+                x.HasOne(x => x.User)
+                .WithMany(x => x.RefreshTokens)
                 .HasForeignKey(x => x.UserId)
                 .IsRequired();
             });

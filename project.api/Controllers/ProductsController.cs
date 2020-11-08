@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
@@ -10,6 +11,7 @@ using project.models.Products;
 
 namespace project.api.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -37,6 +39,7 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<List<GetProductModel>>> GetProducts()
         {
             try
@@ -70,18 +73,19 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<GetProductModel>> GetProduct(string id)
         {
             try
             {
                 if (!Guid.TryParse(id, out Guid productId))
                 {
-                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetBoek", "400");
+                    throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetProduct", "400");
                 }
 
-                GetProductModel boek = await _productsRepository.GetProduct(productId);
+                GetProductModel product = await _productsRepository.GetProduct(productId);
 
-                return boek;
+                return product;
             }
             catch (ProjectException e)
             {
@@ -122,6 +126,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Moderator")]
         public async Task<ActionResult<GetProductModel>> PostProduct(PostProductModel postProductModel)
         {
             try
@@ -170,6 +175,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutProduct(string id, PutProductModel putProductModel)
         {
             try
@@ -214,6 +220,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteProduct(string id)
         {
             try

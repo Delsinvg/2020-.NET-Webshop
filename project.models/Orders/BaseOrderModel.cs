@@ -9,7 +9,5 @@ namespace project.models.Orders
     {
         [DataType(DataType.Date)]
         public DateTime Orderdate { get; set; }
-        [Phone]
-        public string PhoneNumber { get; set; }
     }
 }

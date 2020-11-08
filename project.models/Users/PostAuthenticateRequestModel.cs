@@ -5,11 +5,12 @@ using System.Text;
 
 namespace project.models.Users
 {
-    public class PostUserModel : BaseUserModel
+    public class PostAuthenticateRequestModel
     {
         [Required]
+        public string UserName { get; set; }
+
+        [Required]
         public string Password { get; set; }
-        public ICollection<string> Roles { get; set; }
-        public Guid AddressId { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace project.models.Companies
         public string Email { get; set; }
         [StringLength(20, MinimumLength = 8)]
         public string AccountNumber { get; set; }
+        [Phone]
+        public string PhoneNumber { get; set; }
     }
 }

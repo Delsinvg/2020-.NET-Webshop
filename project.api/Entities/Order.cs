@@ -11,8 +11,6 @@ namespace project.api.Entities
         public Guid Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime Orderdate { get; set; }
-        [Phone]
-        public string PhoneNumber { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; }

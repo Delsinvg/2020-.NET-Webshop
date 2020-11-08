@@ -1,4 +1,5 @@
-﻿using project.models.Users;
+﻿using project.models.RefreshTokens;
+using project.models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,12 @@ namespace project.api.Repositories
         Task PutUser(string id, PutUserModel putUserModel);
         Task PatchUser(string id, PatchUserModel patchUserModel);
         Task DeleteUser(string id);
+        Task<List<GetRefreshTokenModel>> GetUserRefreshTokens(Guid id);
+
+        // JWT methods
+
+        Task<PostAuthenticateResponseModel> Authenticate(PostAuthenticateRequestModel postAuthenticateRequestModel, string ipAddress);
+        Task<PostAuthenticateResponseModel> RefreshToken(string token, string ipAddress);
+        Task RevokeToken(string token, string ipAddress);
     }
 }

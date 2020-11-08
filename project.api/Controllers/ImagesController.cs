@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
@@ -10,6 +11,7 @@ using project.models.Images;
 
 namespace project.api.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -38,13 +40,14 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<List<GetImageModel>>> GetImages()
         {
             try
             {
-                List<GetImageModel> boeken = await _imageRepository.GetImages();
+                List<GetImageModel> images = await _imageRepository.GetImages();
 
-                return boeken;
+                return images;
             }
             catch (ProjectException e)
             {
@@ -71,6 +74,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<GetImageModel>> GetImage(string id)
         {
             try
@@ -80,9 +84,9 @@ namespace project.api.Controllers
                     throw new GuidException("Invalid Guid format.", this.GetType().Name, "GetImage", "400");
                 }
 
-                GetImageModel boek = await _imageRepository.GetImage(imageId);
+                GetImageModel image = await _imageRepository.GetImage(imageId);
 
-                return boek;
+                return image;
             }
             catch (ProjectException e)
             {
@@ -119,7 +123,8 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GetImageModel>> PostBoek(PostImageModel postImageModel)
+        [Authorize(Roles = "Moderator")]
+        public async Task<ActionResult<GetImageModel>> PostImage(PostImageModel postImageModel)
         {
             try
             {
@@ -163,6 +168,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutImage(string id, PutImageModel putImageModel)
         {
             try
@@ -207,6 +213,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteImage(string id)
         {
             try

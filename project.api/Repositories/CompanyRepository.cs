@@ -55,6 +55,7 @@ namespace project.api.Repositories
                 Name = x.Name,
                 Email = x.Email,
                 AccountNumber = x.AccountNumber,
+                PhoneNumber = x.PhoneNumber,
                 Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}"
             })
             .AsNoTracking()
@@ -80,6 +81,7 @@ namespace project.api.Repositories
                         Name = x.Name,
                         Email = x.Email,
                         AccountNumber = x.AccountNumber,
+                        PhoneNumber = x.PhoneNumber,
                         Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) {x.Address.Street}"
 
                     })
@@ -102,6 +104,7 @@ namespace project.api.Repositories
                 Name = postCompanyModel.Name,
                 Email = postCompanyModel.Email,
                 AccountNumber = postCompanyModel.AccountNumber,
+                PhoneNumber = postCompanyModel.PhoneNumber,
                 AddressId = postCompanyModel.AddressId
             });
 
@@ -133,6 +136,7 @@ namespace project.api.Repositories
                 company.Name = putCompanyModel.Name;
                 company.Email = putCompanyModel.Email;
                 company.AccountNumber = putCompanyModel.AccountNumber;
+                company.PhoneNumber = putCompanyModel.PhoneNumber;
                 company.AddressId = putCompanyModel.AddressId;
 
                 await _context.SaveChangesAsync();

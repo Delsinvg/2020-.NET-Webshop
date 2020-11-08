@@ -21,7 +21,7 @@ namespace project.api.Entities
 
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
-
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 
 }

@@ -63,7 +63,6 @@ namespace project.api.Repositories
                     {
                         Id = x.Id,
                         Orderdate = x.Orderdate,
-                        PhoneNumber = x.PhoneNumber,
                         User = $"{x.User.FirstName} {x.User.LastName}",
                         Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
                     })
@@ -88,7 +87,6 @@ namespace project.api.Repositories
                     {
                         Id = x.Id,
                         Orderdate = x.Orderdate,
-                        PhoneNumber = x.PhoneNumber,
                         User = $"{x.User.FirstName} {x.User.LastName}",
                         Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
                     })
@@ -113,7 +111,6 @@ namespace project.api.Repositories
                 EntityEntry<Order> result = await _context.Orders.AddAsync(new Order
                 {
                     Orderdate = postOrderModel.Orderdate,
-                    PhoneNumber = postOrderModel.PhoneNumber,
                     UserId = postOrderModel.UserId,
 
                 });
@@ -164,7 +161,6 @@ namespace project.api.Repositories
                 await CheckUser(putOrderModel.UserId, "PutOrder");
 
                 order.Orderdate = putOrderModel.Orderdate;
-                order.PhoneNumber = putOrderModel.PhoneNumber;
                 order.UserId = putOrderModel.UserId;
 
                 _context.OrderProducts.RemoveRange(order.OrderProducts);
