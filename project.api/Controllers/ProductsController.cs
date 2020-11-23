@@ -11,7 +11,7 @@ using project.models.Products;
 
 namespace project.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

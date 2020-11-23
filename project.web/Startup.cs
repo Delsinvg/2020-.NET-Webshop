@@ -56,7 +56,7 @@ namespace project.web
             {
                 c.BaseAddress = new Uri("https://localhost:44388/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
-            }).AddHttpMessageHandler<ValidateHeaderHandler>();
+            });//.AddHttpMessageHandler<ValidateHeaderHandler>();
 
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
@@ -95,11 +95,11 @@ namespace project.web
 
             // app.UseRequestLocalization();
 
-            app.UseCors();
+            //app.UseCors();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseSession();
 

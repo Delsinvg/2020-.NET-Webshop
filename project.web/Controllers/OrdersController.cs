@@ -4,17 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
-using project.models.Categories;
+using project.models.Orders;
 using project.web.Services;
 
 namespace project.web.Controllers
 {
-    public class CategoriesController : Controller
+    public class OrdersController : Controller
     {
         private readonly ProjectApiService _projectApiService;
         //private readonly ITokenValidationService _tokenValidationService;
 
-        public CategoriesController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public OrdersController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
         {
             _projectApiService = projectApiService;
             //_tokenValidationService = tokenValidationService;
@@ -22,15 +22,16 @@ namespace project.web.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             try
             {
                 //Authorize("Moderator", "Index");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
-                List<GetCategoryModel> getCategoriesModel = await _projectApiService.GetModels<GetCategoryModel>("Categories");
+                List<GetOrderModel> getOrderModels = await _projectApiService.GetModels<GetOrderModel>("Orders");
 
-                return View(getCategoriesModel);
+                return View(getOrderModels);
             }
             catch (ProjectException e)
             {
@@ -46,9 +47,9 @@ namespace project.web.Controllers
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
-                return View(getCategoryModel);
+                return View(getOrderModel);
             }
             catch (ProjectException e)
             {
@@ -74,22 +75,22 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Create(PostCategoryModel postCategoryModel)
+        public async Task<IActionResult> Create(PostOrderModel postOrderModel)
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                //Authorize("Beheerder", "Create");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
-                    GetCategoryModel getCategoryModel = await _projectApiService.PostModel<PostCategoryModel, GetCategoryModel>(postCategoryModel, "Categories");
+                    GetOrderModel getOrderModel = await _projectApiService.PostModel<PostOrderModel, GetOrderModel>(postOrderModel, "Orders");
 
-                    return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                    return RedirectToRoute(new { action = "Index", controller = "Orders" });
                 }
 
-                return View(postCategoryModel);
+                return View(postOrderModel);
             }
             catch (ProjectException e)
             {
@@ -97,7 +98,7 @@ namespace project.web.Controllers
                 {
                     TempData["ApiError"] = e.Message;
 
-                    return View(postCategoryModel);
+                    return View(postOrderModel);
                 }
 
                 return HandleError(e);
@@ -112,15 +113,14 @@ namespace project.web.Controllers
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
-                PutCategoryModel putCategoryModel = new PutCategoryModel
+                PutOrderModel putOrderModel = new PutOrderModel
                 {
-                    Name = getCategoryModel.Name,
-                    ParentId = (Guid)getCategoryModel.ParentId
+                    Orderdate = getOrderModel.Orderdate,
                 };
 
-                return View(putCategoryModel);
+                return View(putOrderModel);
             }
             catch (ProjectException e)
             {
@@ -130,22 +130,22 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Edit(string id, PutCategoryModel putCategoryModel)
+        public async Task<IActionResult> Edit(string id, PutOrderModel putOrderModel)
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                //Authorize("Beheerder", "Edit");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
-                    await _projectApiService.PutModel<PutCategoryModel>(id, putCategoryModel, "Categories");
+                    await _projectApiService.PutModel<PutOrderModel>(id, putOrderModel, "Orders");
 
-                    return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                    return RedirectToRoute(new { action = "Index", controller = "Orders" });
                 }
 
-                return View(putCategoryModel);
+                return View(putOrderModel);
             }
             catch (ProjectException e)
             {
@@ -153,7 +153,7 @@ namespace project.web.Controllers
                 {
                     TempData["ApiError"] = e.Message;
 
-                    return View(putCategoryModel);
+                    return View(putOrderModel);
                 }
 
                 return HandleError(e);
@@ -168,9 +168,9 @@ namespace project.web.Controllers
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
-                return View(getCategoryModel);
+                return View(getOrderModel);
             }
             catch (ProjectException e)
             {
@@ -180,17 +180,17 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Delete(string id, GetCategoryModel getCategoryModel)
+        public async Task<IActionResult> Delete(string id, GetOrderModel getOrderModel)
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                //Authorize("Beheerder", "Delete");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
-                await _projectApiService.DeleteModel(id, "Categories");
+                await _projectApiService.DeleteModel(id, "Orders");
 
-                return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                return RedirectToRoute(new { action = "Index", controller = "Orders" });
             }
             catch (ProjectException e)
             {
@@ -205,19 +205,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all Categories";
+                    error = "No permission to get all Orders";
                     break;
                 case "Details":
-                    error = "No permission to get Category details";
+                    error = "No permission to get Order details";
                     break;
                 case "Create":
-                    error = "No permission to create Category";
+                    error = "No permission to create Order";
                     break;
                 case "Edit":
-                    error = "No permission to edit Category";
+                    error = "No permission to edit Order";
                     break;
                 case "Delete":
-                    error = "No permission to delete Category";
+                    error = "No permission to delete Order";
                     break;
             }
 
@@ -226,7 +226,6 @@ namespace project.web.Controllers
                 throw new ForbiddenException(error, this.GetType().Name, $"{method}", "403");
             }
         }
-
         private IActionResult HandleError(ProjectException e)
         {
             // Place error in TempData to show in View

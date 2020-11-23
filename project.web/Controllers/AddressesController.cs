@@ -10,12 +10,12 @@ namespace project.web.Controllers
     public class AddressesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        private readonly ITokenValidationService _tokenValidationService;
+        //private readonly ITokenValidationService _tokenValidationService;
 
-        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+        public AddressesController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
         {
             _projectApiService = projectApiService;
-            _tokenValidationService = tokenValidationService;
+            //_tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
@@ -23,9 +23,9 @@ namespace project.web.Controllers
 
             try
             {
-                Authorize("Moderator", "Index");
+                //Authorize("Moderator", "Index");
 
-                await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetAddressModel> getAddressModels = await _projectApiService.GetModels<GetAddressModel>("Addresses");
 
@@ -41,9 +41,9 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Details");
+                //Authorize("Moderator", "Details");
 
-                await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetAddressModel getAddressModel = await _projectApiService.GetModel<GetAddressModel>(id, "Addresses");
 

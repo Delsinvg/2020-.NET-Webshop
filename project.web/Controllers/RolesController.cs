@@ -4,17 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
-using project.models.Categories;
+using project.models.Roles;
 using project.web.Services;
 
 namespace project.web.Controllers
 {
-    public class CategoriesController : Controller
+    public class RolesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
         //private readonly ITokenValidationService _tokenValidationService;
 
-        public CategoriesController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public RolesController(
+            ProjectApiService projectApiService
+            /*ITokenValidationService tokenValidationService*/)
         {
             _projectApiService = projectApiService;
             //_tokenValidationService = tokenValidationService;
@@ -24,13 +26,13 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Index");
+                //Authorize("Administrator", "Index");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
-                List<GetCategoryModel> getCategoriesModel = await _projectApiService.GetModels<GetCategoryModel>("Categories");
+                List<GetRoleModel> getRolesModel = await _projectApiService.GetModels<GetRoleModel>("Roles");
 
-                return View(getCategoriesModel);
+                return View(getRolesModel);
             }
             catch (ProjectException e)
             {
@@ -42,13 +44,13 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Details");
+                //Authorize("Administrator", "Details");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
-                return View(getCategoryModel);
+                return View(getRoleModel);
             }
             catch (ProjectException e)
             {
@@ -60,7 +62,7 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                //Authorize("Administrator", "Create");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
@@ -74,30 +76,30 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Create(PostCategoryModel postCategoryModel)
+        public async Task<IActionResult> Create(PostRoleModel postRoleModel)
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                //Authorize("Administrator", "Create");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
-                    GetCategoryModel getCategoryModel = await _projectApiService.PostModel<PostCategoryModel, GetCategoryModel>(postCategoryModel, "Categories");
+                    GetRoleModel getRoleModel = await _projectApiService.PostModel<PostRoleModel, GetRoleModel>(postRoleModel, "Roles");
 
-                    return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                    return RedirectToRoute(new { action = "Index", controller = "Roles" });
                 }
 
-                return View(postCategoryModel);
+                return View(postRoleModel);
             }
             catch (ProjectException e)
             {
-                if (e.ProjectError.Type.Equals("DatabaseException"))
+                if (e.ProjectError.Type.Equals("IdentityException"))
                 {
                     TempData["ApiError"] = e.Message;
 
-                    return View(postCategoryModel);
+                    return View(postRoleModel);
                 }
 
                 return HandleError(e);
@@ -108,19 +110,19 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                //Authorize("Administrator", "Edit");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
-                PutCategoryModel putCategoryModel = new PutCategoryModel
+                PutRoleModel putRoleModel = new PutRoleModel
                 {
-                    Name = getCategoryModel.Name,
-                    ParentId = (Guid)getCategoryModel.ParentId
+                    Name = getRoleModel.Name,
+                    Description = getRoleModel.Description
                 };
 
-                return View(putCategoryModel);
+                return View(putRoleModel);
             }
             catch (ProjectException e)
             {
@@ -130,30 +132,30 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Edit(string id, PutCategoryModel putCategoryModel)
+        public async Task<IActionResult> Edit(string id, PutRoleModel putRoleModel)
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                //Authorize("Administrator", "Edit");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
-                    await _projectApiService.PutModel<PutCategoryModel>(id, putCategoryModel, "Categories");
+                    await _projectApiService.PutModel<PutRoleModel>(id, putRoleModel, "Roles");
 
-                    return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                    return RedirectToRoute(new { action = "Index", controller = "Roles" });
                 }
 
-                return View(putCategoryModel);
+                return View(putRoleModel);
             }
             catch (ProjectException e)
             {
-                if (e.ProjectError.Type.Equals("DatabaseException"))
+                if (e.ProjectError.Type.Equals("IdentityException"))
                 {
                     TempData["ApiError"] = e.Message;
 
-                    return View(putCategoryModel);
+                    return View(putRoleModel);
                 }
 
                 return HandleError(e);
@@ -164,13 +166,13 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                //Authorize("Administrator", "Delete");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
-                GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
+                GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
-                return View(getCategoryModel);
+                return View(getRoleModel);
             }
             catch (ProjectException e)
             {
@@ -180,17 +182,17 @@ namespace project.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
-        public async Task<IActionResult> Delete(string id, GetCategoryModel getCategoryModel)
+        public async Task<IActionResult> Delete(string id, GetRoleModel getRoleModel)
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                //Authorize("Administrator", "Delete");
 
                 //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
-                await _projectApiService.DeleteModel(id, "Categories");
+                await _projectApiService.DeleteModel(id, "Roles");
 
-                return RedirectToRoute(new { action = "Index", controller = "Categories" });
+                return RedirectToRoute(new { action = "Index", controller = "Roles" });
             }
             catch (ProjectException e)
             {
@@ -205,19 +207,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all Categories";
+                    error = "No permission to get all roles";
                     break;
                 case "Details":
-                    error = "No permission to get Category details";
+                    error = "No permission to get role details";
                     break;
                 case "Create":
-                    error = "No permission to create Category";
+                    error = "No permission to create role";
                     break;
                 case "Edit":
-                    error = "No permission to edit Category";
+                    error = "No permission to edit role";
                     break;
                 case "Delete":
-                    error = "No permission to delete Category";
+                    error = "No permission to delete role";
                     break;
             }
 
