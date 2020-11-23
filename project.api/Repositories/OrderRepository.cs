@@ -95,7 +95,7 @@ namespace project.api.Repositories
 
             if (orders.Count == 0)
             {
-                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetAuteurs", "404");
+                throw new CollectionException("No orders found.", this.GetType().Name, "GetOrders", "404");
             }
 
             return orders;

@@ -64,6 +64,7 @@ namespace project.api.Repositories
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Email = x.Email,
+                    Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}",
                     Roles = x.UserRoles.Select(x => x.Role.Name).ToList()
                 })
                 .AsNoTracking()
@@ -82,6 +83,7 @@ namespace project.api.Repositories
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     Email = x.Email,
+                    Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}",
                     Roles = x.UserRoles.Select(x => x.Role.Name).ToList()
                 })
                 .AsNoTracking()

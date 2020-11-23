@@ -39,7 +39,7 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Customer")]
+        //[AllowAnonymous]
         public async Task<ActionResult<List<GetProductModel>>> GetProducts()
         {
             try
@@ -73,7 +73,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Customer")]
+        //[AllowAnonymous]
         public async Task<ActionResult<GetProductModel>> GetProduct(string id)
         {
             try
@@ -126,7 +126,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Moderator")]
+        //[Authorize(Roles = "Moderator")]
         public async Task<ActionResult<GetProductModel>> PostProduct(PostProductModel postProductModel)
         {
             try
@@ -175,7 +175,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Moderator")]
+        //[Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutProduct(string id, PutProductModel putProductModel)
         {
             try
@@ -220,7 +220,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Moderator")]
+        //[Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteProduct(string id)
         {
             try

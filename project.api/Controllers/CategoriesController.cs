@@ -12,7 +12,7 @@ using project.models.Categories;
 
 namespace project.api.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -42,7 +42,7 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Customer")]
+        //[AllowAnonymous]
         public async Task<ActionResult<List<GetCategoryModel>>> GetCategories()
         {
             try
@@ -76,7 +76,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Customer")]
+        //[AllowAnonymous]
         public async Task<ActionResult<GetCategoryModel>> GetCategory(string id)
         {
             try
@@ -125,7 +125,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Moderator")]
+        //[Authorize(Roles = "Moderator")]
         public async Task<ActionResult<GetCategoryModel>> PostCategory(PostCategoryModel postCategoryModel)
         {
             try
@@ -170,7 +170,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Moderator")]
+        //[Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutCategory(string id, PutCategoryModel putCategoryModel)
         {
             try

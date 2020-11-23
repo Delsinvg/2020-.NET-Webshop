@@ -1,0 +1,42 @@
+﻿
+
+@model project.models.Users.PostUserModel
+
+@{ ViewData["Title"] = "Registreren"; }
+
+<form class="form-signin" asp-action="Index">
+    <img src="~/img/logo.png" alt="Logo" class="logo" />
+    <h1 class="h4 mb-3 font-weight-normal">Mediatheek - registreren</h1>
+    @if (TempData.ContainsKey("ApiError"))
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["ApiError"]
+        </div>}
+    <div class="form-group">
+        <label asp-for="FirstName" class="sr-only">Voornaam</label>
+        <input asp-for="FirstName" id="Voornaam" class="form-control" placeholder="Voornaam" autofocus>
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FirstName" class="sr-only">Familienaam</label>
+        <input asp-for="LastName" id="Familienaam" class="form-control" placeholder="Familienaam">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="sr-only">E-mailadres</label>
+        <input asp-for="Email" id="Email" class="form-control" placeholder="E-mailadres">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="sr-only">Wachtwoord</label>
+        <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Wachtwoord">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group remember-me">
+        <label>
+            <input type="checkbox" name="rememberMe"> Onthoud mij
+        </label>
+    </div>
+    <button class="btn btn-lg btn-outline-primary btn-block" type="submit">Registreer</button>
+    <a class="btn btn-lg btn-outline-info btn-block" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
+</form>

@@ -20,5 +20,16 @@ namespace project.api.Exceptions
                 Status = status
             };
         }
+        public ProjectException(string type, string message, string sourceClass, string sourceMethod, string status) : base(message)
+        {
+            ProjectError = new ProjectError
+            {
+                Type = type,
+                Message = message,
+                SourceClass = sourceClass,
+                SourceMethod = sourceMethod,
+                Status = status
+            };
+        }
     }
 }
