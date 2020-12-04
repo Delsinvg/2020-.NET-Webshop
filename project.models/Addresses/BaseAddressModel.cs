@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace project.models.Addresses
 {
-   public class BaseAddressModel
+    public class BaseAddressModel
     {
         [StringLength(4, MinimumLength = 2)]
         public string CountryCode { get; set; }

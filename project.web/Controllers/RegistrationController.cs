@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.models.Users;
 using project.web.Services;
+using System.Threading.Tasks;
 
 namespace project.web.Controllers
 {

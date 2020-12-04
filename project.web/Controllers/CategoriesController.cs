@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.models.Categories;
 using project.web.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace project.web.Controllers
 {
@@ -114,13 +113,26 @@ namespace project.web.Controllers
 
                 GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
 
-                PutCategoryModel putCategoryModel = new PutCategoryModel
+                if (getCategoryModel.ParentId == null)
                 {
-                    Name = getCategoryModel.Name,
-                    ParentId = (Guid)getCategoryModel.ParentId
-                };
+                    PutCategoryModel putCategoryModelWithoutParentId = new PutCategoryModel
+                    {
+                        Name = getCategoryModel.Name,
+                    };
+                    return View(putCategoryModelWithoutParentId);
+                }
 
-                return View(putCategoryModel);
+                else
+                {
+                    PutCategoryModel putCategoryModel = new PutCategoryModel
+                    {
+                        Name = getCategoryModel.Name,
+                        ParentId = (Guid)getCategoryModel.ParentId
+                    };
+                    return View(putCategoryModel);
+                }
+
+
             }
             catch (ProjectException e)
             {

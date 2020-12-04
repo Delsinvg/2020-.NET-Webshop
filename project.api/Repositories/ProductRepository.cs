@@ -55,58 +55,58 @@ namespace project.api.Repositories
 
         public async Task<List<GetProductModel>> GetProducts()
         {
-                List<GetProductModel> products = await _context.Products
-                   .Include(x => x.Images)
-                    .Include(x => x.Category)
-                    .Include(x => x.Company)
-                    .Select(x => new GetProductModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Price = x.Price,
-                        Description = x.Description,
-                        Stock = x.Stock,
-                        Company = x.Company.Name,
-                        Category = x.Category.Name,
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
-
-                
-                if (products.Count == 0)
+            List<GetProductModel> products = await _context.Products
+               .Include(x => x.Images)
+                .Include(x => x.Category)
+                .Include(x => x.Company)
+                .Select(x => new GetProductModel
                 {
-                    throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
-                }
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    Description = x.Description,
+                    Stock = x.Stock,
+                    Company = x.Company.Name,
+                    Category = x.Category.Name,
+                })
+                .AsNoTracking()
+                .ToListAsync();
 
-                return products;
+
+            if (products.Count == 0)
+            {
+                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
             }
+
+            return products;
+        }
 
         public async Task<GetProductModel> GetProduct(Guid id)
         {
-            
-                GetProductModel product = await _context.Products
-                    .Include(x => x.Images)
-                    .Include(x => x.Category)
-                    .Include(x => x.Company)
-                    .Select(x => new GetProductModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Price = x.Price,
-                        Description = x.Description,
-                        Stock = x.Stock,
-                        Company = x.Company.Name,
-                        Category = x.Category.Name,
-                    })
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == id);
 
-
-                if (product == null)
+            GetProductModel product = await _context.Products
+                .Include(x => x.Images)
+                .Include(x => x.Category)
+                .Include(x => x.Company)
+                .Select(x => new GetProductModel
                 {
-                    throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
-                }
-                return product;
+                    Id = x.Id,
+                    Name = x.Name,
+                    Price = x.Price,
+                    Description = x.Description,
+                    Stock = x.Stock,
+                    Company = x.Company.Name,
+                    Category = x.Category.Name,
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+
+            if (product == null)
+            {
+                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
+            }
+            return product;
         }
 
         public async Task<GetProductModel> PostProduct(PostProductModel postProductModel)
@@ -119,7 +119,7 @@ namespace project.api.Repositories
                 Price = postProductModel.Price,
                 CategoryId = postProductModel.CategoryId,
                 CompanyId = postProductModel.CompanyId,
-                
+
             });
 
             try
@@ -132,7 +132,7 @@ namespace project.api.Repositories
             }
 
             return await GetProduct(result.Entity.Id);
-            
+
         }
 
         public async Task PutProduct(Guid id, PutProductModel putProductModel)

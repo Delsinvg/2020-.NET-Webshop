@@ -2,8 +2,6 @@
 using project.api.Exceptions;
 using project.models.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Services

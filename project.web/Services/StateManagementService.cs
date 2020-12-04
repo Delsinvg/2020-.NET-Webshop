@@ -2,11 +2,9 @@
 using project.models.Users;
 using project.web.Models;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace project.web.Services
 {

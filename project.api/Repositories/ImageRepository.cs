@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using project.api.Entities;
 using project.api.Exceptions;
-using project.models.Addresses;
 using project.models.Images;
 using System;
 using System.Collections.Generic;
@@ -49,16 +48,16 @@ namespace project.api.Repositories
 
         public async Task<GetImageModel> GetImage(Guid id)
         {
-            
-                GetImageModel image = await _context.Images
-                    .Select(x => new GetImageModel
-                    {
-                        Id = x.Id,
-                        Path = x.Path,
-                        Product = x.Product.Name
-                    })
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            GetImageModel image = await _context.Images
+                .Select(x => new GetImageModel
+                {
+                    Id = x.Id,
+                    Path = x.Path,
+                    Product = x.Product.Name
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (image == null)
             {
@@ -66,28 +65,28 @@ namespace project.api.Repositories
             }
 
             return image;
-            
+
         }
 
         public async Task<List<GetImageModel>> GetImages()
         {
-            
-                List<GetImageModel> images = await _context.Images
-                    .Select(x => new GetImageModel
-                    {
-                        Id = x.Id,
-                        Path = x.Path,
-                        Product = x.Product.Name
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
+
+            List<GetImageModel> images = await _context.Images
+                .Select(x => new GetImageModel
+                {
+                    Id = x.Id,
+                    Path = x.Path,
+                    Product = x.Product.Name
+                })
+                .AsNoTracking()
+                .ToListAsync();
 
             if (images.Count == 0)
             {
                 throw new CollectionException("No images found.", this.GetType().Name, "GetImages", "404");
             }
             return images;
-            
+
         }
 
         public async Task<GetImageModel> PostImage(PostImageModel postImageModel)

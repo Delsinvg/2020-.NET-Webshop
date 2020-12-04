@@ -32,7 +32,8 @@ namespace project.api.Repositories
                 _context.Categories.Remove(category);
 
                 await _context.SaveChangesAsync();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 if (e.GetType().Name.Equals("KeyNotFoundException"))
                 {
@@ -69,21 +70,21 @@ namespace project.api.Repositories
             {
                 throw new CollectionException("No Categories found", this.GetType().Name, "GetCategories", "404");
             }
-            return categories;            
+            return categories;
         }
 
         public async Task<GetCategoryModel> GetCategory(Guid id)
         {
-            
-                GetCategoryModel category = await _context.Categories
-                .Select(x => new GetCategoryModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ParentCategory = x.ParentCategory.Name
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+
+            GetCategoryModel category = await _context.Categories
+            .Select(x => new GetCategoryModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ParentCategory = x.ParentCategory.Name
+            })
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
 
             if (category == null)
             {

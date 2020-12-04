@@ -19,7 +19,7 @@ namespace project.api.Repositories
             _context = context;
         }
 
-        
+
         public async Task DeleteAddress(Guid id)
         {
             try
@@ -66,7 +66,8 @@ namespace project.api.Repositories
                     .FirstOrDefaultAsync(x => x.Id == id);
 
                 return address;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddresses", "400");
             }
@@ -83,7 +84,7 @@ namespace project.api.Repositories
                     {
                         Id = x.Id,
                         CountryCode = x.CountryCode,
-                        Country = x.City,
+                        Country = x.Country,
                         City = x.City,
                         PostalCode = x.PostalCode,
                         Street = x.Street,
@@ -94,7 +95,8 @@ namespace project.api.Repositories
                     .ToListAsync();
 
                 return addresses;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 throw new GuidException(e.InnerException.Message, this.GetType().Name, "GetAddresses", "400");
             }
@@ -115,11 +117,11 @@ namespace project.api.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PostAddress", "400");
             }
-            
+
 
             return new GetAddressModel
             {
@@ -151,7 +153,8 @@ namespace project.api.Repositories
 
                 await _context.SaveChangesAsync();
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 if (e.GetType().Name.Equals("KeyNotFoundException"))
                 {
@@ -165,7 +168,7 @@ namespace project.api.Repositories
 
                 if (e.GetType().ToString().Contains("DbUpdate"))
                 {
-                    throw new DatabaseException( e.InnerException.Message, this.GetType().Name, "PutAddress", "400");
+                    throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutAddress", "400");
                 }
             }
         }

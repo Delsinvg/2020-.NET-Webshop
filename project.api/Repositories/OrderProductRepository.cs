@@ -23,7 +23,7 @@ namespace project.api.Repositories
             try
             {
                 OrderProduct orderProduct = await _context.OrderProducts
-                    
+
                     .FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
                 if (orderProduct == null)

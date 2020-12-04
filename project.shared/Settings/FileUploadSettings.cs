@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace project.shared.Settings
+﻿namespace project.shared.Settings
 {
     public class FileUploadSettings
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace project.models.UserRoles
+﻿namespace project.models.UserRoles
 {
     class GetUserRoleModel : BaseUserRoleModel
     {

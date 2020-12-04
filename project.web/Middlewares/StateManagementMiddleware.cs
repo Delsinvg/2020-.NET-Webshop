@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using project.web.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Middlewares

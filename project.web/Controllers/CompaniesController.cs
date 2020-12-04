@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.models.Companies;
 using project.web.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace project.web.Controllers
 {
@@ -120,7 +118,6 @@ namespace project.web.Controllers
                     Name = getCompanyModel.Name,
                     AccountNumber = getCompanyModel.AccountNumber,
                     PhoneNumber = getCompanyModel.PhoneNumber,
-                    AddressId = getCompanyModel.AddressId,
                     Email = getCompanyModel.Email
                 };
 

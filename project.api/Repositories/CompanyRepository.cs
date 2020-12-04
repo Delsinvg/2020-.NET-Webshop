@@ -18,7 +18,7 @@ namespace project.api.Repositories
         {
             _context = context;
         }
-        
+
         public async Task DeleteCompany(Guid id)
         {
             try
@@ -43,58 +43,58 @@ namespace project.api.Repositories
                 throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutCompany", "400");
             }
         }
-        
-
-    public async Task<List<GetCompanyModel>> GetCompanies()
-    {
-
-        List<GetCompanyModel> companies = await _context.Companies
-            .Select(x => new GetCompanyModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Email = x.Email,
-                AccountNumber = x.AccountNumber,
-                PhoneNumber = x.PhoneNumber,
-                Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}"
-            })
-            .AsNoTracking()
-            .ToListAsync();
 
 
-        if (companies.Count == 0)
+        public async Task<List<GetCompanyModel>> GetCompanies()
         {
-            throw new CollectionException("No companies found", this.GetType().Name, "GetCompanies", "404");
+
+            List<GetCompanyModel> companies = await _context.Companies
+                .Select(x => new GetCompanyModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    AccountNumber = x.AccountNumber,
+                    PhoneNumber = x.PhoneNumber,
+                    Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) - {x.Address.Street}"
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+
+            if (companies.Count == 0)
+            {
+                throw new CollectionException("No companies found", this.GetType().Name, "GetCompanies", "404");
+            }
+
+            return companies;
         }
 
-        return companies;
-    }
-    
 
         public async Task<GetCompanyModel> GetCompany(Guid id)
         {
-            
-                GetCompanyModel company = await _context.Companies
-                    .Select(x => new GetCompanyModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Email = x.Email,
-                        AccountNumber = x.AccountNumber,
-                        PhoneNumber = x.PhoneNumber,
-                        Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) {x.Address.Street}"
 
-                    })
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == id);
+            GetCompanyModel company = await _context.Companies
+                .Select(x => new GetCompanyModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    AccountNumber = x.AccountNumber,
+                    PhoneNumber = x.PhoneNumber,
+                    Address = $"{x.Address.Country} ({x.Address.CountryCode}) - {x.Address.City} ({x.Address.PostalCode}) {x.Address.Street}"
+
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (company == null)
             {
                 throw new EntityException("Company not found.", this.GetType().Name, "GetAuteur", "404");
             }
-                
-                return company;
-            
+
+            return company;
+
         }
 
         public async Task<GetCompanyModel> PostCompany(PostCompanyModel postCompanyModel)
@@ -119,7 +119,7 @@ namespace project.api.Repositories
 
 
             return await GetCompany(result.Entity.Id);
-            
+
         }
 
         public async Task PutCompany(Guid id, PutCompanyModel putCompanyModel)

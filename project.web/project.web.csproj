@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Shared\images\**" />
+    <Content Remove="Views\Shared\images\**" />
+    <EmbeddedResource Remove="Views\Shared\images\**" />
+    <None Remove="Views\Shared\images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\project.api\project.api.csproj" />
     <ProjectReference Include="..\project.models\project.models.csproj" />
     <ProjectReference Include="..\project.shared\project.shared.csproj" />

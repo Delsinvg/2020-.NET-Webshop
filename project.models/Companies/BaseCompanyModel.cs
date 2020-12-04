@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace project.models.Companies
 {
-   public class BaseCompanyModel
+    public class BaseCompanyModel
     {
         [StringLength(30, MinimumLength = 2)]
         public string Name { get; set; }

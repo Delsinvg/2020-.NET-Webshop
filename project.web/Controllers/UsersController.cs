@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.models.Users;
 using project.web.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace project.web.Controllers
 {
@@ -126,7 +124,6 @@ namespace project.web.Controllers
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
 
-                //TempData["ImageData"] = GetImage(getUserModel.AfbeeldingModel.Data, getUserModel.AfbeeldingModel.Bestandstype);
 
                 PutUserModel putUserModel = new PutUserModel
                 {

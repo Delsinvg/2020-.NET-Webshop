@@ -55,19 +55,19 @@ namespace project.api.Repositories
 
         public async Task<GetOrderModel> GetOrder(Guid id)
         {
-          
-                GetOrderModel order = await _context.Orders
-                    .Include(x => x.OrderProducts)
-                    .Include(x => x.User)
-                    .Select(x => new GetOrderModel
-                    {
-                        Id = x.Id,
-                        Orderdate = x.Orderdate,
-                        User = $"{x.User.FirstName} {x.User.LastName}",
-                        Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
-                    })
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            GetOrderModel order = await _context.Orders
+                .Include(x => x.OrderProducts)
+                .Include(x => x.User)
+                .Select(x => new GetOrderModel
+                {
+                    Id = x.Id,
+                    Orderdate = x.Orderdate,
+                    User = $"{x.User.FirstName} {x.User.LastName}",
+                    Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (order == null)
             {
@@ -79,19 +79,19 @@ namespace project.api.Repositories
 
         public async Task<List<GetOrderModel>> GetOrders()
         {
-            
-                List<GetOrderModel> orders = await _context.Orders
-                    .Include(x => x.OrderProducts)
-                    .Include(x => x.User)
-                    .Select(x => new GetOrderModel
-                    {
-                        Id = x.Id,
-                        Orderdate = x.Orderdate,
-                        User = $"{x.User.FirstName} {x.User.LastName}",
-                        Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
+
+            List<GetOrderModel> orders = await _context.Orders
+                .Include(x => x.OrderProducts)
+                .Include(x => x.User)
+                .Select(x => new GetOrderModel
+                {
+                    Id = x.Id,
+                    Orderdate = x.Orderdate,
+                    User = $"{x.User.FirstName} {x.User.LastName}",
+                    Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
+                })
+                .AsNoTracking()
+                .ToListAsync();
 
             if (orders.Count == 0)
             {
@@ -99,7 +99,7 @@ namespace project.api.Repositories
             }
 
             return orders;
-            
+
         }
 
         public async Task<GetOrderModel> PostOrder(PostOrderModel postOrderModel)

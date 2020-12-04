@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace project.api.Entities
 {
@@ -16,7 +13,7 @@ namespace project.api.Entities
         [StringLength(30, MinimumLength = 2)]
         public string City { get; set; }
         [RegularExpression(@"^\d+$")]
-        [Range(0,10000)]
+        [Range(0, 10000)]
         public int PostalCode { get; set; }
         [StringLength(30, MinimumLength = 2)]
         public string Street { get; set; }
