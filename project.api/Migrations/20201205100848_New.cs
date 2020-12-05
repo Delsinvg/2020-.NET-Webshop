@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace project.api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class New : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,6 +99,7 @@ namespace project.api.Migrations
                     Name = table.Column<string>(maxLength: 30, nullable: true),
                     Email = table.Column<string>(nullable: true),
                     AccountNumber = table.Column<string>(maxLength: 20, nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
                     AddressId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -224,7 +225,6 @@ namespace project.api.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Orderdate = table.Column<DateTime>(nullable: false),
-                    PhoneNumber = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -232,6 +232,31 @@ namespace project.api.Migrations
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Token = table.Column<string>(nullable: true),
+                    Expires = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    CreatedByIp = table.Column<string>(nullable: true),
+                    Revoked = table.Column<DateTime>(nullable: true),
+                    RevokedByIp = table.Column<string>(nullable: true),
+                    ReplacedByToken = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -364,11 +389,32 @@ namespace project.api.Migrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
+                name: "Un_Category_Name_ParentId",
+                table: "Categories",
+                columns: new[] { "Name", "ParentId" },
+                unique: true,
+                filter: "[Name] IS NOT NULL AND [ParentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Companies_AddressId",
                 table: "Companies",
                 column: "AddressId",
                 unique: true,
                 filter: "[AddressId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "Un_Company_Name_Email_AccountNumber",
+                table: "Companies",
+                columns: new[] { "Name", "Email", "AccountNumber" },
+                unique: true,
+                filter: "[Name] IS NOT NULL AND [Email] IS NOT NULL AND [AccountNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "Un_Image_Path",
+                table: "Images",
+                column: "Path",
+                unique: true,
+                filter: "[Path] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_ProductId",
@@ -381,9 +427,10 @@ namespace project.api.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderProducts_ProductId",
+                name: "Un_OrderProduct_ProductId_OrderId",
                 table: "OrderProducts",
-                column: "ProductId");
+                columns: new[] { "ProductId", "OrderId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -393,13 +440,24 @@ namespace project.api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
-                column: "CategoryId",
-                unique: true);
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CompanyId",
                 table: "Products",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "Un_Product_Name_Description",
+                table: "Products",
+                columns: new[] { "Name", "Description" },
+                unique: true,
+                filter: "[Description] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -424,6 +482,9 @@ namespace project.api.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

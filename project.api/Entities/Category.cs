@@ -12,7 +12,7 @@ namespace project.api.Entities
         [StringLength(30, MinimumLength = 2)]
         public string Name { get; set; }
 
-        public Product Product { get; set; }
+        public ICollection<Product> Products { get; set; }
         public ICollection<Category> SubCategories { get; set; }
 
     }

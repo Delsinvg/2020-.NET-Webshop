@@ -301,8 +301,7 @@ namespace project.api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CompanyId");
 
@@ -563,8 +562,8 @@ namespace project.api.Migrations
             modelBuilder.Entity("project.api.Entities.Product", b =>
                 {
                     b.HasOne("project.api.Entities.Category", "Category")
-                        .WithOne("Product")
-                        .HasForeignKey("project.api.Entities.Product", "CategoryId")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

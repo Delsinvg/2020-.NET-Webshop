@@ -10,8 +10,8 @@ using project.api.Entities;
 namespace project.api.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20201028130559_CompanyUpdate")]
-    partial class CompanyUpdate
+    [Migration("20201205100848_New")]
+    partial class New
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -303,8 +303,7 @@ namespace project.api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CompanyId");
 
@@ -565,8 +564,8 @@ namespace project.api.Migrations
             modelBuilder.Entity("project.api.Entities.Product", b =>
                 {
                     b.HasOne("project.api.Entities.Category", "Category")
-                        .WithOne("Product")
-                        .HasForeignKey("project.api.Entities.Product", "CategoryId")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

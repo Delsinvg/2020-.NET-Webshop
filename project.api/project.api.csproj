@@ -5,21 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201003082750_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003082750_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201003083038_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003083038_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201003091555_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003091555_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201003092803_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003092803_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201003092911_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003092911_InitialCreate.Designer.cs" />
-    <Compile Remove="Migrations\20201003093656_InitialCreate.cs" />
-    <Compile Remove="Migrations\20201003093656_InitialCreate.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />

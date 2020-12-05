@@ -88,6 +88,11 @@ namespace project.api.Entities
                 .HasForeignKey(x => x.CompanyId)
                 .IsRequired();
 
+                x.HasOne(x => x.Category)
+                .WithMany(x => x.Products)
+                .HasForeignKey(x => x.CategoryId)
+                .IsRequired();
+
             });
 
             modelBuilder.Entity<Image>(x =>
@@ -103,12 +108,6 @@ namespace project.api.Entities
                 x.HasMany(x => x.SubCategories)
                 .WithOne(x => x.ParentCategory)
                 .HasForeignKey(x => x.ParentId);
-
-
-                x.HasOne(o => o.Product)
-                .WithOne(o => o.Category)
-                .HasForeignKey<Product>(o => o.CategoryId)
-                .IsRequired();
             });
 
             modelBuilder.Entity<Address>(o =>
