@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.api.Repositories;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace project.api.Controllers
 {
-    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
@@ -39,7 +40,7 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<ActionResult<List<GetUserModel>>> GetUsers()
         {
             List<GetUserModel> users = await _userRepository.GetUsers();
@@ -70,7 +71,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<GetUserModel>> GetUser(string id)
         {
             try
@@ -116,7 +117,7 @@ namespace project.api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<ActionResult<GetUserModel>> PostUser(PostUserModel postUserModel)
         {
             try
@@ -159,7 +160,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PutUser(string id, PutUserModel putUserModel)
         {
             try
@@ -198,7 +199,7 @@ namespace project.api.Controllers
         /// <response code="400">The id is not a valid Guid or the current password does not match or the new password is not conform the password rules</response>
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PatchUser(string id, PatchUserModel patchUserModel)
         {
             await _userRepository.PatchUser(id, patchUserModel);
@@ -223,7 +224,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try
@@ -262,7 +263,7 @@ namespace project.api.Controllers
         /// <returns>Details of authenticated user, an JWT token and a refresh token</returns>
         /// <response code="200">Returns the authenticated user with tokens</response>
         /// <response code="401">Incorrect credentials</response>   
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost("authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -294,7 +295,7 @@ namespace project.api.Controllers
         /// <returns>Details of authenticated user, a new JWT token and a new refresh token</returns>
         /// <response code="200">Returns the authenticated user with new tokens</response>
         /// <response code="401">Invalid refresh token</response>   
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost("refresh-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -335,7 +336,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> RevokeToken(PostRevokeTokenRequestModel postRevokeTokenRequestModel)
         {
             try
@@ -382,7 +383,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<ActionResult<List<GetRefreshTokenModel>>> GetUserRefreshTokens(string id)
         {
             try

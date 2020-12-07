@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
 using project.api.Repositories;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace project.api.Controllers
 {
-    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
@@ -39,7 +40,7 @@ namespace project.api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<List<GetCompanyModel>>> GetCompanies()
         {
             try
@@ -73,7 +74,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<GetCompanyModel>> GetCompany(string id)
         {
             try
@@ -124,7 +125,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<ActionResult<GetCompanyModel>> PostCompany(PostCompanyModel postCompanyModel)
         {
             try
@@ -171,7 +172,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutCompany(string id, PutCompanyModel putCompanyModel)
         {
             try
@@ -216,7 +217,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> DeleteCompany(string id)
         {
             try

@@ -10,12 +10,12 @@ namespace project.web.Controllers
     public class AddressesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
-        public AddressesController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
@@ -23,9 +23,9 @@ namespace project.web.Controllers
 
             try
             {
-                //Authorize("Moderator", "Index");
+                Authorize("Moderator", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetAddressModel> getAddressModels = await _projectApiService.GetModels<GetAddressModel>("Addresses");
 
@@ -41,9 +41,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Details");
+                Authorize("Moderator", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetAddressModel getAddressModel = await _projectApiService.GetModel<GetAddressModel>(id, "Addresses");
 
@@ -59,9 +59,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -77,9 +77,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Beheerder", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -107,9 +107,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetAddressModel getAddressModel = await _projectApiService.GetModel<GetAddressModel>(id, "Addresses");
 
@@ -136,9 +136,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Beheerder", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -166,9 +166,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetAddressModel getAddressModel = await _projectApiService.GetModel<GetAddressModel>(id, "Addresses");
 
@@ -186,9 +186,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Beheerder", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Addresses");
 

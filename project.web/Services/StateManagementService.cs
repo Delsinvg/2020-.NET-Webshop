@@ -48,7 +48,7 @@ namespace project.web.Services
 
         public void SetState(PostAuthenticateResponseModel postAuthenticateResponseModel, string rememberMe)
         {
-            string refreshToken = postAuthenticateResponseModel.RefreshToken.Split(';').Single(x => x.Contains("Project.RefreshToken=")).Substring(24);
+            string refreshToken = postAuthenticateResponseModel.RefreshToken.Split(';').Single(x => x.Contains("refreshToken=")).Substring(24);
             string rtExpiresOn = postAuthenticateResponseModel.RefreshToken.Split(';').Single(x => x.Contains("expires=")).Substring(9);
 
             StateManagementModel stateManagementModel = new StateManagementModel

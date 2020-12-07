@@ -199,7 +199,8 @@ namespace project.api.Repositories
                 LastName = user.LastName,
                 UserName = user.UserName,
                 JwtToken = jwtToken,
-                RefreshToken = refreshToken.Token
+                RefreshToken = refreshToken.Token,
+                Roles = await _userManager.GetRolesAsync(user)
             };
         }
 

@@ -52,7 +52,7 @@ namespace project.web
             {
                 c.BaseAddress = new Uri("https://localhost:44388/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
-            });//.AddHttpMessageHandler<ValidateHeaderHandler>();
+            }).AddHttpMessageHandler<ValidateHeaderHandler>();
 
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
@@ -65,7 +65,7 @@ namespace project.web
             // Get access to the HttpContext in views and business logic
             services.AddHttpContextAccessor();
 
-            // Mediatheek services
+            // Project services
             services.AddProject();
         }
 
@@ -95,7 +95,7 @@ namespace project.web
 
             //app.UseAuthentication();
 
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseSession();
 
