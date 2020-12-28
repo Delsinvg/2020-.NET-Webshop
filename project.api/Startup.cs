@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using project.api.Entities;
 using project.api.Helper;
 using project.api.Repositories;
+using project.shared.Settings;
 using System;
 using System.IO;
 using System.Reflection;
@@ -75,6 +76,10 @@ namespace project.api
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+
+            // Configure strongly typed file upload settings object
+            var fileUploadSettingsSection = Configuration.GetSection("FileUploadSettings");
+            services.Configure<FileUploadSettings>(fileUploadSettingsSection);
 
             // Configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
