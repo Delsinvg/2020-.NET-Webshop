@@ -160,7 +160,7 @@ namespace project.api.Entities
 
             modelBuilder.Entity<Image>(x =>
             {
-                x.HasIndex(x => new {  x.ProductId, x.Name, x.Extension })
+                x.HasIndex(x => new { x.ProductId, x.Name, x.Extension })
                 .IsUnique(true)
                 .HasName("Un_Image_BoekId_Name_Extension");
             });

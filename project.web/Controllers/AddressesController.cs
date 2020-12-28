@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Addresses;
 using project.web.Services;

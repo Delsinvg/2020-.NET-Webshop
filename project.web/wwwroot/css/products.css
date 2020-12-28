@@ -1,4 +1,20 @@
 ﻿.side-nav {
     margin-top: 250px;
 }
+
+.product {
+    margin-top: 175px;
+}
+
+.product-text {
+    margin-top: 100px;
+}
+
+.product-image {
+    float: left;
+}
+
+.product-content {
+    float: right;
+}
   

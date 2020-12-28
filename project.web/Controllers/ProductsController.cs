@@ -26,7 +26,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Index");
+                Authorize("Customer", "Index");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
@@ -44,7 +44,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Details");
+                Authorize("Customer", "Details");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
@@ -71,9 +71,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Customer", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -89,7 +89,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Create");
+                Authorize("Customer", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
@@ -135,7 +135,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Edit");
+                Authorize("Customer", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
@@ -175,7 +175,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Edit");
+                Authorize("Customer", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
@@ -223,7 +223,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Delete");
+                Authorize("Customer", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
@@ -252,7 +252,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Delete");
+                Authorize("Customer", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 

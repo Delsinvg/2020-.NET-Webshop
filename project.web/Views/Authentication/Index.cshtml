@@ -4,32 +4,35 @@
     <link rel="stylesheet" href="~/css/authentication.css" />
 }
 
-<form class="form-signin" asp-action="Index">
-    <h1 class="h3 mb-3 font-weight-normal">Aanmelden</h1>
-    @if (TempData.ContainsKey("ApiError"))
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ApiError"]
-        </div>
-    }
-    <div class="form-group">
-        <label asp-for="UserName" class="sr-only">E-mailadres</label>
-        <input asp-for="UserName" id="UserName" class="form-control" placeholder="E-mailadres" autofocus>
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password" class="sr-only">Wachtwoord</label>
-        <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Wachtwoord">
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group remember-me">
-        <label>
-            <input type="checkbox" checked="@ViewData["RememberMe"]" name="rememberMe"> Onthoud mij
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
-</form>
+<div class="container">
 
-@section Scripts{
-    <script src="~/js/authentication.js" asp-append-version="true"></script>
-}
+    <form class="form-signin" asp-action="Index">
+        <h1 class="h3 mb-3 font-weight-normal">Aanmelden</h1>
+        @if (TempData.ContainsKey("ApiError"))
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ApiError"]
+            </div>
+        }
+        <div class="form-group">
+            <label asp-for="UserName" class="sr-only">E-mailadres</label>
+            <input asp-for="UserName" id="UserName" class="form-control" placeholder="E-mailadres" autofocus>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="sr-only">Wachtwoord</label>
+            <input asp-for="Password" type="password" id="Password" class="form-control" placeholder="Wachtwoord">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group remember-me">
+            <label>
+                <input type="checkbox" checked="@ViewData["RememberMe"]" name="rememberMe"> Onthoud mij
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
+    </form>
+    </div>
+
+    @section Scripts{
+        <script src="~/js/authentication.js" asp-append-version="true"></script>
+    }

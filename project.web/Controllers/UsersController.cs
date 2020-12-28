@@ -17,7 +17,7 @@ namespace project.web.Controllers
 
         public UsersController(
             ProjectApiService projectApiService
-        ,ITokenValidationService tokenValidationService,
+        , ITokenValidationService tokenValidationService,
         IOptions<FileUploadSettings> fileUploadSettings)
         {
             _projectApiService = projectApiService;

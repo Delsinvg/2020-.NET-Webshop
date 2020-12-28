@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace project.api.Migrations
 {
@@ -30,7 +30,7 @@ namespace project.api.Migrations
                 name: "Data",
                 table: "Images",
                 nullable: false,
-                defaultValue: new byte[] {  });
+                defaultValue: new byte[] { });
 
             migrationBuilder.AddColumn<string>(
                 name: "Description",

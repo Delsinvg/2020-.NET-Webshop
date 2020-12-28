@@ -32,7 +32,8 @@ namespace project.web.Helpers
             if (type.Equals("product"))
             {
                 return "/img/product.jpg";
-            } else
+            }
+            else
             {
                 return "/img/user.jpg";
             }

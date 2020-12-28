@@ -1,18 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using project.api.Exceptions;
 using project.shared.Settings;
 using project.web.Handlers;
 using project.web.Middlewares;
 using project.web.Services;
 using System;
-using System.Globalization;
 using System.Reflection;
 
 namespace project.web
@@ -30,17 +27,17 @@ namespace project.web
         public void ConfigureServices(IServiceCollection services)
         {
             // Configure Localization options
-//            services.Configure<RequestLocalizationOptions>(options =>
-//            {
-//                var supportedCultures = new[]
-//{
-//                    new CultureInfo("nl"),
-//                    new CultureInfo("en")
-//                };
-//                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
-//                options.SupportedCultures = supportedCultures;
-//                options.SupportedUICultures = supportedCultures;
-//            });
+            //            services.Configure<RequestLocalizationOptions>(options =>
+            //            {
+            //                var supportedCultures = new[]
+            //{
+            //                    new CultureInfo("nl"),
+            //                    new CultureInfo("en")
+            //                };
+            //                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
+            //                options.SupportedCultures = supportedCultures;
+            //                options.SupportedUICultures = supportedCultures;
+            //            });
 
             // Session configuration
             services.AddDistributedMemoryCache();
