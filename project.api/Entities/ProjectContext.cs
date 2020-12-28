@@ -137,13 +137,6 @@ namespace project.api.Entities
                 .HasName("Un_Company_Name_Email_AccountNumber");
             });
 
-            modelBuilder.Entity<Image>(x =>
-            {
-                x.HasIndex(x => new { x.Path })
-                .IsUnique(true)
-                .HasName("Un_Image_Path");
-            });
-
             modelBuilder.Entity<Product>(x =>
             {
                 x.HasIndex(x => new { x.Name, x.Description })
@@ -163,6 +156,13 @@ namespace project.api.Entities
                 x.HasIndex(x => new { x.ProductId, x.OrderId })
                 .IsUnique(true)
                 .HasName("Un_OrderProduct_ProductId_OrderId");
+            });
+
+            modelBuilder.Entity<Image>(x =>
+            {
+                x.HasIndex(x => new {  x.ProductId, x.Name, x.Extension })
+                .IsUnique(true)
+                .HasName("Un_Image_BoekId_Name_Extension");
             });
         }
     }
