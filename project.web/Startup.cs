@@ -13,6 +13,7 @@ using project.web.Middlewares;
 using project.web.Services;
 using System;
 using System.Globalization;
+using System.Reflection;
 
 namespace project.web
 {
@@ -76,7 +77,16 @@ namespace project.web
                     options.JsonSerializerOptions.Converters.Add(new ProjectExceptionConverter());
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 })
-                .AddSessionStateTempDataProvider();
+                .AddSessionStateTempDataProvider()
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        var assemblyName = new AssemblyName(typeof(models.Images.ImageModel).GetTypeInfo().Assembly.FullName);
+                        return factory.Create("SharedResource", assemblyName.Name);
+                    };
+                });
 
             // Get access to the HttpContext in views and business logic
             services.AddHttpContextAccessor();
