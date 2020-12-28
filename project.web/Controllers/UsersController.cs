@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using project.api.Exceptions;
 using project.models.Users;
+using project.shared.Settings;
 using project.web.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,26 +12,26 @@ namespace project.web.Controllers
     public class UsersController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
-        //private readonly FileUploadSettings _fileUploadSettings;
+        private readonly ITokenValidationService _tokenValidationService;
+        private readonly FileUploadSettings _fileUploadSettings;
 
         public UsersController(
-            ProjectApiService projectApiService)
-        //,ITokenValidationService tokenValidationService,
-        //IOptions<FileUploadSettings> fileUploadSettings)
+            ProjectApiService projectApiService
+        ,ITokenValidationService tokenValidationService,
+        IOptions<FileUploadSettings> fileUploadSettings)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
-            //_fileUploadSettings = fileUploadSettings.Value;
+            _tokenValidationService = tokenValidationService;
+            _fileUploadSettings = fileUploadSettings.Value;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                //Authorize("Beheerder", "Index");
+                Authorize("Beheerder", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetUserModel> getUsersModel = await _projectApiService.GetModels<GetUserModel>("Users");
 
@@ -45,9 +47,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Details");
+                Authorize("Beheerder", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
 
@@ -65,9 +67,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Beheerder", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -83,9 +85,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Beheerder", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 //if (postUserModel.Afbeelding != null && ValidateImage(postUserModel.Afbeelding))
                 //{
@@ -118,9 +120,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Beheerder", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
 
@@ -147,9 +149,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Beheerder", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 //if (putUserModel.Afbeelding != null && ValidateImage(putUserModel.Afbeelding))
                 //{
@@ -182,9 +184,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Beheerder", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
 
@@ -202,9 +204,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Beheerder", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Users");
 
@@ -223,19 +225,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all users";
+                    error = "Onvoldoende rechten om users op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get user details";
+                    error = "Onvoldoende rechten om de details van een user op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create user";
+                    error = "Onvoldoende rechten om user aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit user";
+                    error = "Onvoldoende rechten om user aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete user";
+                    error = "Onvoldoende rechten om user te verwijderen";
                     break;
             }
 

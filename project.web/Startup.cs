@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using project.api.Exceptions;
 using project.shared.Settings;
 using project.web.Handlers;
 using project.web.Middlewares;
 using project.web.Services;
 using System;
+using System.Globalization;
 
 namespace project.web
 {
@@ -25,6 +28,19 @@ namespace project.web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configure Localization options
+//            services.Configure<RequestLocalizationOptions>(options =>
+//            {
+//                var supportedCultures = new[]
+//{
+//                    new CultureInfo("nl"),
+//                    new CultureInfo("en")
+//                };
+//                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
+//                options.SupportedCultures = supportedCultures;
+//                options.SupportedUICultures = supportedCultures;
+//            });
+
             // Session configuration
             services.AddDistributedMemoryCache();
 
@@ -88,6 +104,10 @@ namespace project.web
             // app.UseCookiePolicy();
 
             app.UseRouting();
+
+            //// Localization
+            //var requestLocalizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            //app.UseRequestLocalization(requestLocalizationOptions.Value);
 
             // app.UseRequestLocalization();
 

@@ -10,21 +10,21 @@ namespace project.web.Controllers
     public class ProductsController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
-        public ProductsController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public ProductsController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                //Authorize("Beheerder", "Index");
+                Authorize("Beheerder", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetProductModel> getProductsModel = await _projectApiService.GetModels<GetProductModel>("Products");
 
@@ -40,9 +40,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Details");
+                Authorize("Beheerder", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
@@ -76,9 +76,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Beheerder", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -105,9 +105,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Beheerder", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
@@ -133,9 +133,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Beheerder", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -163,9 +163,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Beheerder", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
@@ -183,9 +183,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Beheerder", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Products");
 
@@ -204,19 +204,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all genres";
+                    error = "Onvoldoende rechten om producten op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get genre details";
+                    error = "Onvoldoende rechten om de details van een product op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create genre";
+                    error = "Onvoldoende rechten om product aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit genre";
+                    error = "Onvoldoende rechten om product aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete genre";
+                    error = "Onvoldoende rechten om product te verwijderen";
                     break;
             }
 

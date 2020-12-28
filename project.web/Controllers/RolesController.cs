@@ -10,23 +10,23 @@ namespace project.web.Controllers
     public class RolesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
         public RolesController(
-            ProjectApiService projectApiService
-            /*ITokenValidationService tokenValidationService*/)
+            ProjectApiService projectApiService,
+            ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                //Authorize("Administrator", "Index");
+                Authorize("Administrator", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetRoleModel> getRolesModel = await _projectApiService.GetModels<GetRoleModel>("Roles");
 
@@ -42,9 +42,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Details");
+                Authorize("Administrator", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
@@ -60,9 +60,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Create");
+                Authorize("Administrator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -78,9 +78,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Create");
+                Authorize("Administrator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -108,9 +108,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Edit");
+                Authorize("Administrator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
@@ -134,9 +134,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Edit");
+                Authorize("Administrator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -164,9 +164,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Delete");
+                Authorize("Administrator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetRoleModel getRoleModel = await _projectApiService.GetModel<GetRoleModel>(id, "Roles");
 
@@ -184,9 +184,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Administrator", "Delete");
+                Authorize("Administrator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Roles");
 
@@ -205,19 +205,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all roles";
+                    error = "Onvoldoende rechten om rollen op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get role details";
+                    error = "Onvoldoende rechten om de details van een rollen op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create role";
+                    error = "Onvoldoende rechten om rollen aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit role";
+                    error = "Onvoldoende rechten om rollen aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete role";
+                    error = "Onvoldoende rechten om rollen te verwijderen";
                     break;
             }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Addresses;
 using project.web.Services;
@@ -11,11 +12,13 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        //private readonly IStringLocalizer<AddressesController> _localizer;
 
-        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService/*, IStringLocalizer<AddressesController> localizer*/)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            //_localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -77,7 +80,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Create");
+                Authorize("Moderator", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
@@ -136,7 +139,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Edit");
+                Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
@@ -186,7 +189,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Beheerder", "Delete");
+                Authorize("Moderator", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
@@ -207,19 +210,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all addresses";
+                    error = "Onvoldoende rechten om adressesen op te halen";
                     break;
                 case "Details":
-                    error = "No permission to get address details";
+                    error = "Onvoldoende rechten om details van adressesen op te halen";
                     break;
                 case "Create":
-                    error = "No permission to create address";
+                    error = "Onvoldoende rechten om adressesen op te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit address";
+                    error = "Onvoldoende rechten om adressesen aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete address";
+                    error = "Onvoldoende rechten om adressesen te verwijderen";
                     break;
             }
 

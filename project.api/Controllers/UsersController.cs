@@ -303,7 +303,7 @@ namespace project.api.Controllers
         {
             try
             {
-                string refreshToken = Request.Cookies["refreshToken"];
+                string refreshToken = Request.Cookies["Project.RefreshToken"];
 
                 PostAuthenticateResponseModel postAuthenticateResponseModel = await _userRepository.RefreshToken(refreshToken, IpAddress());
 
@@ -342,7 +342,7 @@ namespace project.api.Controllers
             try
             {
                 // Accept token from request body or cookie
-                string token = postRevokeTokenRequestModel.Token ?? Request.Cookies["refreshToken"];
+                string token = postRevokeTokenRequestModel.Token ?? Request.Cookies["Project.RefreshToken"];
 
                 if (string.IsNullOrEmpty(token))
                 {
@@ -421,7 +421,7 @@ namespace project.api.Controllers
                 Expires = DateTime.UtcNow.AddDays(7)
             };
 
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
+            Response.Cookies.Append("Project.RefreshToken", token, cookieOptions);
         }
 
         private string IpAddress()

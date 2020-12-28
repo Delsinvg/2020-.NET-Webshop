@@ -11,21 +11,21 @@ namespace project.web.Controllers
     public class CategoriesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
-        public CategoriesController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public CategoriesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                //Authorize("Moderator", "Index");
+                Authorize("Moderator", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetCategoryModel> getCategoriesModel = await _projectApiService.GetModels<GetCategoryModel>("Categories");
 
@@ -41,9 +41,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Details");
+                Authorize("Moderator", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
 
@@ -59,9 +59,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -77,9 +77,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -107,9 +107,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
 
@@ -146,9 +146,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -176,9 +176,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetCategoryModel getCategoryModel = await _projectApiService.GetModel<GetCategoryModel>(id, "Categories");
 
@@ -196,9 +196,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Categories");
 
@@ -217,19 +217,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all Categories";
+                    error = "Onvoldoende rechten om categorieën op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get Category details";
+                    error = "Onvoldoende rechten om de details van een categorie op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create Category";
+                    error = "Onvoldoende rechten om categorie aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit Category";
+                    error = "Onvoldoende rechten om categorie aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete Category";
+                    error = "Onvoldoende rechten om categorie te verwijderen";
                     break;
             }
 

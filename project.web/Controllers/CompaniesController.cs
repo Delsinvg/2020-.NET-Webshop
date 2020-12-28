@@ -10,21 +10,21 @@ namespace project.web.Controllers
     public class CompaniesController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
-        public CompaniesController(ProjectApiService projectApiService)
+        public CompaniesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
         {
             try
             {
-                //Authorize("Moderator", "Index");
+                Authorize("Moderator", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetCompanyModel> getCompaniesModel = await _projectApiService.GetModels<GetCompanyModel>("Companies");
 
@@ -40,9 +40,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Details");
+                Authorize("Moderator", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetCompanyModel getCompanyModel = await _projectApiService.GetModel<GetCompanyModel>(id, "Companies");
 
@@ -58,9 +58,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -77,9 +77,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -107,9 +107,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetCompanyModel getCompanyModel = await _projectApiService.GetModel<GetCompanyModel>(id, "Companies");
 
@@ -135,9 +135,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -165,9 +165,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetCompanyModel getCompanyModel = await _projectApiService.GetModel<GetCompanyModel>(id, "Companies");
 
@@ -185,9 +185,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Companies");
 
@@ -205,19 +205,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all companies";
+                    error = "Onvoldoende rechten om bedrijven op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get companies";
+                    error = "Onvoldoende rechten om de details van een bedrijf op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create company";
+                    error = "Onvoldoende rechten om bedrijf aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit company";
+                    error = "Onvoldoende rechten om bedrijf aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete company";
+                    error = "Onvoldoende rechten om bedrijf te verwijderen";
                     break;
             }
 

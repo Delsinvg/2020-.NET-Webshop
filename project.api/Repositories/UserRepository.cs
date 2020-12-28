@@ -243,7 +243,8 @@ namespace project.api.Repositories
                 LastName = user.LastName,
                 UserName = user.UserName,
                 JwtToken = jwtToken,
-                RefreshToken = newRefreshToken.Token
+                RefreshToken = newRefreshToken.Token,
+                Roles = await _userManager.GetRolesAsync(user)
             };
         }
 
@@ -296,7 +297,7 @@ namespace project.api.Repositories
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);

@@ -10,12 +10,12 @@ namespace project.web.Controllers
     public class OrdersController : Controller
     {
         private readonly ProjectApiService _projectApiService;
-        //private readonly ITokenValidationService _tokenValidationService;
+        private readonly ITokenValidationService _tokenValidationService;
 
-        public OrdersController(ProjectApiService projectApiService/*, ITokenValidationService tokenValidationService*/)
+        public OrdersController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
         {
             _projectApiService = projectApiService;
-            //_tokenValidationService = tokenValidationService;
+            _tokenValidationService = tokenValidationService;
         }
 
         public async Task<IActionResult> Index()
@@ -23,9 +23,9 @@ namespace project.web.Controllers
 
             try
             {
-                //Authorize("Moderator", "Index");
+                Authorize("Moderator", "Index");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetOrderModel> getOrderModels = await _projectApiService.GetModels<GetOrderModel>("Orders");
 
@@ -41,9 +41,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Details");
+                Authorize("Moderator", "Details");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
+                await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
                 GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
@@ -59,9 +59,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
             }
@@ -77,9 +77,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Create");
+                Authorize("Moderator", "Create");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
                 if (ModelState.IsValid)
                 {
@@ -107,9 +107,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
@@ -132,9 +132,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Edit");
+                Authorize("Moderator", "Edit");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
                 if (ModelState.IsValid)
                 {
@@ -162,9 +162,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Moderator", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetOrderModel getOrderModel = await _projectApiService.GetModel<GetOrderModel>(id, "Orders");
 
@@ -182,9 +182,9 @@ namespace project.web.Controllers
         {
             try
             {
-                //Authorize("Beheerder", "Delete");
+                Authorize("Moderator", "Delete");
 
-                //await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
+                await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
                 await _projectApiService.DeleteModel(id, "Orders");
 
@@ -203,19 +203,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "No permission to get all Orders";
+                    error = "Onvoldoende rechten om orders op te vragen";
                     break;
                 case "Details":
-                    error = "No permission to get Order details";
+                    error = "Onvoldoende rechten om de details van een order op te vragen";
                     break;
                 case "Create":
-                    error = "No permission to create Order";
+                    error = "Onvoldoende rechten om order aan te maken";
                     break;
                 case "Edit":
-                    error = "No permission to edit Order";
+                    error = "Onvoldoende rechten om order aan te passen";
                     break;
                 case "Delete":
-                    error = "No permission to delete Order";
+                    error = "Onvoldoende rechten om order te verwijderen";
                     break;
             }
 
