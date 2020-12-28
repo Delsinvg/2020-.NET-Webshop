@@ -16,6 +16,6 @@ namespace project.models.Products
 
         public ICollection<ImageModel> ImageModels { get; set; }
 
-        public string AfbeeldingNamen { get; set; }
+        public string AfbeeldingNames { get; set; }
     }
 }

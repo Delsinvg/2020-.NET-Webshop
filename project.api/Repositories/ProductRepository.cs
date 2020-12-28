@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using project.api.Entities;
 using project.api.Exceptions;
+using project.models.Images;
 using project.models.Products;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,10 @@ namespace project.api.Repositories
                     throw new CollectionException("Remove all Products first.", this.GetType().Name, "DeleteProducts", "400");
                 }
 
-                _context.Images.RemoveRange(product.Images);
+                if (product.Images != null && product.Images.Count > 0)
+                {
+                    _context.Images.RemoveRange(product.Images);
+                }
 
                 _context.Products.Remove(product);
 
@@ -56,7 +60,7 @@ namespace project.api.Repositories
         public async Task<List<GetProductModel>> GetProducts()
         {
             List<GetProductModel> products = await _context.Products
-               .Include(x => x.Images)
+                .Include(x => x.Images)
                 .Include(x => x.Category)
                 .Include(x => x.Company)
                 .Select(x => new GetProductModel
@@ -68,7 +72,14 @@ namespace project.api.Repositories
                     Stock = x.Stock,
                     Company = x.Company.Name,
                     Category = x.Category.Name,
-                    A
+                    ImagesModel = x.Images.Select(x => new ImageModel
+                    {
+                        Name = x.Name,
+                        FileType = x.FileType,
+                        Extension = x.Extension,
+                        Description = x.Description,
+                        Data = x.Data
+                    }).ToList()
                 })
                 .AsNoTracking()
                 .ToListAsync();
@@ -76,7 +87,7 @@ namespace project.api.Repositories
 
             if (products.Count == 0)
             {
-                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
+                throw new CollectionException("No products found.", this.GetType().Name, "GetProducts", "404");
             }
 
             return products;
@@ -98,6 +109,14 @@ namespace project.api.Repositories
                     Stock = x.Stock,
                     Company = x.Company.Name,
                     Category = x.Category.Name,
+                    ImagesModel = x.Images.Select(x => new ImageModel
+                    {
+                        Name = x.Name,
+                        FileType = x.FileType,
+                        Extension = x.Extension,
+                        Description = x.Description,
+                        Data = x.Data
+                    }).ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -105,7 +124,7 @@ namespace project.api.Repositories
 
             if (product == null)
             {
-                throw new CollectionException("No auteurs found.", this.GetType().Name, "GetProducts", "404");
+                throw new CollectionException("No products found.", this.GetType().Name, "GetProducts", "404");
             }
             return product;
         }
@@ -122,6 +141,24 @@ namespace project.api.Repositories
                 CompanyId = postProductModel.CompanyId,
 
             });
+
+            if (postProductModel.ImageModels != null && postProductModel.ImageModels.Count > 0)
+            {
+                result.Entity.Images = new List<Image>();
+
+                foreach (ImageModel imageModel in postProductModel.ImageModels)
+                {
+                    Image image = new Image
+                    {
+                        Name = imageModel.Name,
+                        FileType = imageModel.FileType,
+                        Extension = imageModel.Extension,
+                        Data = imageModel.Data
+                    };
+
+                    result.Entity.Images.Add(image);
+                }
+            }
 
             try
             {
@@ -144,14 +181,56 @@ namespace project.api.Repositories
 
                 if (product == null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new EntityException("Product niet gevonden", this.GetType().Name, "PutProduct", "404");
                 }
+
+                if (product.Images.Count > 0)
+                {
+                    if (putProductModel.AfbeeldingNames == null)
+                    {
+                        _context.Images.RemoveRange(product.Images);
+                    }
+                    else
+                    {
+                        string[] namen = putProductModel.AfbeeldingNames.Split(",");
+
+                        foreach (Image image in product.Images)
+                        {
+                            if (!namen.Contains(image.Name))
+                            {
+                                _context.Images.Remove(image);
+                            }
+                        }
+                    }
+                }
+
                 product.Name = putProductModel.Name;
                 product.Description = putProductModel.Description;
                 product.Stock = putProductModel.Stock;
                 product.Price = putProductModel.Price;
                 product.CategoryId = putProductModel.CategoryId;
                 product.CompanyId = putProductModel.CompanyId;
+
+                if (putProductModel.ImageModels != null && putProductModel.ImageModels.Count > 0)
+                {
+                    if (product.Images == null || product.Images.Count == 0)
+                    {
+                        product.Images = new List<Image>();
+                    }
+
+                    foreach (ImageModel imageModel in putProductModel.ImageModels)
+                    {
+                        Image image = new Image
+                        {
+                            Name = imageModel.Name,
+                            FileType = imageModel.FileType,
+                            Extension = imageModel.Extension,
+                            Data = imageModel.Data
+                        };
+
+                        product.Images.Add(image);
+                    }
+                }
 
                 await _context.SaveChangesAsync();
             }
