@@ -68,6 +68,7 @@ namespace project.api.Repositories
                     Stock = x.Stock,
                     Company = x.Company.Name,
                     Category = x.Category.Name,
+                    A
                 })
                 .AsNoTracking()
                 .ToListAsync();

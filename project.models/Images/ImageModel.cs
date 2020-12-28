@@ -4,7 +4,7 @@ using System.Text;
 
 namespace project.models.Images
 {
-    class ImageModel
+    public class ImageModel
     {
         public string Name { get; set; }
         public string FileType { get; set; }
