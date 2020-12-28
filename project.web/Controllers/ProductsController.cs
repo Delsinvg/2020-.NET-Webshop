@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
+using project.models.Images;
 using project.models.Products;
+using project.web.Helpers;
 using project.web.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Controllers
@@ -46,6 +50,15 @@ namespace project.web.Controllers
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
+                if (getProductModel.ImagesModel != null && getProductModel.ImagesModel.Count > 0)
+                {
+                    for (int i = 0; i < getProductModel.ImagesModel.Count; i++)
+                    {
+                        string key = "afbeelding" + i;
+                        ViewData[key] = ImageHelper.GetImage(getProductModel.ImagesModel.ToArray()[i].Data, getProductModel.ImagesModel.ToArray()[i].FileType, "product");
+                    }
+                }
+
                 return View(getProductModel);
             }
             catch (ProjectException e)
@@ -80,6 +93,23 @@ namespace project.web.Controllers
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
+                if (postProductModel.Images != null)
+                {
+                    postProductModel.ImageModels = new List<ImageModel>();
+
+                    foreach (IFormFile image in postProductModel.Images)
+                    {
+                        if (await ImageHelper.ValidateImage(image, this.ModelState, "Images"))
+                        {
+                            postProductModel.ImageModels.Add(await ImageHelper.SetAfbeelding(image, "Afbeelding van de cover"));
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
                 if (ModelState.IsValid)
                 {
                     GetProductModel getProductModel = await _projectApiService.PostModel<PostProductModel, GetProductModel>(postProductModel, "Products");
@@ -111,12 +141,24 @@ namespace project.web.Controllers
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
+                List<string> names = new List<string>();
+
+                if (getProductModel.ImagesModel != null && getProductModel.ImagesModel.Count > 0)
+                {
+                    for (int i = 0; i < getProductModel.ImagesModel.Count; i++)
+                    {
+                        names.Add(getProductModel.ImagesModel.ToArray()[i].Name);
+                    }
+                }
+
                 PutProductModel putProductModel = new PutProductModel
                 {
                     Name = getProductModel.Name,
                     Description = getProductModel.Description,
                     Price = getProductModel.Price,
                     Stock = getProductModel.Stock,
+                    ImageModels = getProductModel.ImagesModel,
+                    ImageNames = string.Join(",", names)
                 };
 
                 return View(putProductModel);
@@ -136,6 +178,24 @@ namespace project.web.Controllers
                 Authorize("Beheerder", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
+
+                if (putProductModel.Images != null)
+                {
+                    putProductModel.ImageModels = new List<ImageModel>();
+
+                    foreach (IFormFile afbeelding in putProductModel.Images)
+                    {
+                        if (await ImageHelper.ValidateImage(afbeelding, this.ModelState, "Afbeeldingen"))
+                        {
+                            putProductModel.ImageModels.Add(await ImageHelper.SetAfbeelding(afbeelding, "Afbeelding van de cover"));
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
 
                 if (ModelState.IsValid)
                 {
@@ -168,6 +228,15 @@ namespace project.web.Controllers
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
+
+                if (getProductModel.ImagesModel != null && getProductModel.ImagesModel.Count > 0)
+                {
+                    for (int i = 0; i < getProductModel.ImagesModel.Count; i++)
+                    {
+                        string key = "afbeelding" + i;
+                        ViewData[key] = ImageHelper.GetImage(getProductModel.ImagesModel.ToArray()[i].Data, getProductModel.ImagesModel.ToArray()[i].FileType, "product");
+                    }
+                }
 
                 return View(getProductModel);
             }

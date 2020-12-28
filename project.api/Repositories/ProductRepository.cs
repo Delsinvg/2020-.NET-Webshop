@@ -186,13 +186,13 @@ namespace project.api.Repositories
 
                 if (product.Images.Count > 0)
                 {
-                    if (putProductModel.AfbeeldingNames == null)
+                    if (putProductModel.ImageNames == null)
                     {
                         _context.Images.RemoveRange(product.Images);
                     }
                     else
                     {
-                        string[] namen = putProductModel.AfbeeldingNames.Split(",");
+                        string[] namen = putProductModel.ImageNames.Split(",");
 
                         foreach (Image image in product.Images)
                         {
