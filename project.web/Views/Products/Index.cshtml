@@ -1,4 +1,5 @@
-﻿@model IEnumerable<project.models.Products.GetProductModel>
+﻿@{ ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;}
+@model IEnumerable<project.models.Products.GetProductModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -23,16 +24,19 @@
         </div>
 
         <div class="col-sm-10">
-            <h1>Index</h1>
+            <h1>Producten</h1>
 
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
+            @if (user.IsInRole("Moderator"))
+            {
+                <p>
+                    <a asp-action="Create">Create New</a>
+                </p>
+            }
 
             <div class="row product">
 
                 @foreach (var item in Model)
-                { 
+                {
                     <div class="col-sm-4" style="margin-bottom: 15px">
                         <div class="card">
                             <img class="card-img-top" src="~/images/Default.png" alt="bike" />
@@ -44,12 +48,12 @@
                                 </ul>
                                 <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                 <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                               @Html.ActionLink("Details", "Details", new { id = item.Id }, new {@class="button-style"})
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "button-style" })
                             </div>
                         </div>
                     </div>
-                    }
-            </div>
+                }
             </div>
         </div>
+    </div>
 </div>

@@ -71,7 +71,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Create");
+                Authorize("Moderator", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
@@ -89,7 +89,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Create");
+                Authorize("Moderator", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 

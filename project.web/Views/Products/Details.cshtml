@@ -1,114 +1,59 @@
-﻿@model project.models.Products.GetProductModel
+﻿@{ ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;}
+@model project.models.Products.GetProductModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <div class="container">
-    <h1>Details</h1>
+    <h1 class="my-4">
+        @Html.DisplayFor(model => model.Company)
+        <small>@Html.DisplayFor(model => model.Name)</small>
+    </h1>
 
+    <!-- Portfolio Item Row -->
+    <div class="row">
 
-
-    <div class="product-component">
-        <div class="product-image" style="float: left">
-        @if (Model.ImagesModel != null && Model.ImagesModel.Count > 0)
-        {
-            for (int i = 0; i < Model.ImagesModel.Count; i++)
+        <div class="col-md-8">
+            @if (Model.ImagesModel != null && Model.ImagesModel.Count > 0)
             {
-                string key = "afbeelding" + i;
-                <img src="@ViewData[key]" class="img-thumbnail boek-details" alt="@key" data-toggle="modal" data-target="#@key">
+                for (int i = 0; i < Model.ImagesModel.Count; i++)
+                {
+                    string key = "afbeelding" + i;
+                    <img src="@ViewData[key]" class="img-thumbnail product-details" alt="@key" data-toggle="modal" data-target="#@key">
 
-                <!-- Modal -->
-                <div class="modal fade" id="@key" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <img src="@ViewData[key]" class="img-thumbnail">
+                    <!-- Modal -->
+                    <div class="modal fade" id="@key" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="@ViewData[key]" class="img-thumbnail">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-        }
         </div>
-        <div class="product-content" style="float: right">
-            <h1>@Html.DisplayFor(model => model.Name)</h1>
+
+        <div class="col-md-4">
+            <h3 class="my-3">Omschrijving</h3>
+            <p>@Html.DisplayFor(model => model.Description)</p>
+            <h3 class="my-3">Details</h3>
+            <ul>
+                <li><b>Categorie:</b> @Html.DisplayFor(model => model.Category)</li>
+                <li><b>Stock:</b> @Html.DisplayFor(model => model.Stock)</li>
+            </ul>
+            <p><b>Prijs: </b>@Html.DisplayFor(model => model.Price)</p>
         </div>
     </div>
 
+    @if (user.IsInRole("Moderator"))
+    {
+        <div>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        </div>
+    }
 
-    <div>
-        <h4>GetProductModel</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Id)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Id)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Category)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Category)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Company)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Company)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Stock)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Stock)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-        </dl>
-    </div>
-
-    <div class="afbeeldingen-thumbnails">
-        @if (Model.ImagesModel != null && Model.ImagesModel.Count > 0)
-        {
-            for (int i = 0; i < Model.ImagesModel.Count; i++)
-            {
-                string key = "afbeelding" + i;
-                <img src="@ViewData[key]" class="img-thumbnail boek-details" alt="@key" data-toggle="modal" data-target="#@key">
-
-                <!-- Modal -->
-                <div class="modal fade" id="@key" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <img src="@ViewData[key]" class="img-thumbnail">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <a asp-action="Index">Back to List</a>
 </div>
