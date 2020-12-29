@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
+using project.models.Addresses;
 using project.models.Users;
 using project.web.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace project.web.Controllers
@@ -32,6 +34,7 @@ namespace project.web.Controllers
             {
                 try
                 {
+
                     // Send an API request to create the new user
                     GetUserModel getUserModel = await _projectApiService.PostModel<PostUserModel, GetUserModel>(postUserModel, "Users");
 

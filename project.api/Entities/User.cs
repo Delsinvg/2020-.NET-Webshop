@@ -14,7 +14,7 @@ namespace project.api.Entities
         [StringLength(50, MinimumLength = 2)]
         public string LastName { get; set; }
 
-        public Guid AddressId { get; set; }
+        public Guid? AddressId { get; set; }
         public Address Address { get; set; }
 
         public ICollection<Order> Orders { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using project.api.Entities;
@@ -101,18 +102,57 @@ namespace project.api.Repositories
 
         public async Task<GetUserModel> PostUser(PostUserModel postUserModel)
         {
+
+            EntityEntry<Address> address = await _context.Addresses.AddAsync(new Address
+            {
+                CountryCode = postUserModel.CountryCode,
+                City = postUserModel.City,
+                PostalCode = postUserModel.PostalCode,
+                Country = postUserModel.Country,
+                Street = postUserModel.Street
+            });
+
+            await _context.SaveChangesAsync();
+            
             User user = new User
             {
                 UserName = postUserModel.Email,
                 FirstName = postUserModel.FirstName,
                 LastName = postUserModel.LastName,
                 Email = postUserModel.Email,
-                AddressId = postUserModel.AddressId
+                AddressId = address.Entity.Id
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, postUserModel.Password);
 
-            await _userManager.AddToRolesAsync(user, postUserModel.Roles);
+            if (!result.Succeeded)
+            {
+                string description = result.Errors.First().Description;
+
+                if (description.Contains("is already taken"))
+                {
+                    description = "Dit e-mailadres is reeds geregistreerd";
+                }
+
+                throw new IdentityException(description, this.GetType().Name, "PostUser", "400");
+            }
+
+            try
+            {
+                if (postUserModel.Roles == null)
+                {
+                    await _userManager.AddToRoleAsync(user, "Customer");
+                }
+                else
+                {
+                    await _userManager.AddToRolesAsync(user, postUserModel.Roles);
+                }
+            }
+            catch (Exception e)
+            {
+                await _userManager.DeleteAsync(user);
+                throw new IdentityException(e.Message, this.GetType().Name, "PostUser", "400");
+            }
 
             return await GetUser(user.Id.ToString());
         }
