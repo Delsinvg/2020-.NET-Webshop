@@ -1,0 +1,42 @@
+﻿@model IEnumerable<project.models.Roles.GetRoleModel>
+
+@{
+    ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;
+}
+
+<p>Toegangsrechten</p>
+
+<input name="roles" type="hidden" value="Customer" />
+
+@foreach (var getRoleModel in Model)
+{
+    @if (getRoleModel.Name.Equals("Customer"))
+    {
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="roles" value="@getRoleModel.Name" id="@getRoleModel.Name" checked disabled>
+            <label class="custom-control-label" for="@getRoleModel.Name">@getRoleModel.Name</label>
+        </div>
+    }
+    else
+    {
+        if (getRoleModel.Name.Equals("Administrator") && !user.IsInRole("Administrator"))
+        {
+            continue;
+        }
+        else if (getRoleModel.Name.Equals("Moderator") && !user.IsInRole("Moderator"))
+        {
+            continue;
+        }
+        else if (getRoleModel.Name.Equals("Customer") && !user.IsInRole("Customer"))
+        {
+            continue;
+        }
+        else
+        {
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="roles" value="@getRoleModel.Name" id="@getRoleModel.Name" @(getRoleModel.Checked ? "checked" : "")>
+                <label class="custom-control-label" for="@getRoleModel.Name">@getRoleModel.Name</label>
+            </div>
+        }
+    }
+}

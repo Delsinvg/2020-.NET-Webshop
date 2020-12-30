@@ -1,15 +1,21 @@
-﻿@{ ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;}
+﻿@{
+    ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;
+    string id = HttpContextAccessor.HttpContext.Session.GetString("_Id");
+    string voornaam = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
+    string achternaam = HttpContextAccessor.HttpContext.Session.GetString("_LastName");
+}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-signin-client_id" content="121656330834-a5dv7fa20hg6d6c0kdprmbaf92b96fd4.apps.googleusercontent.com">
     <title>@ViewData["Title"] - project.web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/home.css" />
-    <link rel="stylesheet" href="~/css/products.css"/>
+    <link rel="stylesheet" href="~/css/products.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -23,27 +29,37 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
+                        @if (user.IsInRole("Moderator"))
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                        </li>
+
+
+                        @if (user.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                            </li>
+                        }
 
                         @if (user.Identity.IsAuthenticated)
                         {
@@ -62,10 +78,10 @@
             </div>
         </nav>
     </header>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -75,6 +91,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bs-custom-file-input@1.3.4/dist/bs-custom-file-input.min.js" integrity="sha256-e0DUqNhsFAzOlhrWXnMOQwRoqrCRlofpWgyhnrIIaPo=" crossorigin="anonymous"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,59 +1,62 @@
 ﻿@{ ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;}
 @model IEnumerable<project.models.Products.GetProductModel>
-
-@{
-    ViewData["Title"] = "Index";
+@{ string id = HttpContextAccessor.HttpContext.Session.GetString("_Id");
+   string voornaam = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-2 side-nav">
-            <h4>Merken</h4>
-            <ul>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-            </ul>
+    @{
+        ViewData["Title"] = "Index";
+    }
 
-            <h4>Test</h4>
-            <ul>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-            </ul>
-        </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 side-nav">
+                <h4>Merken</h4>
+                <ul>
+                    <li>@user.Identity.Name</li>
+                    <li>@voornaam</li>
+                    <li>test</li>
+                </ul>
 
-        <div class="col-sm-10">
-            <h1>Producten</h1>
+                <h4>Test</h4>
+                <ul>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                </ul>
+            </div>
 
-            @if (user.IsInRole("Moderator"))
-            {
-                <p>
-                    <a asp-action="Create">Create New</a>
-                </p>
-            }
+            <div class="col-sm-10">
+                <h1>Producten</h1>
 
-            <div class="row product">
-
-                @foreach (var item in Model)
+                @if (user.IsInRole("Moderator"))
                 {
-                    <div class="col-sm-4" style="margin-bottom: 15px">
-                        <div class="card">
-                            <img class="card-img-top" src="~/images/Default.png" alt="bike" />
-                            <div class="card-body">
-                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><b>Categorie:</b> @Html.DisplayFor(modelItem => item.Category)</li>
-                                    <li class="list-group-item"><b>Stock:</b> @Html.DisplayFor(modelItem => item.Stock)</li>
-                                </ul>
-                                <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                                <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "button-style" })
+                    <p>
+                        <a asp-action="Create">Create New</a>
+                    </p>
+                }
+
+                <div class="row product">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-sm-4" style="margin-bottom: 15px">
+                            <div class="card">
+                                <img class="card-img-top" src="~/images/Default.png" alt="bike" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><b>Categorie:</b> @Html.DisplayFor(modelItem => item.Category)</li>
+                                        <li class="list-group-item"><b>Stock:</b> @Html.DisplayFor(modelItem => item.Stock)</li>
+                                    </ul>
+                                    <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                                    <p>@Html.DisplayFor(modelItem => item.Price)</p>
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "button-style" })
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>

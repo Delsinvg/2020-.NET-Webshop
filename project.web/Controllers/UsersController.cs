@@ -149,7 +149,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Edit");
+                 Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
