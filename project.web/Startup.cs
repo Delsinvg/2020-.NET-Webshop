@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +11,7 @@ using project.web.Handlers;
 using project.web.Middlewares;
 using project.web.Services;
 using System;
+using System.Globalization;
 using System.Reflection;
 
 namespace project.web
@@ -26,18 +28,18 @@ namespace project.web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configure Localization options
-            //            services.Configure<RequestLocalizationOptions>(options =>
-            //            {
-            //                var supportedCultures = new[]
-            //{
-            //                    new CultureInfo("nl"),
-            //                    new CultureInfo("en")
-            //                };
-            //                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
-            //                options.SupportedCultures = supportedCultures;
-            //                options.SupportedUICultures = supportedCultures;
-            //            });
+            //Configure Localization options
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+{
+                                new CultureInfo("nl"),
+                                new CultureInfo("en")
+                };
+                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
 
             // Session configuration
             services.AddDistributedMemoryCache();
@@ -67,6 +69,9 @@ namespace project.web
                 c.BaseAddress = new Uri("https://localhost:44388/api/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             }).AddHttpMessageHandler<ValidateHeaderHandler>();
+
+            // Set default localization resources path
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>

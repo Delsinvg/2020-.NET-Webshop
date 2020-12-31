@@ -4,6 +4,7 @@ using project.models.Addresses;
 using project.web.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
 
 namespace project.web.Controllers
 {
@@ -11,13 +12,13 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
-        //private readonly IStringLocalizer<AddressesController> _localizer;
+        private readonly IStringLocalizer<AddressesController> _localizer;
 
-        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService/*, IStringLocalizer<AddressesController> localizer*/)
+        public AddressesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService, IStringLocalizer<AddressesController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
-            //_localizer = localizer;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -209,19 +210,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om adressen op te halen";
+                    error = _localizer["Onvoldoende rechten om adressen op te halen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om details van adressen op te halen";
+                    error = _localizer["Onvoldoende rechten om details van adres op te halen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om adressen op te maken";
+                    error = _localizer["Onvoldoende rechten om adres op te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om adressen aan te passen";
+                    error = _localizer["Onvoldoende rechten om adres aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om adressen te verwijderen";
+                    error = _localizer["Onvoldoende rechten om adres te verwijderen"];
                     break;
             }
 

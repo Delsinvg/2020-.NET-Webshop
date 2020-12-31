@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Onvoldoende rechten om adressesen aan te passen" xml:space="preserve">
-    <value>No permission to edit address</value>
-  </data>
-  <data name="Onvoldoende rechten om adressesen op te halen" xml:space="preserve">
-    <value>No permission to get all addresses</value>
-  </data>
-  <data name="Onvoldoende rechten om adressesen op te maken" xml:space="preserve">
+  <data name="Onvoldoende rechten om adres aan te maken" xml:space="preserve">
     <value>No permission to create address</value>
   </data>
-  <data name="Onvoldoende rechten om adressesen te verwijderen" xml:space="preserve">
+  <data name="Onvoldoende rechten om adres aan te passen" xml:space="preserve">
+    <value>No permission to edit address</value>
+  </data>
+  <data name="Onvoldoende rechten om adres te verwijderen" xml:space="preserve">
     <value>No permission to delete address</value>
   </data>
-  <data name="Onvoldoende rechten om details van adressesen op te halen" xml:space="preserve">
+  <data name="Onvoldoende rechten om adressen op te halen" xml:space="preserve">
+    <value>No permission to get all addresses</value>
+  </data>
+  <data name="Onvoldoende rechten om details van adres op te halen" xml:space="preserve">
     <value>No permission to get address details</value>
   </data>
 </root>

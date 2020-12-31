@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using project.api.Entities;
 using project.api.Exceptions;
 using project.models.Products;
 using project.web.Helpers;
@@ -59,14 +58,7 @@ namespace project.web.Controllers
 
         public async Task<IActionResult> Buy(string id)
         {
-            GetProductModel getProduct = await _projectApiService.GetModel<GetProductModel>(id, "Products");
-            Product product = new Product
-            {
-                Id = getProduct.Id,
-                Name = getProduct.Name,
-                Price = getProduct.Price,
-                Description = getProduct.Description,
-            };
+            GetProductModel product = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
             if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {
