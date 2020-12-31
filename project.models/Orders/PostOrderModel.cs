@@ -9,5 +9,6 @@ namespace project.models.Orders
         public ICollection<Guid> Products { get; set; }
 
         public ICollection<int> Quantity { get; set; }
+        public ICollection<Decimal> Price { get; set; }
     }
 }

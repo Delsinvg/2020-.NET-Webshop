@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
+using project.models.Orders;
 using project.models.Products;
 using project.web.Helpers;
 using project.web.Models;
 using project.web.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -119,6 +121,33 @@ namespace project.web.Controllers
             {
                 throw new ForbiddenException(error, this.GetType().Name, $"{method}", "403");
             }
+        }
+
+        public async Task<IActionResult> CheckOut(string userId)
+        {
+            Authorize("Customer", "Create");
+
+            await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+
+
+            PostOrderModel postOrderModel = new PostOrderModel
+            {
+                UserId = new Guid(userId),
+                Products = cart.Select(x => x.Product.Id).ToList(),
+                Quantity = cart.Select(x => x.Quantity).ToList(),
+                Orderdate = DateTime.Now
+            };
+
+            if (ModelState.IsValid)
+            {
+                GetOrderModel getOrderModel = await _projectApiService.PostModel<PostOrderModel, GetOrderModel>(postOrderModel, "Orders");
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+
+                return RedirectToRoute(new { action = "Index", controller = "Products" });
+            }
+            return RedirectToRoute(new { action = "Details", controller = "Users" });
         }
     }
 }
