@@ -7,6 +7,7 @@ using project.models.RefreshTokens;
 using project.models.Users;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace project.api.Controllers
@@ -76,18 +77,32 @@ namespace project.api.Controllers
         {
             try
             {
-                GetUserModel user = await _userRepository.GetUser(id);
-
-                if (user == null)
+                if (!Guid.TryParse(id, out Guid userId))
                 {
-                    return NotFound();
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "GetUser", "400");
                 }
+
+                GetUserModel user = await _userRepository.GetUser(userId.ToString());
 
                 return user;
             }
-            catch (GuidException e)
+            catch (ProjectException e)
             {
-                return BadRequest(e.ProjectError);
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else if (e.ProjectError.Status.Equals("403"))
+                {
+                    return new ObjectResult(e.ProjectError)
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden
+                    };
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -165,17 +180,32 @@ namespace project.api.Controllers
         {
             try
             {
-                await _userRepository.PutUser(id, putUserModel);
+                if (!Guid.TryParse(id, out Guid userId))
+                {
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "PutUser", "400");
+                }
+
+                await _userRepository.PutUser(userId.ToString(), putUserModel);
 
                 return NoContent();
             }
-            catch (ArgumentNullException)
+            catch (ProjectException e)
             {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { origin = e.Message, message = e.InnerException.Message });
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else if (e.ProjectError.Status.Equals("403"))
+                {
+                    return new ObjectResult(e.ProjectError)
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden
+                    };
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -202,9 +232,35 @@ namespace project.api.Controllers
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PatchUser(string id, PatchUserModel patchUserModel)
         {
-            await _userRepository.PatchUser(id, patchUserModel);
+            try
+            {
+                if (!Guid.TryParse(id, out Guid userId))
+                {
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "PatchUser", "400");
+                }
 
-            return NoContent();
+                await _userRepository.PatchUser(userId.ToString(), patchUserModel);
+
+                return NoContent();
+            }
+            catch (ProjectException e)
+            {
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else if (e.ProjectError.Status.Equals("403"))
+                {
+                    return new ObjectResult(e.ProjectError)
+                    {
+                        StatusCode = (int)HttpStatusCode.Forbidden
+                    };
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
+            }
         }
 
         /// <summary>
@@ -229,17 +285,25 @@ namespace project.api.Controllers
         {
             try
             {
-                await _userRepository.DeleteUser(id);
+                if (!Guid.TryParse(id, out Guid userId))
+                {
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "DeleteUser", "400");
+                }
+
+                await _userRepository.DeleteUser(userId.ToString());
 
                 return NoContent();
             }
-            catch (ArgumentNullException)
+            catch (ProjectException e)
             {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { origin = e.Message, message = e.InnerException.Message });
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 

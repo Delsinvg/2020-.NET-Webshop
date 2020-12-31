@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace project.api.Exceptions
 {
+
+    [JsonConverter(typeof(ProjectExceptionConverter))]
     public class ProjectException : Exception
     {
         public ProjectError ProjectError { get; }

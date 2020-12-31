@@ -5,10 +5,18 @@
             <img class="img-fluid no-padding image-style" src="~/images/soccer-banner.jpg" alt="soccer" />
 
             <div class="container">
+
                 <div class="text-center">
                     <h1 class="display-4">SportShop</h1>
                     <p>Koop hier jouw sportgerief</p>
                 </div>
+
+                @if (TempData.ContainsKey("ApiError"))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ApiError"]
+                    </div>
+                }
 
                 <div class="row">
                     <div class="col-sm-4">

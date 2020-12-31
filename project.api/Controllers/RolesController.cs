@@ -75,18 +75,25 @@ namespace project.api.Controllers
         {
             try
             {
-                GetRoleModel role = await _roleRepository.GetRole(id);
-
-                if (role == null)
+                if (!Guid.TryParse(id, out Guid roleId))
                 {
-                    return NotFound();
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "GetRole", "400");
                 }
+
+                GetRoleModel role = await _roleRepository.GetRole(roleId.ToString());
 
                 return role;
             }
-            catch (GuidException e)
+            catch (ProjectException e)
             {
-                return BadRequest(e.ProjectError);
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -152,17 +159,25 @@ namespace project.api.Controllers
         {
             try
             {
-                await _roleRepository.PutRole(id, putRoleModel);
+                if (!Guid.TryParse(id, out Guid roleId))
+                {
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "PutRole", "400");
+                }
+
+                await _roleRepository.PutRole(roleId.ToString(), putRoleModel);
 
                 return NoContent();
             }
-            catch (ArgumentNullException)
+            catch (ProjectException e)
             {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { origin = e.Message, message = e.InnerException.Message });
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
 
@@ -188,17 +203,25 @@ namespace project.api.Controllers
         {
             try
             {
-                await _roleRepository.DeleteRole(id);
+                if (!Guid.TryParse(id, out Guid roleId))
+                {
+                    throw new GuidException("Ongeldig id", this.GetType().Name, "DeleteRole", "400");
+                }
+
+                await _roleRepository.DeleteRole(roleId.ToString());
 
                 return NoContent();
             }
-            catch (ArgumentNullException)
+            catch (ProjectException e)
             {
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { origin = e.Message, message = e.InnerException.Message });
+                if (e.ProjectError.Status.Equals("404"))
+                {
+                    return NotFound(e.ProjectError);
+                }
+                else
+                {
+                    return BadRequest(e.ProjectError);
+                }
             }
         }
     }
