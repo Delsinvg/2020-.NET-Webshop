@@ -58,13 +58,15 @@ namespace project.api.Repositories
 
             GetOrderModel order = await _context.Orders
                 .Include(x => x.OrderProducts)
+                .ThenInclude(x => x.Product)
                 .Include(x => x.User)
                 .Select(x => new GetOrderModel
                 {
                     Id = x.Id,
-                    Orderdate = x.Orderdate,
-                    User = $"{x.User.FirstName} {x.User.LastName}",
-                    Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
+                    UserId = x.UserId,
+                    Products = x.OrderProducts.Select(x => x.ProductId).ToList(),
+                    Quantity = x.OrderProducts.Select(x => x.Quantity).ToList(),
+                    Orderdate = x.Orderdate
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -82,13 +84,15 @@ namespace project.api.Repositories
 
             List<GetOrderModel> orders = await _context.Orders
                 .Include(x => x.OrderProducts)
+                .ThenInclude(x => x.Product)
                 .Include(x => x.User)
                 .Select(x => new GetOrderModel
                 {
                     Id = x.Id,
-                    Orderdate = x.Orderdate,
-                    User = $"{x.User.FirstName} {x.User.LastName}",
-                    Products = x.OrderProducts.Select(x => x.Product.Name).ToList(),
+                    UserId = x.UserId,
+                    Products = x.OrderProducts.Select(x => x.ProductId).ToList(),
+                    Quantity = x.OrderProducts.Select(x => x.Quantity).ToList(),
+                    Orderdate = x.Orderdate
                 })
                 .AsNoTracking()
                 .ToListAsync();
@@ -115,7 +119,7 @@ namespace project.api.Repositories
 
                 });
 
-                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
+                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList(), postOrderModel.Quantity.ToList());
 
                 await _context.SaveChangesAsync();
 
@@ -131,14 +135,15 @@ namespace project.api.Repositories
             }
         }
 
-        private async Task AddOrderProducts(Guid orderId, List<Guid> productIds)
+        private async Task AddOrderProducts(Guid orderId, List<Guid> productIds, List<int> quantity)
         {
-            foreach (Guid productId in productIds)
+            for (int i = 0; i < quantity.Count ; i++)
             {
                 await _context.OrderProducts.AddAsync(new OrderProduct
                 {
                     OrderId = orderId,
-                    ProductId = productId,
+                    ProductId = productIds[i],
+                    Quantity = quantity[i]
                 });
             }
 
@@ -166,7 +171,7 @@ namespace project.api.Repositories
                 _context.OrderProducts.RemoveRange(order.OrderProducts);
 
 
-                await AddOrderProducts(id, putOrderModel.Products.ToList());
+                await AddOrderProducts(id, putOrderModel.Products.ToList(), putOrderModel.Quantity.ToList());
                 await _context.SaveChangesAsync();
             }
             catch (ProjectException e)

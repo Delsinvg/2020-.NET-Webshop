@@ -18,7 +18,7 @@ namespace project.api.Repositories
             _context = context;
         }
 
-        public async Task DeleteOrder(string id)
+        public async Task DeleteOrderProduct(string id)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace project.api.Repositories
 
                 if (orderProduct == null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new EntityException("OrderProduct not found.", this.GetType().Name, "DeleteOrderproduct", "404");
                 }
 
                 _context.OrderProducts.Remove(orderProduct);
@@ -41,7 +41,7 @@ namespace project.api.Repositories
             }
             catch (Exception e)
             {
-                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "PutOrder", "400");
+                throw new DatabaseException(e.InnerException.Message, this.GetType().Name, "DeleteOrderProduct", "400");
             }
         }
 
@@ -96,7 +96,7 @@ namespace project.api.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<GetOrderProductModel> PostProduct(PostProductOrderModel postProductModel)
+        public Task PostProductOrder(PostProductOrderModel postProductModel)
         {
             throw new NotImplementedException();
         }

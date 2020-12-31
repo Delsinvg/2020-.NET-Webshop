@@ -9,7 +9,7 @@ namespace project.api.Repositories
         Task<List<GetOrderProductModel>> GetOrderProducts();
         Task<GetOrderProductModel> GetOrderProduct(string id);
         Task<GetProductOrderModel> GetProductOrder(string id);
-        Task<GetOrderProductModel> PostProduct(PostProductOrderModel postProductModel);
-        Task DeleteOrder(string id);
+        Task PostProductOrder(PostProductOrderModel postProductOrderModel);
+        Task DeleteOrderProduct(string id);
     }
 }
