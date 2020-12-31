@@ -24,13 +24,25 @@ namespace project.web.Controllers
             _tokenValidationService = tokenValidationService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
             try
             {
                 //await _tokenValidationService.Validate(this.GetType().Name, "Index");
 
                 List<GetProductModel> getProductsModel = await _projectApiService.GetModels<GetProductModel>("Products");
+
+                if(!string.IsNullOrEmpty(searchTerm))
+                {
+                    List<GetProductModel> filteredList = new List<GetProductModel>();
+                    foreach (var item in getProductsModel)
+                    {
+                        if(item.Name.Contains(searchTerm)) {
+                            filteredList.Add(item);
+                        }
+                    }
+                    return View(filteredList);
+                }
 
                 return View(getProductsModel);
             }

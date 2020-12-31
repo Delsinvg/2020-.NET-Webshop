@@ -11,6 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-2 side-nav">
+
                 <h4>Merken</h4>
                 <ul>
                     <li>test</li>
@@ -36,6 +37,13 @@
                     </p>
                 }
 
+            <form asp-controller="Products" asp-action="Index" method="get">
+                <p>
+                    <input type="text" name="SearchTerm" />
+                    <button type="submit" class="btn btn-primary">Zoek</button>
+                </p>
+            </form>
+
                 <div class="row product" style="margin-top: -15px">
 
                     @foreach (var item in Model)
@@ -51,7 +59,7 @@
                                     </ul>
                                     <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                     <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                                    @Html.ActionLink("More info", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Meer info", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
                                     <a asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">Koop nu!</a>
                                 </div>
                             </div>
