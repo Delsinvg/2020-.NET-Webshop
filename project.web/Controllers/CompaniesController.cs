@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using project.api.Exceptions;
+using project.models.Addresses;
 using project.models.Companies;
 using project.web.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Controllers
@@ -62,6 +64,8 @@ namespace project.web.Controllers
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
+                ViewBag.Addresses = (await _projectApiService.GetModels<GetAddressModel>("Addresses")).OrderBy(x => x.City).ToList();
+
                 return View();
             }
             catch (ProjectException e)
@@ -80,6 +84,8 @@ namespace project.web.Controllers
                 Authorize("Moderator", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+
+                ViewBag.Addresses = (await _projectApiService.GetModels<GetAddressModel>("Addresses")).OrderBy(x => x.City).ToList();
 
                 if (ModelState.IsValid)
                 {

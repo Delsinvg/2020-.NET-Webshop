@@ -15,8 +15,9 @@
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="ParentId" class="control-label"></label>
-                    <input asp-for="ParentId" class="form-control" />
+                    <label asp-for="ParentId" class="control-label">Category</label>
+                    <select asp-for="ParentId" asp-items="@(new SelectList(ViewBag.Categories, nameof(ViewBag.Category.Id), nameof(ViewBag.Category.Name)))" class="form-control" onchange="SetDept() required">
+                    </select>
                     <span asp-validation-for="ParentId" class="text-danger"></span>
                 </div>
                 <div class="form-group">

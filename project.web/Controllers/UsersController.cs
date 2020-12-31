@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using project.api.Exceptions;
+using project.models.Addresses;
 using project.models.Users;
 using project.shared.Settings;
 using project.web.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Controllers
@@ -47,7 +49,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Details");
+                Authorize("Customer", "Details");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Details");
 
@@ -122,6 +124,8 @@ namespace project.web.Controllers
             {
                 Authorize("Moderator", "Edit");
 
+                ViewBag.Addresses = (await _projectApiService.GetModels<GetAddressModel>("Addresses")).OrderBy(x => x.City).ToList();
+
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
@@ -149,7 +153,7 @@ namespace project.web.Controllers
         {
             try
             {
-                 Authorize("Moderator", "Edit");
+                Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 

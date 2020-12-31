@@ -13,8 +13,8 @@
             <div class="col-sm-2 side-nav">
                 <h4>Merken</h4>
                 <ul>
-                    <li>@user.Identity.Name</li>
-                    <li>@voornaam</li>
+                    <li>test</li>
+                    <li>test</li>
                     <li>test</li>
                 </ul>
 
@@ -36,12 +36,12 @@
                     </p>
                 }
 
-                <div class="row product">
+                <div class="row product" style="margin-top: -15px">
 
                     @foreach (var item in Model)
                     {
-                        <div class="col-sm-4" style="margin-bottom: 15px">
-                            <div class="card">
+                        <div class="col-sm-4">
+                            <div class="card" style="margin-bottom: 15px">
                                 <img class="card-img-top" src="~/images/Default.png" alt="bike" />
                                 <div class="card-body">
                                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
@@ -51,7 +51,8 @@
                                     </ul>
                                     <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                     <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "button-style" })
+                                    @Html.ActionLink("More info", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                                    <a asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">Koop nu!</a>
                                 </div>
                             </div>
                         </div>

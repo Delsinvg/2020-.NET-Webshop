@@ -1,8 +1,9 @@
 ﻿@{
     ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;
     string id = HttpContextAccessor.HttpContext.Session.GetString("_Id");
-    string voornaam = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
-    string achternaam = HttpContextAccessor.HttpContext.Session.GetString("_LastName");
+    string firstName = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
+    string lastName = HttpContextAccessor.HttpContext.Session.GetString("_LastName");
+    string userId = HttpContextAccessor.HttpContext.Session.GetString("_Id");
 }
 
 <!DOCTYPE html>
@@ -13,13 +14,15 @@
     <meta name="google-signin-client_id" content="121656330834-a5dv7fa20hg6d6c0kdprmbaf92b96fd4.apps.googleusercontent.com">
     <title>@ViewData["Title"] - project.web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/shoppingcart.css"/>
     <link rel="stylesheet" href="~/css/home.css" />
     <link rel="stylesheet" href="~/css/products.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <header style="margin-bottom: 75px">
+    <header style="margin-bottom: 100px">
         <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportShop</a>
@@ -32,50 +35,53 @@
                         @if (user.IsInRole("Moderator"))
                         {
 
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                        </li>
                         }
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                         </li>
-
-
                         @if (user.IsInRole("Administrator"))
                         {
-                            <li class="nav-item">
+                            <li class="nav-item mr-sm-2">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
-                            </li>
-                        }
-
-                        @if (user.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
                             </li>
                         }
                     </ul>
                 </div>
             </div>
+            <ul class="navbar-nav">
+
+                @if (user.Identity.IsAuthenticated)
+            {
+                <li class="nav-item mr-sm-2">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Details" asp-route-id="@userId">@firstName @lastName</a>
+                </li>
+
+                <li class="nav-item mr-sm-2">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                </li>
+            } else
+            {
+                <li class="nav-item mr-sm-2">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
+                </li>
+            }
+            </ul>
         </nav>
     </header>
     <main role="main" class="pb-3">

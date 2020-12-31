@@ -4,6 +4,7 @@ using project.models.Categories;
 using project.web.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace project.web.Controllers
@@ -61,6 +62,8 @@ namespace project.web.Controllers
             {
                 Authorize("Moderator", "Create");
 
+                ViewBag.Categories = (await _projectApiService.GetModels<GetCategoryModel>("Categories")).OrderBy(x => x.Name).ToList();
+
                 await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
 
                 return View();
@@ -115,6 +118,7 @@ namespace project.web.Controllers
 
                 if (getCategoryModel.ParentId == null)
                 {
+                    ViewBag.Categories = (await _projectApiService.GetModels<GetCategoryModel>("Categories")).OrderBy(x => x.Name).ToList();
                     PutCategoryModel putCategoryModelWithoutParentId = new PutCategoryModel
                     {
                         Name = getCategoryModel.Name,
@@ -124,6 +128,7 @@ namespace project.web.Controllers
 
                 else
                 {
+                    ViewBag.Categories = (await _projectApiService.GetModels<GetCategoryModel>("Categories")).OrderBy(x => x.Name).ToList();
                     PutCategoryModel putCategoryModel = new PutCategoryModel
                     {
                         Name = getCategoryModel.Name,

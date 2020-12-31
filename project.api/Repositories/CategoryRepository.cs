@@ -59,7 +59,8 @@ namespace project.api.Repositories
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ParentCategory = x.ParentCategory.Name
+                    ParentCategory = x.ParentCategory.Name,
+                    ParentId = x.ParentId
                 })
                 .AsNoTracking()
                 .ToListAsync();
@@ -81,7 +82,8 @@ namespace project.api.Repositories
             {
                 Id = x.Id,
                 Name = x.Name,
-                ParentCategory = x.ParentCategory.Name
+                ParentCategory = x.ParentCategory.Name,
+                ParentId = x.ParentId
             })
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);

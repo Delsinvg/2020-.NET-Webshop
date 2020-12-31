@@ -33,7 +33,7 @@ namespace project.api
         {
 
 
-       
+
 
             // DB configuration
             services.AddDbContext<ProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProjectContext")));

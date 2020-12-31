@@ -15,13 +15,17 @@
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="CategoryId" class="control-label"></label>
-                    <input asp-for="CategoryId" class="form-control" />
+                    <label asp-for="CategoryId" class="control-label">Category</label>
+                    <select asp-for="CategoryId" asp-items="@(new SelectList(ViewBag.Categories, nameof(ViewBag.Category.Id), nameof(ViewBag.Category.Name)))" class="form-control" onchange="SetDept() required">
+                    </select>
+                    <a class="btn btn-primary" style="margin-top: 5px" href="@Url.Action("Create", "Categories")">Add new Category</a>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="CompanyId" class="control-label"></label>
-                    <input asp-for="CompanyId" class="form-control" />
+                    <label asp-for="CompanyId" class="control-label">Company</label>
+                    <select asp-for="CompanyId" asp-items="@(new SelectList(ViewBag.Companies, nameof(ViewBag.Company.Id), nameof(ViewBag.Company.Name)))" class="form-control" onchange="SetDept() required">
+                    </select>
+                    <a class="btn btn-primary" style="margin-top: 5px" href="@Url.Action("Create", "Companies")">Add new company</a>
                     <span asp-validation-for="CompanyId" class="text-danger"></span>
                 </div>
                 <div class="form-group">

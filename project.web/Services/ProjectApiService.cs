@@ -82,6 +82,7 @@ namespace project.web.Services
             throw await HandleError(httpResponse, "GetModels");
         }
 
+
         public async Task<T> GetModel<T>(string id, string route)
         {
             var httpResponse = await _httpClient.GetAsync($"{route}/{id}");

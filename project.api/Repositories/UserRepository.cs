@@ -113,7 +113,7 @@ namespace project.api.Repositories
             });
 
             await _context.SaveChangesAsync();
-            
+
             User user = new User
             {
                 UserName = postUserModel.Email,
@@ -337,7 +337,7 @@ namespace project.api.Repositories
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims.ToArray()),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);

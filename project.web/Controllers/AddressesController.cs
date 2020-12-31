@@ -209,19 +209,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om adressesen op te halen";
+                    error = "Onvoldoende rechten om adressen op te halen";
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om details van adressesen op te halen";
+                    error = "Onvoldoende rechten om details van adressen op te halen";
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om adressesen op te maken";
+                    error = "Onvoldoende rechten om adressen op te maken";
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om adressesen aan te passen";
+                    error = "Onvoldoende rechten om adressen aan te passen";
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om adressesen te verwijderen";
+                    error = "Onvoldoende rechten om adressen te verwijderen";
                     break;
             }
 
