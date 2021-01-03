@@ -4,6 +4,9 @@
     string firstName = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
     string lastName = HttpContextAccessor.HttpContext.Session.GetString("_LastName");
     string userId = HttpContextAccessor.HttpContext.Session.GetString("_Id");
+    var requestPath = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var requestQueryString = Context.Request.QueryString.HasValue ? Context.Request.QueryString.Value : "";
+    var returnUrl = requestPath + requestQueryString;
 }
 
 <!DOCTYPE html>
@@ -35,21 +38,21 @@
                         @if (user.IsInRole("Moderator"))
                         {
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
                         }
 
                         <li class="nav-item">
@@ -73,20 +76,27 @@
                     </li>
 
                     <li class="nav-item mr-sm-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">@Localizer["Uitloggen"]</a>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item mr-sm-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">@Localizer["Aanmelden"]</a>
                     </li>
 
                     <li class="nav-item mr-sm-2">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Registreren</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">@Localizer["Registreren"]</a>
                     </li>
                 }
             </ul>
+            <form id="setLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" class="form-inline">
+                <div id="setlanguage" class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                    <input name="culture" type="submit" value="NL" class="btn btn-link"><span>|</span>
+                    <input name="culture" type="submit" value="EN" class="btn btn-link">
+                </div>
+            </form>
+
         </nav>
     </header>
     <main role="main" class="pb-3">
