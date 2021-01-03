@@ -6,20 +6,21 @@
 
 <div class="container">
     <form class="form-signin" asp-action="Index">
-        <img src="~/img/logo.png" alt="Logo" class="logo" />
-        <h1 class="h4 mb-3 font-weight-normal">SportShop - registreren</h1>
+        <h1 class="h4 mb-3 font-weight-normal">Registreer je nu!</h1>
         @if (TempData.ContainsKey("ApiError"))
         {
             <div class="alert alert-danger" role="alert">
                 @TempData["ApiError"]
-            </div>}
+            </div>
+         }
+
         <div class="form-group">
-            <label asp-for="FirstName" class="sr-only">Voornaam</label>
+            <label asp-for="FirstName" class="control-label">Voornaam</label>
             <input asp-for="FirstName" id="Voornaam" class="form-control" placeholder="Voornaam" autofocus>
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="FirstName" class="sr-only">Familienaam</label>
+            <label asp-for="FirstName" class="control-label">Familienaam</label>
             <input asp-for="LastName" id="Familienaam" class="form-control" placeholder="Familienaam">
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>

@@ -32,12 +32,13 @@ namespace project.web.Controllers
 
                 List<GetProductModel> getProductsModel = await _projectApiService.GetModels<GetProductModel>("Products");
 
-                if(!string.IsNullOrEmpty(searchTerm))
+                if (!string.IsNullOrEmpty(searchTerm))
                 {
                     List<GetProductModel> filteredList = new List<GetProductModel>();
                     foreach (var item in getProductsModel)
                     {
-                        if(item.Name.Contains(searchTerm)) {
+                        if (item.Name.Contains(searchTerm))
+                        {
                             filteredList.Add(item);
                         }
                     }
@@ -324,7 +325,7 @@ namespace project.web.Controllers
             }
             else // In case of all other errors redirect to home page
             {
-                return RedirectToRoute(new { action = "Index", controller = "Home" });
+                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
             }
         }
     }

@@ -137,7 +137,7 @@ namespace project.api.Repositories
 
         private async Task AddOrderProducts(Guid orderId, List<Guid> productIds, List<int> quantity)
         {
-            for (int i = 0; i < quantity.Count ; i++)
+            for (int i = 0; i < quantity.Count; i++)
             {
                 await _context.OrderProducts.AddAsync(new OrderProduct
                 {

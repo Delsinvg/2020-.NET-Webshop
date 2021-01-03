@@ -67,20 +67,25 @@
             <ul class="navbar-nav">
 
                 @if (user.Identity.IsAuthenticated)
-            {
-                <li class="nav-item mr-sm-2">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Details" asp-route-id="@userId">@firstName @lastName</a>
-                </li>
+                {
+                    <li class="nav-item mr-sm-2">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Details" asp-route-id="@userId">@firstName @lastName</a>
+                    </li>
 
-                <li class="nav-item mr-sm-2">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
-                </li>
-            } else
-            {
-                <li class="nav-item mr-sm-2">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
-                </li>
-            }
+                    <li class="nav-item mr-sm-2">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Logout">Logout</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item mr-sm-2">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Authentication" asp-action="Index">Aanmelden</a>
+                    </li>
+
+                    <li class="nav-item mr-sm-2">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Registration" asp-action="Index">Registreren</a>
+                    </li>
+                }
             </ul>
         </nav>
     </header>

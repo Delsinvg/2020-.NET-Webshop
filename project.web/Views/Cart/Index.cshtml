@@ -1,56 +1,65 @@
 ﻿@{
     ViewData["Title"] = "Shopping cart";
+}
+
+@{
+    ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;
     string userId = HttpContextAccessor.HttpContext.Session.GetString("_Id");
+    string firstName = HttpContextAccessor.HttpContext.Session.GetString("_FirstName");
+    string lastName = HttpContextAccessor.HttpContext.Session.GetString("_LastName");
 }
 
 
 <div class="container">
 
-                <div id="basket" class="col-lg-9">
-              <div class="box">
-                <form method="post" action="checkout1.html">
-                  <h1>Shopping cart</h1>
-                  <p class="text-muted">Je hebt @ViewBag.itemsCount producten in je winkelwagen.</p>
-                  <div class="table-responsive">
+    <div id="basket" class="col-lg-9">
+        <div class="box">
+            <form method="post" action="checkout1.html">
+                <h1>Shopping cart</h1>
+                <p class="text-muted">Je hebt @ViewBag.itemsCount producten in je winkelwagen.</p>
+                <div class="table-responsive">
                     <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Product</th>
-                          <th>Hoeveelheid</th>
-                          <th>Prijs</th>
-                          <th>Subtotaal</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          @if (ViewBag.cart != null)
-                          {
-                              @foreach (var item in ViewBag.cart)
-                              {
-                                  <tr>
-                                      <td>@item.Product.Name</td>
-                                      <td>@item.Quantity</td>
-                                      <td>@item.Product.Price</td>
-                                      <td>@(item.Product.Price * item.Quantity)</td>
-                                      <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Verwijder</a></td>
-                                  </tr>
-                              }
-                          }
-                          </tbody>
-                      <tfoot>
-                        <tr>
-                          <th colspan="3">Total</th>
-                          <th colspan="1">@ViewBag.total</th>
-                        </tr>
-                      </tfoot>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Hoeveelheid</th>
+                                <th>Prijs</th>
+                                <th>Subtotaal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.cart != null)
+                            {
+                                @foreach (var item in ViewBag.cart)
+                                {
+                                    <tr>
+                                        <td>@item.Product.Name</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Product.Price</td>
+                                        <td>@(item.Product.Price * item.Quantity)</td>
+                                        <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Verwijder</a></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">Total</th>
+                                <th colspan="1">@ViewBag.total</th>
+                            </tr>
+                        </tfoot>
                     </table>
-                  </div>
-                  <!-- /.table-responsive-->
-                  <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
+                </div>
+                <!-- /.table-responsive-->
+                <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
                     <button asp-controller="products" asp-action="index" type="submit" class="btn btn-primary">Winkel verder<i class="fa fa-chevron-right"></i></button>
+                    
+                    @if (ViewBag.cart != null) {
                     <div class="right">
-                        <button asp-controller="cart" asp-action="checkout" asp-route-id="@userId" type="submit" class="btn btn-primary">Proceed to checkout</button>
+                        @Html.ActionLink("Proceed to checkout", "CheckOut", new { userId = userId }, new { @class = "btn btn-primary" })
                     </div>
-                  </div>
-                </form>
-              </div>
-</div>       
+                    }
+                </div>
+            </form>
+        </div>
+    </div>

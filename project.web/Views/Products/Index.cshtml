@@ -10,23 +10,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-2 side-nav">
-
-                <h4>Merken</h4>
-                <ul>
-                    <li>test</li>
-                    <li>test</li>
-                    <li>test</li>
-                </ul>
-
-                <h4>Test</h4>
-                <ul>
-                    <li>test</li>
-                    <li>test</li>
-                    <li>test</li>
-                </ul>
-            </div>
-
+            
             <div class="col-sm-10">
                 <h1>Producten</h1>
 
@@ -55,7 +39,12 @@
                                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item"><b>Categorie:</b> @Html.DisplayFor(modelItem => item.Category)</li>
-                                        <li class="list-group-item"><b>Stock:</b> @Html.DisplayFor(modelItem => item.Stock)</li>
+                                        <li class="list-group-item">
+                                            <b>Stock:</b> @if (item.Stock == 0)
+                                            {<text>Niet beschikbaar</text> }
+                                        else
+                                        { @Html.DisplayFor(modelItem => item.Stock)}
+                                        </li>
                                     </ul>
                                     <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                     <p>@Html.DisplayFor(modelItem => item.Price)</p>

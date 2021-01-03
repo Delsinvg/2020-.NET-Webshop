@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Addresses;
 using project.web.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Localization;
 
 namespace project.web.Controllers
 {

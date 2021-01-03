@@ -25,22 +25,30 @@ namespace project.web.Controllers
 
         public IActionResult Index()
         {
-            //Authorize("Customer", "Index");
-
-            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-
-            if (cart != null)
+            try
             {
-                ViewBag.cart = cart;
-                ViewBag.itemsCount = cart.Count;
-                ViewBag.total = cart.Sum(x => x.Product.Price * x.Quantity);
-            }
-            else
-            {
-                ViewBag.cart = cart;
-            }
 
-            return View();
+                Authorize("Customer", "Index");
+
+                var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+
+                if (cart != null)
+                {
+                    ViewBag.cart = cart;
+                    ViewBag.itemsCount = cart.Count;
+                    ViewBag.total = cart.Sum(x => x.Product.Price * x.Quantity);
+                }
+                else
+                {
+                    ViewBag.cart = cart;
+                }
+
+                return View();
+            }
+            catch (ProjectException e)
+            {
+                return HandleError(e);
+            }
         }
 
         private int ProductAlreadyInCard(string id)
@@ -60,38 +68,58 @@ namespace project.web.Controllers
 
         public async Task<IActionResult> Buy(string id)
         {
-            GetProductModel product = await _projectApiService.GetModel<GetProductModel>(id, "Products");
+            try
+            {
 
-            if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
-            {
-                List<Item> cart = new List<Item>();
-                cart.Add(new Item { Quantity = 1, Product = product });
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
-            else
-            {
-                List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-                int index = ProductAlreadyInCard(id);
-                if (index != -1)
+                Authorize("Customer", "Index");
+
+                GetProductModel product = await _projectApiService.GetModel<GetProductModel>(id, "Products");
+
+                if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
                 {
-                    cart[index].Quantity++;
+                    List<Item> cart = new List<Item>();
+                    cart.Add(new Item { Quantity = 1, Product = product });
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                 }
                 else
                 {
-                    cart.Add(new Item { Quantity = 1, Product = product });
+                    List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                    int index = ProductAlreadyInCard(id);
+                    if (index != -1)
+                    {
+                        cart[index].Quantity++;
+                    }
+                    else
+                    {
+                        cart.Add(new Item { Quantity = 1, Product = product });
+                    }
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                 }
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                return RedirectToAction("Index");
+
             }
-            return RedirectToAction("Index");
+            catch (ProjectException e)
+            {
+                return HandleError(e);
+            }
         }
 
         public IActionResult Remove(string id)
         {
-            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            int index = ProductAlreadyInCard(id);
-            cart.RemoveAt(index);
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Index");
+            try
+            {
+                Authorize("Customer", "Index");
+
+                List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                int index = ProductAlreadyInCard(id);
+                cart.RemoveAt(index);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                return RedirectToAction("Index");
+            }
+            catch (ProjectException e)
+            {
+                return HandleError(e);
+            }
         }
 
         private void Authorize(string role, string method)
@@ -120,35 +148,60 @@ namespace project.web.Controllers
             if (!HttpContext.User.IsInRole(role))
             {
                 throw new ForbiddenException(error, this.GetType().Name, $"{method}", "403");
+
+            }
+        }
+
+        private IActionResult HandleError(ProjectException e)
+        {
+            // Place error in TempData to show in View
+            TempData["ApiError"] = e.Message;
+
+            // In case of 401 Unauthorized redirect to login
+            if (e.ProjectError.Status.Equals("401"))
+            {
+                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
+            }
+            else // In case of all other errors redirect to home page
+            {
+                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
             }
         }
 
         public async Task<IActionResult> CheckOut(string userId)
         {
-            Authorize("Customer", "Create");
-
-            await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
-
-            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-
-
-            PostOrderModel postOrderModel = new PostOrderModel
+            try
             {
-                UserId = new Guid(userId),
-                Products = cart.Select(x => x.Product.Id).ToList(),
-                Quantity = cart.Select(x => x.Quantity).ToList(),
-                Orderdate = DateTime.Now
-            };
+                Authorize("Customer", "Create");
 
-            if (ModelState.IsValid)
-            {
-                GetOrderModel getOrderModel = await _projectApiService.PostModel<PostOrderModel, GetOrderModel>(postOrderModel, "Orders");
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+                await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
-                return RedirectToRoute(new { action = "Index", controller = "Products" });
+                List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+
+
+                PostOrderModel postOrderModel = new PostOrderModel
+                {
+                    UserId = new Guid(userId),
+                    Products = cart.Select(x => x.Product.Id).ToList(),
+                    Quantity = cart.Select(x => x.Quantity).ToList(),
+                    Orderdate = DateTime.Now
+                };
+
+                if (ModelState.IsValid)
+                {
+                    GetOrderModel getOrderModel = await _projectApiService.PostModel<PostOrderModel, GetOrderModel>(postOrderModel, "Orders");
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+
+                    return RedirectToRoute(new { action = "Index", controller = "Products" });
+                }
+                return RedirectToRoute(new { action = "Details", controller = "Users" });
             }
-            return RedirectToRoute(new { action = "Details", controller = "Users" });
+            catch (ProjectException e)
+            {
+                return HandleError(e);
+            }
         }
     }
 }
+
 
