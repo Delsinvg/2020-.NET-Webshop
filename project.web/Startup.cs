@@ -1,13 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using project.api.Exceptions;
 using project.shared.Settings;
 using project.web.Handlers;
+using project.web.Helpers;
 using project.web.Middlewares;
 using project.web.Services;
 using System;
@@ -118,8 +122,8 @@ namespace project.web
             app.UseRouting();
 
             //// Localization
-            //var requestLocalizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
-            //app.UseRequestLocalization(requestLocalizationOptions.Value);
+            var requestLocalizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(requestLocalizationOptions.Value);
 
             // app.UseRequestLocalization();
 
@@ -137,6 +141,8 @@ namespace project.web
             app.UseStateManagement();
             app.UseClaims();
             // End Custom middlewares
+
+            ImageHelper.Configure(app.ApplicationServices.GetService<IOptions<FileUploadSettings>>());
 
             app.UseEndpoints(endpoints =>
             {

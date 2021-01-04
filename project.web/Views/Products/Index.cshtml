@@ -12,19 +12,19 @@
         <div class="row">
             
             <div class="col-sm-10">
-                <h1>Producten</h1>
+                <h1>@Localizer["Producten"]</h1>
 
                 @if (user.IsInRole("Moderator"))
                 {
                     <p>
-                        <a asp-action="Create">Create New</a>
+                        <a asp-action="Create">@Localizer["Maak nieuw product"]</a>
                     </p>
                 }
 
             <form asp-controller="Products" asp-action="Index" method="get">
                 <p>
                     <input type="text" name="SearchTerm" />
-                    <button type="submit" class="btn btn-primary">Zoek</button>
+                    <button type="submit" class="btn btn-primary">@Localizer["Zoek"]</button>
                 </p>
             </form>
 
@@ -38,19 +38,28 @@
                                 <div class="card-body">
                                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><b>Categorie:</b> @Html.DisplayFor(modelItem => item.Category)</li>
+                                        <li class="list-group-item"><b>@Localizer["Categorieën"]:</b> @Html.DisplayFor(modelItem => item.Category)</li>
                                         <li class="list-group-item">
-                                            <b>Stock:</b> @if (item.Stock == 0)
-                                            {<text>Niet beschikbaar</text> }
+                                            <b>@Localizer["Voorraad"]:</b> @if (item.Stock == 0)
+                                            {<text>@Localizer["Niet beschikbaar"]</text> }
                                         else
                                         { @Html.DisplayFor(modelItem => item.Stock)}
                                         </li>
                                     </ul>
                                     <p style="margin-top: 10px" class="card-text product-text">@Html.DisplayFor(modelItem => item.Description)</p>
                                     <p>@Html.DisplayFor(modelItem => item.Price)</p>
-                                    @Html.ActionLink("Meer info", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                                    <a asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">Koop nu!</a>
-                                </div>
+
+
+                                    <a href="@Url.Action("Details", "Products", new { id = item.Id })" class="btn btn-secondary">@Localizer["Meer info"]</a>
+
+                                    @if (user.IsInRole("Moderator"))
+                                    {
+                                        <a href="@Url.Action("Delete", "Products", new { id = item.Id })" class="btn btn-danger">@Localizer["Verwijder"]</a>
+                                        <br/>
+                                        <br/>
+                                     }
+                                        <a class="btn btn-primary" asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">@Localizer["Koop nu!"]</a>
+                                    </div>
                             </div>
                         </div>
                     }

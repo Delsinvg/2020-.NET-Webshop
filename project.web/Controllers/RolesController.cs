@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Roles;
 using project.web.Services;
@@ -11,13 +12,16 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        private readonly IStringLocalizer<RolesController> _localizer;
 
         public RolesController(
             ProjectApiService projectApiService,
-            ITokenValidationService tokenValidationService)
+            ITokenValidationService tokenValidationService,
+            IStringLocalizer<RolesController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -205,19 +209,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om rollen op te vragen";
+                    error = _localizer["Onvoldoende rechten om rollen op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een rollen op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een rollen op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om rollen aan te maken";
+                    error = _localizer["Onvoldoende rechten om rollen aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om rollen aan te passen";
+                    error = _localizer["Onvoldoende rechten om rollen aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om rollen te verwijderen";
+                    error = _localizer["Onvoldoende rechten om rollen te verwijderen"];
                     break;
             }
 

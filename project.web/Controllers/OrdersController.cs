@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Orders;
 using project.web.Services;
@@ -11,11 +12,13 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        private readonly IStringLocalizer<OrdersController> _localizer;
 
-        public OrdersController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+        public OrdersController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService, IStringLocalizer<OrdersController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -203,19 +206,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om orders op te vragen";
+                    error = _localizer["Onvoldoende rechten om orders op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een order op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een order op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om order aan te maken";
+                    error = _localizer["Onvoldoende rechten om order aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om order aan te passen";
+                    error = _localizer["Onvoldoende rechten om order aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om order te verwijderen";
+                    error = _localizer["Onvoldoende rechten om order te verwijderen"];
                     break;
             }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using project.api.Exceptions;
 using project.models.Addresses;
@@ -16,15 +17,17 @@ namespace project.web.Controllers
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
         private readonly FileUploadSettings _fileUploadSettings;
+        private readonly IStringLocalizer<UsersController> _localizer;
 
         public UsersController(
-            ProjectApiService projectApiService
-        , ITokenValidationService tokenValidationService,
-        IOptions<FileUploadSettings> fileUploadSettings)
+            ProjectApiService projectApiService, ITokenValidationService tokenValidationService,
+        IOptions<FileUploadSettings> fileUploadSettings,
+        IStringLocalizer<UsersController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
             _fileUploadSettings = fileUploadSettings.Value;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -229,19 +232,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om users op te vragen";
+                    error = _localizer["Onvoldoende rechten om users op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een user op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een user op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om user aan te maken";
+                    error = _localizer["Onvoldoende rechten om user aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om user aan te passen";
+                    error = _localizer["Onvoldoende rechten om user aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om user te verwijderen";
+                    error = _localizer["Onvoldoende rechten om user te verwijderen"];
                     break;
             }
 

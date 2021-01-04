@@ -33,11 +33,6 @@ namespace project.api.Repositories
                     throw new EntityException("Product not found.", this.GetType().Name, "DeleteProduct", "404");
                 }
 
-                if (product.OrderProducts.Count > 0)
-                {
-                    throw new CollectionException("Remove all Products first.", this.GetType().Name, "DeleteProducts", "400");
-                }
-
                 if (product.Images != null && product.Images.Count > 0)
                 {
                     _context.Images.RemoveRange(product.Images);

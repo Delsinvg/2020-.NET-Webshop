@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Addresses;
 using project.models.Companies;
@@ -13,11 +14,13 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        private readonly IStringLocalizer<CompaniesController> _localizer;
 
-        public CompaniesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+        public CompaniesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService, IStringLocalizer<CompaniesController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -211,19 +214,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om bedrijven op te vragen";
+                    error = _localizer["Onvoldoende rechten om bedrijven op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een bedrijf op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een bedrijf op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om bedrijf aan te maken";
+                    error = _localizer["Onvoldoende rechten om bedrijf aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om bedrijf aan te passen";
+                    error = _localizer["Onvoldoende rechten om bedrijf aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om bedrijf te verwijderen";
+                    error = _localizer["Onvoldoende rechten om bedrijf te verwijderen"];
                     break;
             }
 

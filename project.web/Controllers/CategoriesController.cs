@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Categories;
 using project.web.Services;
@@ -13,11 +14,13 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        private readonly IStringLocalizer<CategoriesController> _localizer;
 
-        public CategoriesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+        public CategoriesController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService, IStringLocalizer<CategoriesController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
@@ -222,19 +225,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om categorieën op te vragen";
+                    error = _localizer["Onvoldoende rechten om categorieën op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een categorie op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een categorie op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om categorie aan te maken";
+                    error = _localizer["Onvoldoende rechten om categorie aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om categorie aan te passen";
+                    error = _localizer["Onvoldoende rechten om categorie aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om categorie te verwijderen";
+                    error = _localizer["Onvoldoende rechten om categorie te verwijderen"];
                     break;
             }
 

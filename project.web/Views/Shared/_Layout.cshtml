@@ -39,29 +39,29 @@
                         {
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">Addresses</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">@Localizer["Adressen"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">@Localizer["Bedrijven"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">@Localizer["Categorieën"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">@Localizer["Bestellingen"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Gebruikers"]</a>
                             </li>
                         }
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">@Localizer["Producten"]</a>
                         </li>
                         @if (user.IsInRole("Administrator"))
                         {
                             <li class="nav-item mr-sm-2">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">@Localizer["Rollen"]</a>
                             </li>
                         }
                     </ul>

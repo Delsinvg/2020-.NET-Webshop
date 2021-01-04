@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using project.api.Exceptions;
 using project.models.Categories;
 using project.models.Companies;
@@ -17,11 +18,14 @@ namespace project.web.Controllers
     {
         private readonly ProjectApiService _projectApiService;
         private readonly ITokenValidationService _tokenValidationService;
+        private readonly IStringLocalizer<ProductsController> _localizer;
 
-        public ProductsController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService)
+
+        public ProductsController(ProjectApiService projectApiService, ITokenValidationService tokenValidationService, IStringLocalizer<ProductsController> localizer)
         {
             _projectApiService = projectApiService;
             _tokenValidationService = tokenValidationService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string searchTerm)
@@ -291,19 +295,19 @@ namespace project.web.Controllers
             switch (method)
             {
                 case "Index":
-                    error = "Onvoldoende rechten om producten op te vragen";
+                    error = _localizer["Onvoldoende rechten om producten op te vragen"];
                     break;
                 case "Details":
-                    error = "Onvoldoende rechten om de details van een product op te vragen";
+                    error = _localizer["Onvoldoende rechten om de details van een product op te vragen"];
                     break;
                 case "Create":
-                    error = "Onvoldoende rechten om product aan te maken";
+                    error = _localizer["Onvoldoende rechten om product aan te maken"];
                     break;
                 case "Edit":
-                    error = "Onvoldoende rechten om product aan te passen";
+                    error = _localizer["Onvoldoende rechten om product aan te passen"];
                     break;
                 case "Delete":
-                    error = "Onvoldoende rechten om product te verwijderen";
+                    error = _localizer["Onvoldoende rechten om product te verwijderen"];
                     break;
             }
 

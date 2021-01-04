@@ -120,8 +120,29 @@
   <data name="Aanmelden" xml:space="preserve">
     <value>Sign in</value>
   </data>
+  <data name="Adressen" xml:space="preserve">
+    <value>Addresses</value>
+  </data>
+  <data name="Bedrijven" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="Bestellingen" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Categoriën" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="Gebruikers" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="Producten" xml:space="preserve">
+    <value>Products</value>
+  </data>
   <data name="Registreren" xml:space="preserve">
     <value>Register</value>
+  </data>
+  <data name="Rollen" xml:space="preserve">
+    <value>Roles</value>
   </data>
   <data name="Uitloggen" xml:space="preserve">
     <value>Log out</value>

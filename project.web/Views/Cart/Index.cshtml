@@ -21,10 +21,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Hoeveelheid</th>
-                                <th>Prijs</th>
-                                <th>Subtotaal</th>
+                                <th>@Localizer["Product"]</th>
+                                <th>@Localizer["Hoeveelheid"]</th>
+                                <th>@Localizer["Prijs"]</th>
+                                <th>@Localizer["Subtotal"]</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +37,7 @@
                                         <td>@item.Quantity</td>
                                         <td>@item.Product.Price</td>
                                         <td>@(item.Product.Price * item.Quantity)</td>
-                                        <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">Verwijder</a></td>
+                                        <a asp-controller="cart" asp-action="remove" asp-route-id="@item.Product.Id">@Localizer["Verwijder"]</a>
                                     </tr>
                                 }
                             }
@@ -56,7 +56,7 @@
                     
                     @if (ViewBag.cart != null) {
                     <div class="right">
-                        @Html.ActionLink("Proceed to checkout", "CheckOut", new { userId = userId }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Afrekenen", "CheckOut", new { userId = userId }, new { @class = "btn btn-primary" })
                     </div>
                     }
                 </div>
