@@ -12,7 +12,7 @@ namespace project.api.Repositories
         Task<GetUserModel> GetUser(string id);
         Task<GetUserModel> PostUser(PostUserModel postUserModel);
         Task PutUser(string id, PutUserModel putUserModel);
-        Task PatchUser(string id, PatchUserModel patchUserModel);
+        Task PatchUser(Guid id, PatchUserModel patchUserModel);
         Task DeleteUser(string id);
         Task<List<GetRefreshTokenModel>> GetUserRefreshTokens(Guid id);
 

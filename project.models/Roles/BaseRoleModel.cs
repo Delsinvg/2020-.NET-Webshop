@@ -4,8 +4,8 @@ namespace project.models.Roles
 {
     public class BaseRoleModel
     {
-        [Required(ErrorMessage = "de naam van de rol moet ingevuld worden")]
-        [Display(Name = "Rolnaam")]
+        [Required(ErrorMessage = "De naam van de rol moet ingevuld worden")]
+        [Display(Name = "Naam")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "de omschrijving moet ingevuld worden")]

@@ -41,7 +41,7 @@ namespace project.web.Controllers
                     List<GetProductModel> filteredList = new List<GetProductModel>();
                     foreach (var item in getProductsModel)
                     {
-                        if (item.Name.Contains(searchTerm))
+                        if (item.Name.ToLower().Contains(searchTerm.ToLower()))
                         {
                             filteredList.Add(item);
                         }

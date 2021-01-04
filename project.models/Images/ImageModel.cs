@@ -12,7 +12,7 @@ namespace project.models.Images
         public string Extension { get; set; }
         [Display(Name = "Omschrijving")]
         public string Description { get; set; }
-        [Display(Name = "data")]
+        [Display(Name = "Data")]
         public byte[] Data { get; set; }
     }
 }

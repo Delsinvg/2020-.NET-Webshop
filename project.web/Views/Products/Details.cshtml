@@ -37,14 +37,14 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">Omschrijving</h3>
+            <h3 class="my-3">@Localizer["Omschrijving"]</h3>
             <p>@Html.DisplayFor(model => model.Description)</p>
             <h3 class="my-3">Details</h3>
             <ul>
-                <li><b>Categorie:</b> @Html.DisplayFor(model => model.Category)</li>
-                <li><b>Stock:</b> @Html.DisplayFor(model => model.Stock)</li>
+                <li><b>@Localizer["Categorie"]:</b> @Html.DisplayFor(model => model.Category)</li>
+                <li><b>@Localizer["Voorraad"]:</b> @Html.DisplayFor(model => model.Stock)</li>
             </ul>
-            <p><b>Prijs: </b>@Html.DisplayFor(model => model.Price)</p>
+            <p><b>@Localizer["Prijs"]: </b>@Html.DisplayFor(model => model.Price)</p>
         </div>
     </div>
 

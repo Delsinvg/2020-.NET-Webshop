@@ -239,7 +239,7 @@ namespace project.api.Controllers
                     throw new GuidException("Ongeldig id", this.GetType().Name, "PatchUser", "400");
                 }
 
-                await _userRepository.PatchUser(userId.ToString(), patchUserModel);
+                await _userRepository.PatchUser(userId, patchUserModel);
 
                 return NoContent();
             }

@@ -144,6 +144,23 @@ namespace project.web.Services
 
             throw await HandleError(httpResponse, "DeleteModel");
         }
+
+        public async Task PatchModel<T>(string id, T model, string route)
+        {
+            var patchModelJson = new StringContent(
+                JsonSerializer.Serialize(model),
+                Encoding.UTF8,
+                "application/json");
+
+            using var httpResponse = await _httpClient.PatchAsync($"{route}/{id}", patchModelJson);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            throw await HandleError(httpResponse, "PatchModel");
+        }
         #endregion
 
         private async Task<Exception> HandleError(HttpResponseMessage httpResponse, string method)

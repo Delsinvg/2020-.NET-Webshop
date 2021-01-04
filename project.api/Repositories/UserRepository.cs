@@ -93,11 +93,28 @@ namespace project.api.Repositories
             return users;
         }
 
-        public async Task PatchUser(string id, PatchUserModel patchUserModel)
+        public async Task PatchUser(Guid id, PatchUserModel patchUserModel)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            if (_user.Claims.Where(x => x.Type.Contains("role")).Count() == 1 &&
+                _user.IsInRole("Customer") &&
+                _user.Identity.Name != id.ToString())
+            {
+                throw new ForbiddenException("Geen toelating om deze gebruiker zijn wachtwoord te wijzigen", this.GetType().Name, "PatchUser", "403");
+            }
+
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                throw new EntityException("Gebruiker niet gevonden", this.GetType().Name, "PatchUser", "404");
+            }
 
             IdentityResult result = await _userManager.ChangePasswordAsync(user, patchUserModel.CurrentPassword, patchUserModel.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                throw new IdentityException(result.Errors.First().Description, this.GetType().Name, "PatchUser", "400");
+            }
         }
 
         public async Task<GetUserModel> PostUser(PostUserModel postUserModel)

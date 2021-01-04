@@ -14,7 +14,7 @@ namespace project.models.Companies
         [EmailAddress(ErrorMessage = "Dit veld moet een mailadres zijn")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "De naam moet ingevuld worden")]
+        [Required(ErrorMessage = "Het rekeningnummer moet ingevuld worden")]
         [Display(Name = "Rekeningnummer")]
         [StringLength(20, MinimumLength = 8)]
         public string AccountNumber { get; set; }

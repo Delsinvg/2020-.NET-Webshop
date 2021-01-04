@@ -9,7 +9,7 @@ namespace project.models.Products
 {
     public class PostProductModel : BaseProductModel
     {
-        [Required(ErrorMessage = "de categorie moet ingevuld worden")]
+        [Required(ErrorMessage = "De categorie moet ingevuld worden")]
         [Display(Name = "Categorie")]
         public Guid CategoryId { get; set; }
 

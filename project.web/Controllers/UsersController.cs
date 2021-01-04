@@ -225,6 +225,33 @@ namespace project.web.Controllers
             }
         }
 
+        [ValidateAntiForgeryToken] // Prevents XSRF/CSRF attacks
+        public async Task<IActionResult> ChangePassword(string id, PatchUserModel patchUserModel)
+        {
+            try
+            {
+                Authorize("Customer", "PatchUser");
+
+                if (patchUserModel.NewPassword != patchUserModel.ConfirmNewPassword)
+                {
+                    ModelState.AddModelError("ConfirmNewPassword", "Wachtwoorden komen niet overeen");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    await _projectApiService.PatchModel<PatchUserModel>(id, patchUserModel, "Users");
+
+                    return RedirectToRoute(new { action = "Index", controller = "Home" });
+                }
+
+                return View(patchUserModel);
+            }
+            catch (ProjectException e)
+            {
+                return HandleError(e);
+            }
+        }
+
         private void Authorize(string role, string method)
         {
             string error = string.Empty;

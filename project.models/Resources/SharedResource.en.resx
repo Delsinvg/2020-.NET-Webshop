@@ -117,16 +117,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Categorie" xml:space="preserve">
-    <value>Category</value>
+  <data name="Achternaam" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="Adres" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Adres id" xml:space="preserve">
+    <value>Address id</value>
+  </data>
+  <data name="Bedrijfsnaam" xml:space="preserve">
+    <value>Company name</value>
+  </data>
+  <data name="Bestandstype" xml:space="preserve">
+    <value>File type</value>
+  </data>
+  <data name="Bovenstaande categorie" xml:space="preserve">
+    <value>Parent category</value>
+  </data>
+  <data name="Categorienaam" xml:space="preserve">
+    <value>Category name</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="De achternaam moet ingevuld worden" xml:space="preserve">
+    <value>The surname must be filled in</value>
+  </data>
+  <data name="De categorie moet ingevuld worden" xml:space="preserve">
+    <value>The category must be filled in</value>
+  </data>
+  <data name="De gebruikersnaam moet ingevuld worden" xml:space="preserve">
+    <value>The username must be filled in</value>
+  </data>
+  <data name="De landcode moet ingevuld worden" xml:space="preserve">
+    <value>The country code must be filled in</value>
+  </data>
+  <data name="De naam moet ingevuld worden" xml:space="preserve">
+    <value>The name must be filled in</value>
+  </data>
+  <data name="De naam van de rol moet ingevuld worden" xml:space="preserve">
+    <value>The name of the role must be filled in</value>
+  </data>
+  <data name="De omschrijving moet ingevuld worden" xml:space="preserve">
+    <value>The description must be filled in</value>
+  </data>
+  <data name="De parent moet ingevuld worden" xml:space="preserve">
+    <value>The parent must be filled in</value>
+  </data>
+  <data name="De postcode is minimum 1 en maximum 10000" xml:space="preserve">
+    <value>The postal code is minimum 1 and maximum 10000</value>
+  </data>
+  <data name="De postcode moet ingevuld worden" xml:space="preserve">
+    <value>The postal code must be filled in</value>
+  </data>
+  <data name="De prijs moet ingevuld worden" xml:space="preserve">
+    <value>The price must be filled in</value>
+  </data>
+  <data name="De productnaam moet ingevuld worden" xml:space="preserve">
+    <value>The product name must be filled in</value>
+  </data>
+  <data name="De stad moet ingevuld worden" xml:space="preserve">
+    <value>The city must be filled in</value>
+  </data>
+  <data name="De straat moet ingevuld worden" xml:space="preserve">
+    <value>The street must be filled in</value>
+  </data>
+  <data name="De voornaam moet ingevuld worden" xml:space="preserve">
+    <value>The first name must be filled in</value>
+  </data>
+  <data name="De voorraad moet ingevuld worden" xml:space="preserve">
+    <value>The stock must be filled in</value>
+  </data>
+  <data name="Dit veld moet een mailadres zijn" xml:space="preserve">
+    <value>This field must be a mail address</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Extensie" xml:space="preserve">
+    <value>Extension</value>
+  </data>
+  <data name="Gebruikers id" xml:space="preserve">
+    <value>User id</value>
+  </data>
+  <data name="Gebruikersnaam" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Herhaal nieuw wachtwoord" xml:space="preserve">
+    <value>Repeat new password</value>
+  </data>
+  <data name="Het bedrijf moet ingevuld worden" xml:space="preserve">
+    <value>The company must be filled in</value>
+  </data>
+  <data name="Het emailadres moet ingevuld worden" xml:space="preserve">
+    <value>The email address must be filled in</value>
+  </data>
+  <data name="Het land moet ingevuld worden" xml:space="preserve">
+    <value>The country must be filled in</value>
+  </data>
+  <data name="Het nieuwe wachtwoord moet ingevuld worden" xml:space="preserve">
+    <value>The new password must be filled in</value>
+  </data>
+  <data name="Het oude wachtwoord moet ingevuld worden" xml:space="preserve">
+    <value>The old password must be filled in</value>
+  </data>
+  <data name="Het rekeningnummer moet ingevuld worden" xml:space="preserve">
+    <value>The account number must be entered</value>
+  </data>
+  <data name="Het wachtwoord moet ingevuld worden" xml:space="preserve">
+    <value>The password must be filled in</value>
+  </data>
+  <data name="Land" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Landcode" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="Naam" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Nieuw wachtwoord" xml:space="preserve">
+    <value>New password</value>
   </data>
   <data name="Omschrijving" xml:space="preserve">
-    <value>Desription</value>
+    <value>Description</value>
+  </data>
+  <data name="Order datum" xml:space="preserve">
+    <value>Order date</value>
+  </data>
+  <data name="Oud wachtwoord" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="Postcode" xml:space="preserve">
+    <value>Postalcode</value>
   </data>
   <data name="Prijs" xml:space="preserve">
     <value>Price</value>
   </data>
+  <data name="Productnaam" xml:space="preserve">
+    <value>Product name</value>
+  </data>
+  <data name="Rekeningnummer" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="Rollen" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="Stad" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Straat" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="Telefoonnummer" xml:space="preserve">
+    <value>Telephone number</value>
+  </data>
+  <data name="Voornaam" xml:space="preserve">
+    <value>First name</value>
+  </data>
   <data name="Voorraad" xml:space="preserve">
     <value>Stock</value>
+  </data>
+  <data name="Wachtwoord" xml:space="preserve">
+    <value>Password</value>
   </data>
 </root>

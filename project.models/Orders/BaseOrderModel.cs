@@ -9,7 +9,7 @@ namespace project.models.Orders
         [Required]
         public Guid UserId { get; set; }
 
-        [Display(Name = "order datum")]
+        [Display(Name = "Order datum")]
         [DataType(DataType.Date)]
         public DateTime Orderdate { get; set; }
     }
