@@ -1,5 +1,6 @@
 ﻿using project.api.Exceptions;
 using project.models.Users;
+using project.web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -180,5 +181,37 @@ namespace project.web.Services
                 throw await JsonSerializer.DeserializeAsync<ProjectException>(httpResponseStream);
             }
         }
+
+        public async Task<HttpResponseMessage> SendResetToken(string email)
+        {
+            EmailModel model = new EmailModel
+            {
+                Email = email
+
+            };
+            var postModelJson = new StringContent(
+                JsonSerializer.Serialize(model),
+                Encoding.UTF8,
+                "application/json");
+            using var httpResponse = await _httpClient.PostAsync("Users/SendResetTokenAsync", postModelJson);
+            return httpResponse;
+        }
+
+        public async Task<HttpResponseMessage> ValidatePasswordReset(string userId, string code, string Password)
+        {
+            ResetPasswordModel model = new ResetPasswordModel
+            {
+                UserId = new Guid(userId),
+                Code = code,
+                Password = Password
+            };
+            var postModelJson = new StringContent(
+                JsonSerializer.Serialize(model),
+                Encoding.UTF8,
+                "application/json");
+            using var httpResponse = await _httpClient.PostAsync("Users/validatePasswordResetAsync", postModelJson);
+            return httpResponse;
+        }
+
     }
 }

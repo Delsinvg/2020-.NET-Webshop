@@ -54,5 +54,29 @@ namespace project.web.Controllers
 
             return RedirectToRoute(new { action = "Index", controller = "Home" });
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SendEmailAsync(string email)
+        {
+            var response = await _projectApiService.SendResetToken(email);
+            return View((object)email);
+        }
+
+        public ActionResult ResetPassword(string UserId, string code)
+        {
+            var fixedCode = code.Replace(" ", "+");
+            string[] data = { UserId, fixedCode };
+            return View(data);
+        }
+
+        public async Task<ActionResult> CheckNewPassword(string userId, string code, string Password)
+        {
+            var response = await _projectApiService.ValidatePasswordReset(userId, code, Password);
+            return Redirect("/");
+        }
     }
 }

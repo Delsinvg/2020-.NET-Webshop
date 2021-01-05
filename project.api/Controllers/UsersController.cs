@@ -8,6 +8,7 @@ using project.models.Users;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace project.api.Controllers
@@ -497,6 +498,42 @@ namespace project.api.Controllers
             else
             {
                 return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            }
+        }
+
+        [HttpPost("SendResetToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> SendResetToken(EmailModel emailModel)
+        {
+           try
+            {
+                string code = await _userRepository.SendResetToken(emailModel);
+                return Ok(code);
+            } catch (ProjectException e)
+            {
+                return BadRequest(e.ProjectError);
+            }
+        }
+
+        
+        [HttpPost("validatePasswordReset")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [AllowAnonymous]
+        public async Task<ActionResult<string>> validatePasswordReset(ResetPasswordModel resetPasswordModel)
+        {
+            try
+            {
+                string code = await _userRepository.ValidatePasswordReset(resetPasswordModel);
+                return Ok(code);
+            }
+            catch (ProjectException e)
+            {
+                return BadRequest(e.ProjectError);
             }
         }
     }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +39,7 @@ namespace project.api
             // DB configuration
             services.AddDbContext<ProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ProjectContext")));
             // Identity configuration
-            services.AddIdentity<User, Role>().AddEntityFrameworkStores<ProjectContext>();
+            services.AddIdentity<User, Role>().AddEntityFrameworkStores<ProjectContext>().AddDefaultTokenProviders();
 
             // Default configuration with additional JsonSerializerOptions configured
             services.AddControllers().AddJsonOptions(options =>

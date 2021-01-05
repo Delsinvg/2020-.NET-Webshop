@@ -16,6 +16,8 @@ namespace project.web.Handlers
         {
             new Uri("https://localhost:44388/api/Users"),
             new Uri("https://localhost:44388/api/Users/authenticate"),
+            new Uri("https://localhost:44388/api/Users/SendResetToken"),
+            new Uri("https://localhost:44388/api/Users/validatePasswordReset"),
             new Uri("https://localhost:44388/api/Users/refresh-token")
         };
 

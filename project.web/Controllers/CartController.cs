@@ -182,8 +182,7 @@ namespace project.web.Controllers
                 PostOrderModel postOrderModel = new PostOrderModel
                 {
                     UserId = new Guid(userId),
-                    Products = cart.Select(x => x.Product.Id).ToList(),
-                    Quantity = cart.Select(x => x.Quantity).ToList(),
+                    Products = cart.Select(x => new OrderProductModel { ProductId = x.Product.Id, Quantity = x.Quantity, Price = x.Product.Price * x.Quantity }).ToList(),
                     Orderdate = DateTime.Now
                 };
 

@@ -21,5 +21,9 @@ namespace project.api.Repositories
         Task<PostAuthenticateResponseModel> Authenticate(PostAuthenticateRequestModel postAuthenticateRequestModel, string ipAddress);
         Task<PostAuthenticateResponseModel> RefreshToken(string token, string ipAddress);
         Task RevokeToken(string token, string ipAddress);
+
+        Task<string> SendResetToken(EmailModel emailModel);
+        Task<string> ValidatePasswordReset(ResetPasswordModel resetPasswordModel);
+
     }
 }

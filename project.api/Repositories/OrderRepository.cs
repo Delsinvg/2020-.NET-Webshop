@@ -64,9 +64,8 @@ namespace project.api.Repositories
                 {
                     Id = x.Id,
                     UserId = x.UserId,
-                    Products = x.OrderProducts.Select(x => x.ProductId).ToList(),
-                    Quantity = x.OrderProducts.Select(x => x.Quantity).ToList(),
-                    Orderdate = x.Orderdate
+                    Orderdate = x.Orderdate,
+                    Products = x.OrderProducts.Select(x => new OrderProductModel { ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -90,9 +89,9 @@ namespace project.api.Repositories
                 {
                     Id = x.Id,
                     UserId = x.UserId,
-                    Products = x.OrderProducts.Select(x => x.ProductId).ToList(),
-                    Quantity = x.OrderProducts.Select(x => x.Quantity).ToList(),
-                    Orderdate = x.Orderdate
+                    Orderdate = x.Orderdate,
+                    Products = x.OrderProducts.Select(x => new OrderProductModel { ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
+
                 })
                 .AsNoTracking()
                 .ToListAsync();
@@ -119,7 +118,7 @@ namespace project.api.Repositories
 
                 });
 
-                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList(), postOrderModel.Quantity.ToList());
+                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
 
                 await _context.SaveChangesAsync();
 
@@ -135,18 +134,19 @@ namespace project.api.Repositories
             }
         }
 
-        private async Task AddOrderProducts(Guid orderId, List<Guid> productIds, List<int> quantity)
+        private async Task AddOrderProducts(Guid orderId, List<OrderProductModel> products)
         {
-            for (int i = 0; i < quantity.Count; i++)
+
+            foreach (var item in products)
             {
                 await _context.OrderProducts.AddAsync(new OrderProduct
                 {
                     OrderId = orderId,
-                    ProductId = productIds[i],
-                    Quantity = quantity[i]
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
                 });
-            }
 
+            }
             await _context.SaveChangesAsync();
         }
 
@@ -171,7 +171,7 @@ namespace project.api.Repositories
                 _context.OrderProducts.RemoveRange(order.OrderProducts);
 
 
-                await AddOrderProducts(id, putOrderModel.Products.ToList(), putOrderModel.Quantity.ToList());
+                await AddOrderProducts(id, putOrderModel.Products.ToList());
                 await _context.SaveChangesAsync();
             }
             catch (ProjectException e)
