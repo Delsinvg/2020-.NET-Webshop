@@ -223,7 +223,6 @@ namespace project.api.Repositories
 
         public async Task<string> SendResetToken(EmailModel emailModel)
         {
-
             string code = null;
                 User user = await _userManager.FindByNameAsync(emailModel.Email);
                 if (user != null)

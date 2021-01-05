@@ -29,6 +29,8 @@
                 <input type="checkbox" checked="@ViewData["RememberMe"]" name="rememberMe"> Onthoud mij
             </label>
         </div>
+
+        <a href="@Url.Action("Email", "Authentication")" >@Localizer["Wachtwoord vergeten"]</a>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden</button>
     </form>
     </div>

@@ -32,8 +32,7 @@ namespace project.web.Controllers
         {
             try
             {
-                //await _tokenValidationService.Validate(this.GetType().Name, "Index");
-
+               
                 List<GetProductModel> getProductsModel = await _projectApiService.GetModels<GetProductModel>("Products");
 
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -61,9 +60,6 @@ namespace project.web.Controllers
         {
             try
             {
-
-                //await _tokenValidationService.Validate(this.GetType().Name, "Details");
-
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
                 if (getProductModel.ImagesModel != null && getProductModel.ImagesModel.Count > 0)

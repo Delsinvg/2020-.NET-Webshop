@@ -193,7 +193,7 @@ namespace project.web.Services
                 JsonSerializer.Serialize(model),
                 Encoding.UTF8,
                 "application/json");
-            using var httpResponse = await _httpClient.PostAsync("Users/SendResetTokenAsync", postModelJson);
+            using var httpResponse = await _httpClient.PostAsync("Users/SendResetToken", postModelJson);
             return httpResponse;
         }
 
@@ -209,7 +209,7 @@ namespace project.web.Services
                 JsonSerializer.Serialize(model),
                 Encoding.UTF8,
                 "application/json");
-            using var httpResponse = await _httpClient.PostAsync("Users/validatePasswordResetAsync", postModelJson);
+            using var httpResponse = await _httpClient.PostAsync("Users/validatePasswordReset", postModelJson);
             return httpResponse;
         }
 

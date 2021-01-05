@@ -60,22 +60,28 @@ namespace project.web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SendEmailAsync(string email)
+        public async Task<IActionResult> Confirmation(string email)
         {
             var response = await _projectApiService.SendResetToken(email);
-            return View((object)email);
+            return View();
         }
 
-        public ActionResult ResetPassword(string UserId, string code)
+        public IActionResult Email()
         {
-            var fixedCode = code.Replace(" ", "+");
-            string[] data = { UserId, fixedCode };
-            return View(data);
+            return View();
+        }
+
+        public ActionResult ResetPassword(string userId, string code)
+        {
+            string codeWithoutSpaces = code.Replace(" ", "+");
+            ResetPasswordModel resetPasswordModel = new ResetPasswordModel { UserId = new System.Guid(userId), Code =codeWithoutSpaces };
+            return View(resetPasswordModel);
         }
 
         public async Task<ActionResult> CheckNewPassword(string userId, string code, string Password)
         {
-            var response = await _projectApiService.ValidatePasswordReset(userId, code, Password);
+            string codeWithoutSpaces = code.Replace(" ", "+");
+            var response = await _projectApiService.ValidatePasswordReset(userId, codeWithoutSpaces, Password);
             return Redirect("/");
         }
     }
