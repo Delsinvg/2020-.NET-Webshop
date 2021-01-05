@@ -519,12 +519,12 @@ namespace project.api.Controllers
         }
 
         
-        [HttpPost("validatePasswordReset")]
+        [HttpPost("ValidatePasswordReset")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> validatePasswordReset(ResetPasswordModel resetPasswordModel)
+        public async Task<ActionResult<string>> ValidatePasswordReset(ResetPasswordModel resetPasswordModel)
         {
             try
             {

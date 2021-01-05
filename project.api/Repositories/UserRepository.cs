@@ -244,7 +244,7 @@ namespace project.api.Repositories
             client.EnableSsl = true;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("janis.odisee@gmail.com", "_Azerty123");
+            client.Credentials = new NetworkCredential("lsd2asp.net@gmail.com", "6@mJB5yuSJ5CvussGgY@");
             var body = "Please reset your password by clicking here: " + callback;
             await client.SendMailAsync("janis.odisee@gmail.com", email, "Reset Password", body);
         }
