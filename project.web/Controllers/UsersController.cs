@@ -125,7 +125,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Edit");
+                Authorize("Administrator", "Edit");
 
                 ViewBag.Addresses = (await _projectApiService.GetModels<GetAddressModel>("Addresses")).OrderBy(x => x.City).ToList();
 
@@ -156,14 +156,9 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Edit");
+                Authorize("Administrator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
-
-                //if (putUserModel.Afbeelding != null && ValidateImage(putUserModel.Afbeelding))
-                //{
-                //    putUserModel.AfbeeldingModel = await SetAfbeelding(putUserModel.Afbeelding);
-                //}
 
                 if (ModelState.IsValid)
                 {

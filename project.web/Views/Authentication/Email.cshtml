@@ -5,9 +5,8 @@
 }
 
 <div class="container">
-    <h1>ResetPassword</h1>
 
-    <h4>EmailModel</h4>
+    <h4>@Localizer["Vul je email in"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -19,11 +18,11 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="@Localizer["Verstuur"]" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
-    <a asp-action="Index">Back to Authentication</a>
+    <a asp-action="Index">@Localizer["Terug naar de inlogpagina"]</a>
 </div>
 

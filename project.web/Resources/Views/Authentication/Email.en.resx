@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Aanmelden" xml:space="preserve">
-    <value>Sign in</value>
+  <data name="Terug naar de inlogpagina" xml:space="preserve">
+    <value>Back to Authentication</value>
   </data>
-  <data name="Adressen" xml:space="preserve">
-    <value>Addresses</value>
+  <data name="Verstuur" xml:space="preserve">
+    <value>Send</value>
   </data>
-  <data name="Bedrijven" xml:space="preserve">
-    <value>Companies</value>
-  </data>
-  <data name="Bestellingen" xml:space="preserve">
-    <value>Orders</value>
-  </data>
-  <data name="Categoriën" xml:space="preserve">
-    <value>Categories</value>
-  </data>
-  <data name="Gebruikers" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="Producten" xml:space="preserve">
-    <value>Products</value>
-  </data>
-  <data name="Registreren" xml:space="preserve">
-    <value>Register</value>
-  </data>
-  <data name="Rollen" xml:space="preserve">
-    <value>Roles</value>
-  </data>
-  <data name="Uitloggen" xml:space="preserve">
-    <value>Log out</value>
-  </data>
-  <data name="Winkelwagen" xml:space="preserve">
-    <value>Shopping cart</value>
+  <data name="Vul je email in" xml:space="preserve">
+    <value>Fill in your email</value>
   </data>
 </root>

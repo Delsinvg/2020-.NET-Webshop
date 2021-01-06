@@ -8,6 +8,7 @@ using project.models.Images;
 using project.models.Products;
 using project.web.Helpers;
 using project.web.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +33,10 @@ namespace project.web.Controllers
         {
             try
             {
-               
+                Authorize("Customer", "Index");
+
+                await _tokenValidationService.Validate(this.GetType().Name, "Index");
+
                 List<GetProductModel> getProductsModel = await _projectApiService.GetModels<GetProductModel>("Products");
 
                 if (!string.IsNullOrEmpty(searchTerm))
@@ -85,7 +89,7 @@ namespace project.web.Controllers
             {
                 Authorize("Moderator", "Create");
 
-                ViewBag.Categories = (await _projectApiService.GetModels<GetCategoryModel>("Categories")).OrderBy(x => x.Name).ToList();
+                ViewBag.Categories = (await _projectApiService.GetModels<GetCompanyModel>("Categories")).OrderBy(x => x.Name).ToList();
                 ViewBag.Companies = (await _projectApiService.GetModels<GetCompanyModel>("Companies")).OrderBy(x => x.Name).ToList();
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create GET");
@@ -107,6 +111,9 @@ namespace project.web.Controllers
                 Authorize("Moderator", "Create");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
+
+                ViewBag.Categories = (await _projectApiService.GetModels<GetCompanyModel>("Categories")).OrderBy(x => x.Name).ToList();
+                ViewBag.Companies = (await _projectApiService.GetModels<GetCompanyModel>("Companies")).OrderBy(x => x.Name).ToList();
 
                 if (postProductModel.Images != null)
                 {

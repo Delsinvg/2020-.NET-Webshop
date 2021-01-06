@@ -34,10 +34,8 @@ namespace project.api.Repositories
 
                 if (order.OrderProducts.Count > 0)
                 {
-                    throw new CollectionException("Remove all Orders first.", this.GetType().Name, "DeleteOrder", "400");
+                    _context.OrderProducts.RemoveRange(order.OrderProducts);
                 }
-
-                _context.OrderProducts.RemoveRange(order.OrderProducts);
 
                 _context.Orders.Remove(order);
 
@@ -65,7 +63,8 @@ namespace project.api.Repositories
                     Id = x.Id,
                     UserId = x.UserId,
                     Orderdate = x.Orderdate,
-                    Products = x.OrderProducts.Select(x => new OrderProductModel { ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
+                    totalPrice = x.OrderProducts.Sum(x => x.Price),
+                    Products = x.OrderProducts.Select(x => new OrderProductModel { Name = x.Product.Name, ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -90,7 +89,8 @@ namespace project.api.Repositories
                     Id = x.Id,
                     UserId = x.UserId,
                     Orderdate = x.Orderdate,
-                    Products = x.OrderProducts.Select(x => new OrderProductModel { ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
+                    totalPrice = x.OrderProducts.Sum(x => x.Price * x.Quantity),
+                    Products = x.OrderProducts.Select(x => new OrderProductModel { Name = x.Product.Name, ProductId = x.ProductId, Quantity = x.Quantity, Price = x.Price }).ToList()
 
                 })
                 .AsNoTracking()
@@ -115,10 +115,12 @@ namespace project.api.Repositories
                 {
                     Orderdate = postOrderModel.Orderdate,
                     UserId = postOrderModel.UserId,
-
                 });
 
-                await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
+                if (postOrderModel.Products != null)
+                {
+                    await AddOrderProducts(result.Entity.Id, postOrderModel.Products.ToList());
+                }
 
                 await _context.SaveChangesAsync();
 
@@ -143,7 +145,8 @@ namespace project.api.Repositories
                 {
                     OrderId = orderId,
                     ProductId = item.ProductId,
-                    Quantity = item.Quantity
+                    Quantity = item.Quantity,
+                    Price = item.Price
                 });
 
             }
@@ -194,7 +197,7 @@ namespace project.api.Repositories
 
                 if (user == null)
                 {
-                    throw new EntityException("Genre not found.", this.GetType().Name, sourceMethod, "404");
+                    throw new EntityException("User not found.", this.GetType().Name, sourceMethod, "404");
                 }
             }
         }

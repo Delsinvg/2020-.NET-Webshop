@@ -174,12 +174,13 @@ namespace project.api.Repositories
             {
                 Product product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
 
+
                 if (product == null)
                 {
                     throw new EntityException("Product niet gevonden", this.GetType().Name, "PutProduct", "404");
                 }
 
-                if (product.Images.Count > 0)
+                if (product.Images != null)
                 {
                     if (putProductModel.ImageNames == null)
                     {

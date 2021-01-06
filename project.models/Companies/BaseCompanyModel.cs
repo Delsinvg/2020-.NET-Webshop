@@ -19,8 +19,9 @@ namespace project.models.Companies
         [StringLength(20, MinimumLength = 8)]
         public string AccountNumber { get; set; }
 
+        [Required(ErrorMessage = "Het telefoonnummer moet ingevuld worden")]
         [Display(Name = "Telefoonnummer")]
-        [Phone]
+        [Phone(ErrorMessage = "Geen geldig telefoonnummer ingegeven")]
         public string PhoneNumber { get; set; }
     }
 }

@@ -119,6 +119,7 @@ namespace project.web.Controllers
                 Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
+                ViewBag.Addresses = (await _projectApiService.GetModels<GetAddressModel>("Addresses")).OrderBy(x => x.City).ToList();
 
                 GetCompanyModel getCompanyModel = await _projectApiService.GetModel<GetCompanyModel>(id, "Companies");
 

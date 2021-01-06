@@ -12,5 +12,8 @@ namespace project.models.Orders
         [Display(Name = "Order datum")]
         [DataType(DataType.Date)]
         public DateTime Orderdate { get; set; }
+
+
     }
+    
 }
