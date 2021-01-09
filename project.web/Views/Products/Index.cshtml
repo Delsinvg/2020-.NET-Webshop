@@ -34,7 +34,14 @@
                     {
                         <div class="col-sm-4">
                             <div class="card" style="margin-bottom: 15px">
-                                <img class="card-img-top" src="~/images/Default.png" alt="bike" />
+                                @if (item.ImagesModel.Count != 0)
+                                {
+                                        <img src="@ViewData[item.Id.ToString()]" class="img-thumbnail product-details"  data-toggle="modal">
+                                }
+                                else
+                                {
+                                    <img class="card-img-top" src="~/images/Default.png" alt="bike" />
+                                }
                                 <div class="card-body">
                                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Company) @Html.DisplayFor(modelItem => item.Name)</h5>
                                     <ul class="list-group list-group-flush">
@@ -55,11 +62,11 @@
                                     @if (user.IsInRole("Moderator"))
                                     {
                                         <a href="@Url.Action("Delete", "Products", new { id = item.Id })" class="btn btn-danger">@Localizer["Verwijder"]</a>
-                                        <br/>
-                                        <br/>
-                                     }
-                                        <a class="btn btn-primary" asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">@Localizer["Koop nu!"]</a>
-                                    </div>
+                                        <br />
+                                        <br />
+                                    }
+                                    <a class="btn btn-primary" asp-controller="cart" asp-action="buy" asp-route-id="@item.Id">@Localizer["Koop nu!"]</a>
+                                </div>
                             </div>
                         </div>
                     }

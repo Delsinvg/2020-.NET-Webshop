@@ -22,7 +22,7 @@ namespace project.api.Repositories
         Task<PostAuthenticateResponseModel> RefreshToken(string token, string ipAddress);
         Task RevokeToken(string token, string ipAddress);
 
-        Task<string> SendResetToken(EmailModel emailModel);
+        Task SendResetToken(EmailModel emailModel);
         Task<string> ValidatePasswordReset(ResetPasswordModel resetPasswordModel);
 
     }

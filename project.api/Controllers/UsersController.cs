@@ -8,7 +8,6 @@ using project.models.Users;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace project.api.Controllers
@@ -508,17 +507,18 @@ namespace project.api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<string>> SendResetToken(EmailModel emailModel)
         {
-           try
+            try
             {
-                string code = await _userRepository.SendResetToken(emailModel);
-                return Ok(code);
-            } catch (ProjectException e)
+                await _userRepository.SendResetToken(emailModel);
+                return Ok(emailModel);
+            }
+            catch (ProjectException e)
             {
                 return BadRequest(e.ProjectError);
             }
         }
 
-        
+
         [HttpPost("ValidatePasswordReset")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

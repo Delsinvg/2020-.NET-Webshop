@@ -37,21 +37,25 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (user.IsInRole("Moderator"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Addresses" asp-action="Index">@Localizer["Adressen"]</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">@Localizer["Bedrijven"]</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">@Localizer["Categorieën"]</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">@Localizer["Bestellingen"]</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Gebruikers"]</a>
-                            </li>
+    
+                            <div class="nav-item dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Moderator
+                                </a>
+
+
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Addresses" asp-action="Index">@Localizer["Adressen"]</a>
+
+                                    <a class="dropdown-item" asp-area="" asp-controller="Companies" asp-action="Index">@Localizer["Bedrijven"]</a>
+
+                                    <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">@Localizer["Categorieën"]</a>
+
+                                    <a class="dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">@Localizer["Bestellingen"]</a>
+
+                                    <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Index">@Localizer["Gebruikers"]</a>
+                                </div>
+                            </div>
                         }
 
                         <li class="nav-item">

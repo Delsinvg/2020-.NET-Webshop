@@ -221,18 +221,16 @@ namespace project.api.Repositories
         }
 
 
-        public async Task<string> SendResetToken(EmailModel emailModel)
+        public async Task SendResetToken(EmailModel emailModel)
         {
-            string code = null;
-                User user = await _userManager.FindByNameAsync(emailModel.Email);
-                if (user != null)
-                {
-                    code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    var callbackUrl = "https://localhost:44397/Authentication/ResetPassword?UserId=" + user.Id + "&code=" + code;
-                    await sendEmail(callbackUrl, emailModel.Email);
-                }
-            return code;
-           
+            User user = await _userManager.FindByNameAsync(emailModel.Email);
+            if (user != null)
+            {
+                string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = "https://localhost:44397/Authentication/ResetPassword?UserId=" + user.Id + "&code=" + code;
+                await sendEmail(callbackUrl, emailModel.Email);
+            }
+
         }
 
         public async Task sendEmail(string callback, string email)
@@ -245,7 +243,7 @@ namespace project.api.Repositories
             client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential("lsd2asp.net@gmail.com", "6@mJB5yuSJ5CvussGgY@");
             var body = "Please reset your password by clicking here: " + callback;
-            await client.SendMailAsync("janis.odisee@gmail.com", email, "Reset Password", body);
+            await client.SendMailAsync("lsd2asp.net@gmail.com", email, "Reset Password", body);
         }
 
         // JWT Methods
@@ -408,12 +406,12 @@ namespace project.api.Repositories
         public async Task<string> ValidatePasswordReset(ResetPasswordModel resetPasswordModel)
         {
             IdentityResult result = null;
-                User user = await _userManager.FindByIdAsync(resetPasswordModel.UserId.ToString());
-                if (user != null)
-                {
-                    result = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Code, resetPasswordModel.Password);
-                }
-                return result.ToString();
+            User user = await _userManager.FindByIdAsync(resetPasswordModel.UserId.ToString());
+            if (user != null)
+            {
+                result = await _userManager.ResetPasswordAsync(user, resetPasswordModel.Code, resetPasswordModel.Password);
+            }
+            return result.ToString();
         }
     }
 }

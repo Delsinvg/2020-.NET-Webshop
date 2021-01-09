@@ -1,6 +1,5 @@
 ﻿using project.api.Exceptions;
 using project.models.Users;
-using project.web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -8,7 +8,6 @@ using project.models.Images;
 using project.models.Products;
 using project.web.Helpers;
 using project.web.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,7 +48,17 @@ namespace project.web.Controllers
                             filteredList.Add(item);
                         }
                     }
-                    return View(filteredList);
+                    getProductsModel = filteredList;
+                }
+
+                for (int i = 0; i < getProductsModel.Count(); i++)
+                {
+                    if (getProductsModel[i].ImagesModel.Count != 0)
+                    {
+                        string key = getProductsModel[i].Id.ToString();
+                        ViewData[key] = ImageHelper.GetImage(getProductsModel[i].ImagesModel.ToArray()[0].Data, getProductsModel[i].ImagesModel.ToArray()[0].FileType, "product");
+                    }
+
                 }
 
                 return View(getProductsModel);

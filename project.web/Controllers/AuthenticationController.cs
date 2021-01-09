@@ -74,7 +74,7 @@ namespace project.web.Controllers
         public ActionResult ResetPassword(string userId, string code)
         {
             string codeWithoutSpaces = code.Replace(" ", "+");
-            ResetPasswordModel resetPasswordModel = new ResetPasswordModel { UserId = new System.Guid(userId), Code =codeWithoutSpaces };
+            ResetPasswordModel resetPasswordModel = new ResetPasswordModel { UserId = new System.Guid(userId), Code = codeWithoutSpaces };
             return View(resetPasswordModel);
         }
 
