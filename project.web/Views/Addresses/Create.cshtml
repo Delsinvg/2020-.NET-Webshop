@@ -1,12 +1,12 @@
 ﻿@model project.models.Addresses.PostAddressModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @Localizer["Aanmaken"];
 }
 
 
 <div class="container">
-    <h1>Create</h1>
+    <h1>@Localizer["Maak nieuw"]</h1>
 
     <h4>PostAddressModel</h4>
     <hr />
@@ -47,7 +47,7 @@
     </div>
 
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">@Localizer["Terug naar lijst"]</</a>
     </div>
 
     @section Scripts {

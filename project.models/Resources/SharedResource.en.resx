@@ -243,6 +243,9 @@
   <data name="Het wachtwoord moet ingevuld worden" xml:space="preserve">
     <value>The password must be filled in</value>
   </data>
+  <data name="Hoeveelheid" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
   <data name="Land" xml:space="preserve">
     <value>Country</value>
   </data>
@@ -269,6 +272,9 @@
   </data>
   <data name="Prijs" xml:space="preserve">
     <value>Price</value>
+  </data>
+  <data name="Product id" xml:space="preserve">
+    <value>Product id</value>
   </data>
   <data name="Producten" xml:space="preserve">
     <value>Products</value>
