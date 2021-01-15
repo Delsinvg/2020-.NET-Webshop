@@ -1,6 +1,7 @@
 ﻿@model project.models.Users.GetUserModel
 
 @{
+    ClaimsPrincipal user = HttpContextAccessor.HttpContext.User;
     ViewData["Title"] = "Details";
 }
 
@@ -50,8 +51,12 @@
             </dd>
         </dl>
     </div>
-    <div>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        <a asp-action="Index">Back to List</a>
-    </div>
+    <div>@if (user.IsInRole("Administrator"))
+          {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
+          }
+        
+            | <a asp-action="Index">Back to List</a>
+        
+        </div>
 </div>

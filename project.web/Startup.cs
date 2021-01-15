@@ -13,6 +13,7 @@ using project.web.Helpers;
 using project.web.Middlewares;
 using project.web.Services;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
@@ -33,12 +34,18 @@ namespace project.web
             //Configure Localization options
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[]
-{
-                                new CultureInfo("nl"),
-                                new CultureInfo("en")
+                var supportedCultures = new List<CultureInfo> { };
+
+                var nl = new CultureInfo("nl");
+                var en = new CultureInfo("en")
+                {
+                    DateTimeFormat = nl.DateTimeFormat
                 };
-                options.DefaultRequestCulture = new RequestCulture(culture: "nl", uiCulture: "nl");
+
+                supportedCultures.Add(nl);
+                supportedCultures.Add(en);
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en", uiCulture: "en");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });

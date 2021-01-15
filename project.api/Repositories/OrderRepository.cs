@@ -171,10 +171,6 @@ namespace project.api.Repositories
                 order.Orderdate = putOrderModel.Orderdate;
                 order.UserId = putOrderModel.UserId;
 
-                _context.OrderProducts.RemoveRange(order.OrderProducts);
-
-
-                await AddOrderProducts(id, putOrderModel.Products.ToList());
                 await _context.SaveChangesAsync();
             }
             catch (ProjectException e)

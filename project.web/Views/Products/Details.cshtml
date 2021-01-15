@@ -45,6 +45,7 @@
                 <li><b>@Localizer["Voorraad"]:</b> @Html.DisplayFor(model => model.Stock)</li>
             </ul>
             <p><b>@Localizer["Prijs"]: </b>@Html.DisplayFor(model => model.Price)</p>
+            <a class="btn btn-primary" asp-controller="cart" asp-action="buy" asp-route-id="@Model.Id">@Localizer["Koop nu!"]</a>
         </div>
     </div>
 

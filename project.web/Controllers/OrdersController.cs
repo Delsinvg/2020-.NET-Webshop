@@ -118,6 +118,7 @@ namespace project.web.Controllers
 
                 PutOrderModel putOrderModel = new PutOrderModel
                 {
+                    UserId = getOrderModel.UserId,
                     Orderdate = getOrderModel.Orderdate,
                 };
 

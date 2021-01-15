@@ -57,7 +57,7 @@ namespace project.api.Repositories
                     {
                         Id = x.Id,
                         CountryCode = x.CountryCode,
-                        Country = x.City,
+                        Country = x.Country,
                         City = x.City,
                         PostalCode = x.PostalCode,
                         Street = x.Street
