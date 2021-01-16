@@ -51,12 +51,19 @@
             </dd>
         </dl>
     </div>
-    <div>@if (user.IsInRole("Administrator"))
-          {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
-          }
-        
-            | <a asp-action="Index">Back to List</a>
-        
-        </div>
+    <div>
+        @if (user.IsInRole("Administrator"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+            <span>|</span>
+        }
+
+        @if (user.IsInRole("Moderator"))
+        {
+          <a asp-action="Index">Back to List</a>
+        }
+
+
+
+    </div>
 </div>

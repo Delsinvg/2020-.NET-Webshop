@@ -73,6 +73,8 @@ namespace project.web.Controllers
         {
             try
             {
+                Authorize("Customer", "Index");
+
                 GetProductModel getProductModel = await _projectApiService.GetModel<GetProductModel>(id, "Products");
 
                 if (getProductModel.ImagesModel != null && getProductModel.ImagesModel.Count > 0)
@@ -166,7 +168,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Edit");
+                Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit GET");
 
@@ -209,7 +211,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Edit");
+                Authorize("Moderator", "Edit");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Edit POST");
 
@@ -257,7 +259,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Delete");
+                Authorize("Moderator", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
@@ -286,7 +288,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Customer", "Delete");
+                Authorize("Moderator", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 
@@ -341,7 +343,7 @@ namespace project.web.Controllers
             }
             else // In case of all other errors redirect to home page
             {
-                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
+                return RedirectToRoute(new { action = "Index", controller = "Home" });
             }
         }
     }

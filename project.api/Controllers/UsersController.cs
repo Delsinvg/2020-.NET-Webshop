@@ -280,7 +280,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try

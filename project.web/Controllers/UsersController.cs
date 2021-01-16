@@ -58,7 +58,6 @@ namespace project.web.Controllers
 
                 GetUserModel getUserModel = await _projectApiService.GetModel<GetUserModel>(id, "Users");
 
-                //ViewData["ImageData"] = GetImage(getUserModel.AfbeeldingModel.Data, getUserModel.AfbeeldingModel.Bestandstype);
 
                 return View(getUserModel);
             }
@@ -94,10 +93,6 @@ namespace project.web.Controllers
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Create POST");
 
-                //if (postUserModel.Afbeelding != null && ValidateImage(postUserModel.Afbeelding))
-                //{
-                //    postUserModel.AfbeeldingModel = await SetAfbeelding(postUserModel.Afbeelding);
-                //}
 
                 if (ModelState.IsValid)
                 {
@@ -186,7 +181,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Delete");
+                Authorize("Administrator", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete GET");
 
@@ -206,7 +201,7 @@ namespace project.web.Controllers
         {
             try
             {
-                Authorize("Moderator", "Delete");
+                Authorize("Administrator", "Delete");
 
                 await _tokenValidationService.Validate(this.GetType().Name, "Delete POST");
 

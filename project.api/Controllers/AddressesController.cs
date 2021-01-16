@@ -166,7 +166,7 @@ namespace project.api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> PutAddress(string id, PutAddressModel putAddressModel)
         {
             try

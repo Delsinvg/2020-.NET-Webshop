@@ -239,7 +239,7 @@ namespace project.web.Controllers
             // In case of 401 Unauthorized redirect to login
             if (e.ProjectError.Status.Equals("401"))
             {
-                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
+                return RedirectToRoute(new { action = "Index", controller = "Home" });
             }
             else // In case of all other errors redirect to home page
             {

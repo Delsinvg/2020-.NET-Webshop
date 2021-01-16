@@ -164,7 +164,7 @@ namespace project.web.Controllers
             }
             else // In case of all other errors redirect to home page
             {
-                return RedirectToRoute(new { action = "Index", controller = "Authentication" });
+                return RedirectToRoute(new { action = "Index", controller = "Home" });
             }
         }
 
